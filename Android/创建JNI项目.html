@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cmder.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在 Android Sudio 中使用 JNItarget_link_librariestarget_link_libraries 是 CMake 中用于将共享库或静态库链接到目标可执行文件或共享库的命令。 12&#x2F;&#x2F; 其中，&lt;target&gt; 是要链接库的目标文件的名称，item1、item2 等是要链接到目标文件的库的名称。target_link_libraries(&lt;targe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创建JNI项目">
+<meta property="og:url" content="https://cmder.github.io/Android/%E5%88%9B%E5%BB%BAJNI%E9%A1%B9%E7%9B%AE.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="在 Android Sudio 中使用 JNItarget_link_librariestarget_link_libraries 是 CMake 中用于将共享库或静态库链接到目标可执行文件或共享库的命令。 12&#x2F;&#x2F; 其中，&lt;target&gt; 是要链接库的目标文件的名称，item1、item2 等是要链接到目标文件的库的名称。target_link_libraries(&lt;targe">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-16T14:38:20.000Z">
+<meta property="article:modified_time" content="2024-07-29T02:00:04.125Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cmder.github.io/Android/%E5%88%9B%E5%BB%BAJNI%E9%A1%B9%E7%9B%AE.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>创建JNI项目 | 说码解字</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">说码解字</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于我</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/Android/%E5%88%9B%E5%BB%BAJNI%E9%A1%B9%E7%9B%AE.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_new.jpeg">
+      <meta itemprop="name" content="Bruce Yao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          创建JNI项目
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-16 22:38:20" itemprop="dateCreated datePublished" datetime="2024-07-16T22:38:20+08:00">2024-07-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-29 10:00:04" itemprop="dateModified" datetime="2024-07-29T10:00:04+08:00">2024-07-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Android/%E5%88%9B%E5%BB%BAJNI%E9%A1%B9%E7%9B%AE.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Android/%E5%88%9B%E5%BB%BAJNI%E9%A1%B9%E7%9B%AE.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="在-Android-Sudio-中使用-JNI"><a href="#在-Android-Sudio-中使用-JNI" class="headerlink" title="在 Android Sudio 中使用 JNI"></a>在 Android Sudio 中使用 JNI</h3><h4 id="target-link-libraries"><a href="#target-link-libraries" class="headerlink" title="target_link_libraries"></a>target_link_libraries</h4><p>target_link_libraries 是 CMake 中用于将共享库或静态库链接到目标可执行文件或共享库的命令。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 其中，&lt;<span class="keyword">target</span>&gt; 是要链接库的目标文件的名称，item1、item2 等是要链接到目标文件的库的名称。</span><br><span class="line"><span class="keyword">target_link_libraries</span>(&lt;<span class="keyword">target</span>&gt; [item1] [item2] [...])</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>example:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(mylib SHARED mylib.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(myexe mylib)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(mylib1 SHARED mylib1.cpp)</span><br><span class="line"><span class="keyword">add_library</span>(mylib2 SHARED mylib2.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(mylib2 mylib1)</span><br></pre></td></tr></table></figure>
+<p>上述代码将创建两个共享库 mylib1 和 mylib2，并将 mylib1 链接到 mylib2 中。这意味着，在链接 mylib2 时，CMake 将自动链接 mylib1。</p>
+<h4 id="AS-中-so-文件的生成位置"><a href="#AS-中-so-文件的生成位置" class="headerlink" title="AS 中 so 文件的生成位置"></a>AS 中 so 文件的生成位置</h4><p>\app\build\intermediates\cmake\debug\obj</p>
+<h4 id="module-build-gradle-setting"><a href="#module-build-gradle-setting" class="headerlink" title="module build.gradle setting"></a>module build.gradle setting</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">defaultConfig &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        externalNativeBuild &#123;</span><br><span class="line">            cmake &#123;</span><br><span class="line">                cppFlags <span class="string">&quot;-std=c++11&quot;</span></span><br><span class="line">                abiFilters <span class="string">&#x27;armeabi-v7a&#x27;</span>,<span class="string">&#x27;arm64-v8a&#x27;</span>,<span class="string">&#x27;x86&#x27;</span>,<span class="string">&#x27;x86_64&#x27;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ndk &#123;</span><br><span class="line">            abiFilters <span class="string">&#x27;armeabi-v7a&#x27;</span>,<span class="string">&#x27;arm64-v8a&#x27;</span>,<span class="string">&#x27;x86&#x27;</span>,<span class="string">&#x27;x86_64&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    externalNativeBuild &#123;</span><br><span class="line">        cmake &#123;</span><br><span class="line">            path <span class="string">&quot;CMakeLists.txt&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="CMakeLists-txt-example"><a href="#CMakeLists-txt-example" class="headerlink" title="CMakeLists.txt example"></a>CMakeLists.txt example</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.4</span>.<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_library</span>(fibonacci SHARED</span><br><span class="line">        jni/fibonacci.cpp) // fibonacci.cpp is located under /app/jni/fibonacci.cpp</span><br><span class="line"></span><br><span class="line"><span class="keyword">find_library</span>(log-lib log)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(fibonacci <span class="variable">$&#123;log-lib&#125;</span>)</span><br></pre></td></tr></table></figure>
+<p>located under folder &#x2F;app</p>
+<h4 id="add-multi-cpp-files"><a href="#add-multi-cpp-files" class="headerlink" title="add multi cpp files"></a>add multi cpp files</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>( <span class="comment"># Specifies the name of the library.</span></span><br><span class="line">             native-lib</span><br><span class="line"></span><br><span class="line">             <span class="comment"># Sets the library as a shared library.</span></span><br><span class="line">             // 此处使用 SHARED 标志将库设置为共享库。如果需要将库设置为静态库，则应使用 STATIC 标志。</span><br><span class="line">             SHARED</span><br><span class="line"></span><br><span class="line">             <span class="comment"># Provides a relative path to your source file(s).</span></span><br><span class="line">             src/main/cpp/native-lib.cpp</span><br><span class="line">             src/main/cpp/another-<span class="keyword">file</span>.cpp )</span><br></pre></td></tr></table></figure>
+
+<h4 id="comment-for-a-piece-of-code"><a href="#comment-for-a-piece-of-code" class="headerlink" title="comment for a piece of code"></a>comment for a piece of code</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// extern &quot;C&quot;：C++ 中的一个关键字，用来指定函数使用 C 语言的命名和调用约定。在 JNI 中使用 C 的命名和调用约定非常重要，因为 Java 虚拟机只能通过 C 调用本地函数。因此，需要将 C++ 代码中的函数标记为 C 语言的函数，以便能够正确地被 Java 虚拟机调用。</span></span><br><span class="line"><span class="comment">// JNIEXPORT：JNI 中的宏，用来指定函数的可见性和调用约定。JNIEXPORT 宏被定义为 C 语言的 extern，用于声明一个导出函数</span></span><br><span class="line"><span class="comment">// JNICALL：JNI 中的宏，用来指定函数的调用约定。在 Windows 上，函数的调用约定为 __stdcall，而在其他操作系统上，函数的调用约定为默认的 C 语言调用约定。</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> JNIEXPORT jint JNICALL</span><br><span class="line"><span class="comment">// Java_com_cmder_jnitest_MainActivity_calculateFibonacci：JNI 函数的名称，其中 Java_ 是 JNI 的命名约定，com_cmder_jnitest_MainActivity 是 Java 类的全限定名，calculateFibonacci 是 Java 方法的名称</span></span><br><span class="line"><span class="comment">// JNIEnv* env：JNI 函数的参数，表示指向 JNI 环境的指针。JNI 环境是一个结构体，包含了许多函数指针，用于操作 Java 对象和调用 Java 方法。</span></span><br><span class="line"><span class="comment">// jobject thiz：JNI 函数的参数，表示调用本地函数的 Java 对象的引用。在本例中，它是 MainActivity 类的一个实例。</span></span><br><span class="line"><span class="comment">// jint n：JNI 函数的参数，表示一个 Java int 类型的整数，它将传递给 C/C++ 代码。</span></span><br><span class="line"><span class="built_in">Java_com_cmder_jnitest_MainActivity_calculateFibonacci</span>(JNIEnv* env, jobject thiz, jint n) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">fibonacci</span>(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="add-so-files-in-Android-Studio"><a href="#add-so-files-in-Android-Studio" class="headerlink" title="add so files in Android Studio"></a>add so files in Android Studio</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    sourceSets &#123;</span><br><span class="line">        main &#123;</span><br><span class="line">            <span class="comment">// 4 so files, auto adapt</span></span><br><span class="line">            jniLibs.srcDirs = [<span class="string">&#x27;src/main/jniLibs&#x27;</span>]</span><br><span class="line">            <span class="comment">// or</span></span><br><span class="line">            jniLibs.srcDirs = [<span class="string">&#x27;libs&#x27;</span>]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="在-Java-中使用-JNI"><a href="#在-Java-中使用-JNI" class="headerlink" title="在 Java 中使用 JNI"></a>在 Java 中使用 JNI</h3><ol>
+<li>在 src&#x2F;com&#x2F;cmder 目录下，创建 Java 类<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class MyJNI &#123;</span><br><span class="line">static &#123;</span><br><span class="line">    System.loadLibrary(&quot;MyLibrary&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public native void myFunction();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>在 src 目录下，生成 JNI 头文件，<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">javac -h . com/cmder/MyJNI.java // 这个方法在对MainActivity直接使用时出现问题</span><br><span class="line">// 改用</span><br><span class="line">javah com.example.jni.MainActivity</span><br></pre></td></tr></table></figure></li>
+<li>在 src 目录下，编写 C 代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;jni.h&gt;</span><br><span class="line">#include &quot;MyJNI.h&quot;</span><br><span class="line"></span><br><span class="line">JNIEXPORT void JNICALL Java_com_cmder_MyJNI_myFunction(JNIEnv *env, jobject obj) &#123;</span><br><span class="line">    printf(&quot;Hello from C!\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>在 src 目录下，编译 C 代码创建动态链接库<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -shared -fpic -o libMyLibrary.so MyJNI.c -I/usr/lib/jvm/java-1.11.0-openjdk-amd64/include -I/usr/lib/jvm/java-1.11.0-openjdk-amd64/include/linux</span><br></pre></td></tr></table></figure>
+其中，-I 参数用于指定 Java 头文件的位置。</li>
+<li>在 src 目录下，设置共享库<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=.</span><br></pre></td></tr></table></figure></li>
+<li>在 src 目录下，运行 Java 代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java com.cmder.MyJNI</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="在-Android-Studio-中创建-JNI-项目"><a href="#在-Android-Studio-中创建-JNI-项目" class="headerlink" title="在 Android Studio 中创建 JNI 项目"></a>在 Android Studio 中创建 JNI 项目</h3><h4 id="第一步：进入到项目中的-java-目录"><a href="#第一步：进入到项目中的-java-目录" class="headerlink" title="第一步：进入到项目中的 java 目录"></a>第一步：进入到项目中的 java 目录</h4><h4 id="第二步：生成-h-文件"><a href="#第二步：生成-h-文件" class="headerlink" title="第二步：生成. h 文件"></a>第二步：生成. h 文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javah com.example.jni.MainActivity</span><br></pre></td></tr></table></figure>
+
+<p>.h 文件内容：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JNI 头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;jni.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 解决循环拷贝问题</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _Included_com_example_jni_MainActivity <span class="comment">// 如果没有定义这个宏</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _Included_com_example_jni_MainActivity<span class="comment">// 就定义这个宏</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus <span class="comment">// 如果是 C++ 环境, 就使用 C 的环境</span></span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;<span class="comment">// 全部采用 C 的方式, 采用 C 是为了不准你函数重载 (解决函数名冲突的问题)</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">undef</span> com_example_jni_MainActivity_A</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 自动检测 MainActivity 生成宏</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> com_example_jni_MainActivity_A 234L</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数的声明</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> JNIEXPORT jstring JNICALL <span class="title function_">Java_com_example_jni_MainActivity_getString</span></span><br><span class="line">  <span class="params">(JNIEnv *, jobject)</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus<span class="comment">// 如果是 C++ 什么事情都不干</span></span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>函数实现文件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//extern &quot;C&quot; JNIEXPORT jstring JNICALL Java_com_example_jni_MainActivity_getString</span></span><br><span class="line"><span class="comment">// (JNIEnv *, jobject)&#123;&#125;</span></span><br><span class="line"><span class="comment">//================================= 请看如下注释 =================================</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//JNIEnv 是 C++ 的最终会调用到 C 的 JNINativeInterface 方法 , 所以必须采用 C 的方式 (extern &quot;C&quot;)</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="comment">// 采用 C 的编译方式</span></span><br><span class="line"></span><br><span class="line">JNIEXPORT <span class="comment">// 标记该方法会被外部调用 (VS 会报错, AS 不会报错)</span></span><br><span class="line"></span><br><span class="line">jstring <span class="comment">// java 中方法的返回值,</span></span><br><span class="line"><span class="comment">// 这里返回 jstring, 表示 java 中是 String 类型</span></span><br><span class="line"><span class="comment">// 如果是 jint 则表示 java 中是 int 类型</span></span><br><span class="line"></span><br><span class="line">JNICALL<span class="comment">// 表示是 JIN 的标记 (这个可以去掉)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数名, 由 JDK 设计的 (JNI 是 java 的技术, 不是 native 的技术)</span></span><br><span class="line">Java_com_example_jni_MainActivity_getString</span><br><span class="line">        (JNIEnv *env, jobject job) &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 参数一:(JNIEnv): 是 Java 与 C/C++ 通信最重要的东西 (精华)</span></span><br><span class="line"><span class="comment">     * 参数二 : 情况一 (jobject) 非静态: 谁调用它, 就是谁的实例, 这里 MainActivity 调用, job 就是 MainActivity(this)</span></span><br><span class="line"><span class="comment">     *      : 情况二:(jclass) 静态: 谁调用它, 就是谁的 class, 这里 MainActivity 调用, jclass 就是 MainActivity.class</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="第三步："><a href="#第三步：" class="headerlink" title="第三步："></a>第三步：</h4><p>关键的几个文件：CMakeList.txt，build.gradle（对 CMake 和 NDK 进行配置）</p>
+<p>CMake 和 NDK 的区别：</p>
+<p>CMake 和 NDK 都是用于在 Android 项目中编译原生代码的工具，但它们的职责不同。</p>
+<p>CMake 是一个跨平台的构建工具，可以使用 CMake 编写 C&#x2F;C++ 代码的构建脚本，并生成相应的构建文件，如 Makefile、Visual Studio 项目等。CMake 的优势是可以跨平台使用，而且能够自动生成适合不同平台的构建文件，可以大大简化项目的构建过程。</p>
+<p>NDK（Native Development Kit）则是一个 Android 平台的工具集，它包含了一系列工具和库文件，用于在 Android 平台上开发、编译和调试 C&#x2F;C++ 代码。NDK 提供了一些基本的系统库和头文件，使得 C&#x2F;C++ 代码可以访问 Android 系统的底层功能，例如 OpenGL ES、OpenSL ES、MediaCodec 等。同时 NDK 也提供了交叉编译工具链，可以将 C&#x2F;C++ 代码编译成 ARM、x86 等不同平台的二进制文件。</p>
+<p>在使用 NDK 时，CMake 可以作为一种构建工具来使用，它可以读取 CMake 编写的构建脚本，并根据需要生成相应的构建文件。使用 CMake 可以使得 NDK 开发更加便捷和灵活。</p>
+<p>总结：NDK 利用 CMake 的配置文件来进行构建。</p>
+<p>CMakeList.txt 文件示例：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># For more information about using CMake with Android Studio, read the</span></span><br><span class="line"><span class="comment"># documentation: https://d.android.com/studio/projects/add-native-code.html</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Sets the minimum version of CMake required to build the native library.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.18</span>.<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Declares and names the project.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(<span class="string">&quot;jniapplication&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Creates and names a library, sets it as either STATIC</span></span><br><span class="line"><span class="comment"># or SHARED, and provides the relative paths to its source code.</span></span><br><span class="line"><span class="comment"># You can define multiple libraries, and CMake builds them for you.</span></span><br><span class="line"><span class="comment"># Gradle automatically packages shared libraries with your APK.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">add_library</span>( <span class="comment"># Sets the name of the library.</span></span><br><span class="line">        jniapplication</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Sets the library as a shared library.</span></span><br><span class="line">        SHARED</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Provides a relative path to your source file(s).</span></span><br><span class="line">        native-lib.cpp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Searches for a specified prebuilt library and stores the path as a</span></span><br><span class="line"><span class="comment"># variable. Because CMake includes system libraries in the search path by</span></span><br><span class="line"><span class="comment"># default, you only need to specify the name of the public NDK library</span></span><br><span class="line"><span class="comment"># you want to add. CMake verifies that the library exists before</span></span><br><span class="line"><span class="comment"># completing its build.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">find_library</span>( <span class="comment"># Sets the name of the path variable.</span></span><br><span class="line">        log-lib</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Specifies the name of the NDK library that</span></span><br><span class="line">        <span class="comment"># you want CMake to locate.</span></span><br><span class="line">        log)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Specifies libraries CMake should link to your target library. You</span></span><br><span class="line"><span class="comment"># can link multiple libraries, such as libraries you define in this</span></span><br><span class="line"><span class="comment"># build script, prebuilt third-party libraries, or system libraries.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>( <span class="comment"># Specifies the target library.</span></span><br><span class="line">        jniapplication</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Links the target library to the log library</span></span><br><span class="line">        <span class="comment"># included in the NDK.</span></span><br><span class="line">        <span class="variable">$&#123;log-lib&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>build.gradle 文件示例：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id <span class="string">&#x27;com.android.application&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    namespace <span class="string">&#x27;com.cmder.jniapplication&#x27;</span></span><br><span class="line">    compileSdk <span class="number">33</span></span><br><span class="line"></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        applicationId <span class="string">&quot;com.cmder.jniapplication&quot;</span></span><br><span class="line">        minSdk <span class="number">21</span></span><br><span class="line">        targetSdk <span class="number">33</span></span><br><span class="line">        versionCode <span class="number">1</span></span><br><span class="line">        versionName <span class="string">&quot;1.0&quot;</span></span><br><span class="line"></span><br><span class="line">        testInstrumentationRunner <span class="string">&quot;androidx.test.runner.AndroidJUnitRunner&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled <span class="literal">false</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">&#x27;proguard-android-optimize.txt&#x27;</span>), <span class="string">&#x27;proguard-rules.pro&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    compileOptions &#123;</span><br><span class="line">        sourceCompatibility JavaVersion.VERSION_1_8</span><br><span class="line">        targetCompatibility JavaVersion.VERSION_1_8</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这里</span></span><br><span class="line">    externalNativeBuild &#123;</span><br><span class="line">        cmake &#123;</span><br><span class="line">            path file(<span class="string">&#x27;src/main/cpp/CMakeLists.txt&#x27;</span>)</span><br><span class="line">            version <span class="string">&#x27;3.18.1&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    buildFeatures &#123;</span><br><span class="line">        viewBinding <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line"></span><br><span class="line">    implementation <span class="string">&#x27;androidx.appcompat:appcompat:1.6.1&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;com.google.android.material:material:1.8.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;androidx.constraintlayout:constraintlayout:2.1.4&#x27;</span></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.13.2&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.ext:junit:1.1.5&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.espresso:espresso-core:3.5.1&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>#CPU 架构模式:</p>
+<p>1.arm64-v8a     现在基本 Android 以这个为主</p>
+<p>2.armeabi-v7a   2015 早期的手机</p>
+<p>3.armeabi       2011 基本没人用</p>
+<p>4.x86 5.x86_64  模拟器</p>
+<p>如何知道自己手机 CUP 架构(终端输入):</p>
+<p>adb shell getprop ro.product.cpu.abi</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://cmder.github.io/Android/%E5%88%9B%E5%BB%BAJNI%E9%A1%B9%E7%9B%AE.html" title="创建JNI项目">https://cmder.github.io/Android/创建JNI项目.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Android/View.html" rel="prev" title="View">
+      <i class="fa fa-chevron-left"></i> View
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E3%80%8A%E9%87%91%E7%93%B6%E6%A2%85%E3%80%8B.html" rel="next" title="《金瓶梅》">
+      《金瓶梅》 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Android-Sudio-%E4%B8%AD%E4%BD%BF%E7%94%A8-JNI"><span class="nav-number">1.</span> <span class="nav-text">在 Android Sudio 中使用 JNI</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#target-link-libraries"><span class="nav-number">1.1.</span> <span class="nav-text">target_link_libraries</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AS-%E4%B8%AD-so-%E6%96%87%E4%BB%B6%E7%9A%84%E7%94%9F%E6%88%90%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">AS 中 so 文件的生成位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#module-build-gradle-setting"><span class="nav-number">1.3.</span> <span class="nav-text">module build.gradle setting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CMakeLists-txt-example"><span class="nav-number">1.4.</span> <span class="nav-text">CMakeLists.txt example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#add-multi-cpp-files"><span class="nav-number">1.5.</span> <span class="nav-text">add multi cpp files</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#comment-for-a-piece-of-code"><span class="nav-number">1.6.</span> <span class="nav-text">comment for a piece of code</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#add-so-files-in-Android-Studio"><span class="nav-number">1.7.</span> <span class="nav-text">add so files in Android Studio</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Java-%E4%B8%AD%E4%BD%BF%E7%94%A8-JNI"><span class="nav-number">2.</span> <span class="nav-text">在 Java 中使用 JNI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Android-Studio-%E4%B8%AD%E5%88%9B%E5%BB%BA-JNI-%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">在 Android Studio 中创建 JNI 项目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E8%BF%9B%E5%85%A5%E5%88%B0%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84-java-%E7%9B%AE%E5%BD%95"><span class="nav-number">3.1.</span> <span class="nav-text">第一步：进入到项目中的 java 目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E7%94%9F%E6%88%90-h-%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">第二步：生成. h 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A"><span class="nav-number">3.3.</span> <span class="nav-text">第三步：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/images/avatar_new.jpeg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'KkIE2CZVooezveq205W2WJQy-gzGzoHsz',
+      appKey     : 'kuoAHLe3CebE0RL5Bye6SokM',
+      placeholder: "请在此输入您的评论",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
