@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cmder.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Androidhttps:&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;article&#x2F;1771132 https:&#x2F;&#x2F;github.com&#x2F;XerxesLei&#x2F;developAndroidIssu&#x2F;blob&#x2F;master&#x2F;Android%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知识结构">
+<meta property="og:url" content="https://cmder.github.io/%E7%9F%A5%E8%AF%86%E7%BB%93%E6%9E%84.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="Androidhttps:&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;article&#x2F;1771132 https:&#x2F;&#x2F;github.com&#x2F;XerxesLei&#x2F;developAndroidIssu&#x2F;blob&#x2F;master&#x2F;Android%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.p">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-10-11T09:32:57.000Z">
+<meta property="article:modified_time" content="2024-12-06T10:00:23.204Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cmder.github.io/%E7%9F%A5%E8%AF%86%E7%BB%93%E6%9E%84.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>知识结构 | 说码解字</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">说码解字</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/%E7%9F%A5%E8%AF%86%E7%BB%93%E6%9E%84.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_new.jpeg">
+      <meta itemprop="name" content="Bruce Yao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          知识结构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-10-11 17:32:57" itemprop="dateCreated datePublished" datetime="2024-10-11T17:32:57+08:00">2024-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-12-06 18:00:23" itemprop="dateModified" datetime="2024-12-06T18:00:23+08:00">2024-12-06</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/%E7%9F%A5%E8%AF%86%E7%BB%93%E6%9E%84.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/%E7%9F%A5%E8%AF%86%E7%BB%93%E6%9E%84.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h1><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1771132">https://cloud.tencent.com/developer/article/1771132</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/XerxesLei/developAndroidIssu/blob/master/Android%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.pdf">https://github.com/XerxesLei/developAndroidIssu/blob/master/Android%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.pdf</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.processon.com/view/630059821efad47d1243beec">https://www.processon.com/view/630059821efad47d1243beec</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/liuwg1226/article/details/114777562">https://blog.csdn.net/liuwg1226/article/details/114777562</a></p>
+<p><a target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/blogs/325558">https://bbs.huaweicloud.com/blogs/325558</a></p>
+<a href="/Android/Android-Studio-%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93.html" title="Android Studio 使用总结">Android Studio 使用总结</a>
+
+
+<p>Android 系统架构</p>
+<a href="/Android/Activity.html" title="Activity">Activity</a>
+
+<p>Service</p>
+<p>BroadcastReceiver</p>
+<span id="more"></span>
+
+<p>ContentProvider</p>
+<p>Fragment</p>
+<p>WebView</p>
+<p>WorkManager</p>
+<a href="/Android/View.html" title="View">View</a>
+
+<p>Android 6.0 权限系统</p>
+<p>代码混淆</p>
+<p>内存泄漏</p>
+<p>热修复</p>
+<p>AOP</p>
+<p>ART(AndroidRuntime) 与 Dalvik</p>
+<p>Android 启动模式</p>
+<p>MVC 模式</p>
+<p>MVP 模式</p>
+<p>MVVM 模式</p>
+<p>ConstraintLayout</p>
+<p>性能优化</p>
+<p>Google Play 应用发布流程</p>
+<p>持续集成</p>
+<p>反编译</p>
+<p>屏幕适配</p>
+<a href="/Android/Android-%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93.html" title="Android 面试题总结">Android 面试题总结</a>
+
+<a href="/Android/JNI-%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93.html" title="JNI 使用总结">JNI 使用总结</a>
+
+<h2 id="Jetpack"><a href="#Jetpack" class="headerlink" title="Jetpack"></a>Jetpack</h2><p>Compose</p>
+<h2 id="第三方库"><a href="#第三方库" class="headerlink" title="第三方库"></a>第三方库</h2><p>Dagger2</p>
+<p>RxJava</p>
+<p>Retrofit</p>
+<p>Volley</p>
+<p>LeakCanary</p>
+<p>Butterknife</p>
+<p>ARouter</p>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><h2 id="BSP"><a href="#BSP" class="headerlink" title="BSP"></a>BSP</h2><h1 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h1><p>UML</p>
+<h1 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h1><h1 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h1><h1 id="Kotlin"><a href="#Kotlin" class="headerlink" title="Kotlin"></a>Kotlin</h1><a href="/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Kotlin/Kotlin-%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93.html" title="Kotlin 使用总结">Kotlin 使用总结</a>
+
+<h1 id="IOS"><a href="#IOS" class="headerlink" title="IOS"></a>IOS</h1><h1 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h1><a href="/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++/C++-%E8%AF%AD%E6%B3%95%E6%80%BB%E7%BB%93.html" title="C++ 语法总结">C++ 语法总结</a>
+
+<h1 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h1><h1 id="HarmonyOS"><a href="#HarmonyOS" class="headerlink" title="HarmonyOS"></a>HarmonyOS</h1><h1 id="OpenGL"><a href="#OpenGL" class="headerlink" title="OpenGL"></a>OpenGL</h1><h1 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h1><h1 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h1><h1 id="AI"><a href="#AI" class="headerlink" title="AI"></a>AI</h1><h1 id="音视频"><a href="#音视频" class="headerlink" title="音视频"></a>音视频</h1><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7115388645355307021">音视频技术栈思维导图</a></p>
+<h1 id="嵌入式"><a href="#嵌入式" class="headerlink" title="嵌入式"></a>嵌入式</h1><h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><h2 id="51单片机"><a href="#51单片机" class="headerlink" title="51单片机"></a>51单片机</h2><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/140ee9ea8c0a">Android 知识总结</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://cmder.github.io/%E7%9F%A5%E8%AF%86%E7%BB%93%E6%9E%84.html" title="知识结构">https://cmder.github.io/知识结构.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Android/Android-Studio-%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93.html" rel="prev" title="Android Studio 使用总结">
+      <i class="fa fa-chevron-left"></i> Android Studio 使用总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E5%B7%A5%E5%85%B7/QT-%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93.html" rel="next" title="QT 使用总结">
+      QT 使用总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android"><span class="nav-number">1.</span> <span class="nav-text">Android</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jetpack"><span class="nav-number">1.1.</span> <span class="nav-text">Jetpack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93"><span class="nav-number">1.2.</span> <span class="nav-text">第三方库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework"><span class="nav-number">1.3.</span> <span class="nav-text">Framework</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BSP"><span class="nav-number">1.4.</span> <span class="nav-text">BSP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">架构设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle"><span class="nav-number">3.</span> <span class="nav-text">Gradle</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java"><span class="nav-number">4.</span> <span class="nav-text">Java</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kotlin"><span class="nav-number">5.</span> <span class="nav-text">Kotlin</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IOS"><span class="nav-number">6.</span> <span class="nav-text">IOS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C"><span class="nav-number">7.</span> <span class="nav-text">C++</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Golang"><span class="nav-number">8.</span> <span class="nav-text">Golang</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HarmonyOS"><span class="nav-number">9.</span> <span class="nav-text">HarmonyOS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenGL"><span class="nav-number">10.</span> <span class="nav-text">OpenGL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF"><span class="nav-number">11.</span> <span class="nav-text">前端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF"><span class="nav-number">12.</span> <span class="nav-text">后端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AI"><span class="nav-number">13.</span> <span class="nav-text">AI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9F%B3%E8%A7%86%E9%A2%91"><span class="nav-number">14.</span> <span class="nav-text">音视频</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F"><span class="nav-number">15.</span> <span class="nav-text">嵌入式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux"><span class="nav-number">15.1.</span> <span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#51%E5%8D%95%E7%89%87%E6%9C%BA"><span class="nav-number">15.2.</span> <span class="nav-text">51单片机</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">16.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/images/avatar_new.jpeg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'KkIE2CZVooezveq205W2WJQy-gzGzoHsz',
+      appKey     : 'kuoAHLe3CebE0RL5Bye6SokM',
+      placeholder: "请在此输入您的评论",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
