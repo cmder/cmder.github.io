@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cmder.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="以下是 WebRTC 的基本概念和知识点的详细整理，帮助快速了解和掌握 WebRTC 的核心技术和应用。  1. 什么是 WebRTC 定义：WebRTC（Web Real-Time Communication）是一个开源技术框架，支持浏览器和移动设备之间实现点对点的实时音视频通信和数据传输，而无需借助中间服务器。  核心功能：  音视频捕获：获取摄像头和麦克风数据。 编解码：支持高效的音视频编码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebRTC 速览">
+<meta property="og:url" content="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/WebRTC_%E9%80%9F%E8%A7%88.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="以下是 WebRTC 的基本概念和知识点的详细整理，帮助快速了解和掌握 WebRTC 的核心技术和应用。  1. 什么是 WebRTC 定义：WebRTC（Web Real-Time Communication）是一个开源技术框架，支持浏览器和移动设备之间实现点对点的实时音视频通信和数据传输，而无需借助中间服务器。  核心功能：  音视频捕获：获取摄像头和麦克风数据。 编解码：支持高效的音视频编码">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-29T08:53:41.000Z">
+<meta property="article:modified_time" content="2024-12-20T05:27:53.274Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/WebRTC_%E9%80%9F%E8%A7%88.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>WebRTC 速览 | 说码解字</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">说码解字</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/WebRTC_%E9%80%9F%E8%A7%88.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_new.jpeg">
+      <meta itemprop="name" content="Bruce Yao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WebRTC 速览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-11-29 16:53:41" itemprop="dateCreated datePublished" datetime="2024-11-29T16:53:41+08:00">2024-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-12-20 13:27:53" itemprop="dateModified" datetime="2024-12-20T13:27:53+08:00">2024-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/" itemprop="url" rel="index"><span itemprop="name">音视频</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/%E9%9F%B3%E8%A7%86%E9%A2%91/WebRTC_%E9%80%9F%E8%A7%88.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/%E9%9F%B3%E8%A7%86%E9%A2%91/WebRTC_%E9%80%9F%E8%A7%88.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>以下是 <strong>WebRTC</strong> 的基本概念和知识点的详细整理，帮助快速了解和掌握 WebRTC 的核心技术和应用。</p>
+<hr>
+<h1 id="1-什么是-WebRTC"><a href="#1-什么是-WebRTC" class="headerlink" title="1. 什么是 WebRTC"></a><strong>1. 什么是 WebRTC</strong></h1><ul>
+<li><p><strong>定义</strong>：<br>WebRTC（Web Real-Time Communication）是一个开源技术框架，支持浏览器和移动设备之间实现点对点的实时音视频通信和数据传输，而无需借助中间服务器。</p>
+</li>
+<li><p><strong>核心功能</strong>：</p>
+<ol>
+<li>音视频捕获：获取摄像头和麦克风数据。</li>
+<li>编解码：支持高效的音视频编码解码（VP8、VP9、H.264、Opus 等）。</li>
+<li>网络传输：点对点数据传输，支持 NAT 穿越。</li>
+<li>数据通道：传输非音视频数据（如文本、文件）。</li>
+</ol>
+</li>
+<li><p><strong>特点</strong>：</p>
+<ul>
+<li><strong>跨平台</strong>：支持主流浏览器（Chrome、Firefox、Safari 等）和移动平台（Android、iOS）。</li>
+<li><strong>高性能</strong>：基于 UDP，使用 SRTP 保障传输安全。</li>
+<li><strong>开源</strong>：由 Google 推广和维护，已成为 W3C 标准。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<span id="more"></span>
+
+<h1 id="2-WebRTC-的核心概念"><a href="#2-WebRTC-的核心概念" class="headerlink" title="2. WebRTC 的核心概念"></a><strong>2. WebRTC 的核心概念</strong></h1><h2 id="2-1-WebRTC-的基本架构"><a href="#2-1-WebRTC-的基本架构" class="headerlink" title="2.1 WebRTC 的基本架构"></a><strong>2.1 WebRTC 的基本架构</strong></h2><p>WebRTC 的架构主要包括以下组件：</p>
+<ol>
+<li><p><strong>MediaStream（媒体流）</strong>：</p>
+<ul>
+<li>提供音视频的捕获和管理。</li>
+<li>通过 <code>getUserMedia()</code> 接口获取摄像头和麦克风数据。</li>
+</ul>
+</li>
+<li><p><strong>RTCPeerConnection（点对点连接）</strong>：</p>
+<ul>
+<li>用于建立浏览器之间的 P2P 连接。</li>
+<li>支持音视频流和数据的发送和接收。</li>
+</ul>
+</li>
+<li><p><strong>RTCDataChannel（数据通道）</strong>：</p>
+<ul>
+<li>点对点传输任意非媒体数据（如文本、文件）。</li>
+</ul>
+</li>
+<li><p><strong>ICE（Interactive Connectivity Establishment）</strong>：</p>
+<ul>
+<li>协助穿越 NAT，建立端到端连接。</li>
+<li>包括 STUN（Session Traversal Utilities for NAT）和 TURN（Traversal Using Relays around NAT）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="2-2-信令（Signaling）"><a href="#2-2-信令（Signaling）" class="headerlink" title="2.2 信令（Signaling）"></a><strong>2.2 信令（Signaling）</strong></h2><ul>
+<li><p><strong>定义</strong>：<br>信令是指用于交换必要的元信息（如 SDP、候选地址等）的过程，以便建立 P2P 连接。</p>
+</li>
+<li><p><strong>信令的作用</strong>：</p>
+<ol>
+<li>交换会话描述协议（SDP），协商编解码器和媒体配置。</li>
+<li>共享 ICE 候选地址，帮助穿越 NAT。</li>
+</ol>
+</li>
+<li><p><strong>信令实现方式</strong>：<br>WebRTC 本身不定义信令协议，常见的信令实现方式包括：</p>
+<ul>
+<li>WebSocket</li>
+<li>HTTP&#x2F;HTTPS</li>
+<li>MQTT</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-3-核心协议"><a href="#2-3-核心协议" class="headerlink" title="2.3 核心协议"></a><strong>2.3 核心协议</strong></h2><ol>
+<li><p><strong>SRTP（Secure Real-Time Transport Protocol）</strong>：</p>
+<ul>
+<li>用于加密和验证音视频数据的传输。</li>
+</ul>
+</li>
+<li><p><strong>DTLS（Datagram Transport Layer Security）</strong>：</p>
+<ul>
+<li>用于安全交换密钥，保护数据通道和媒体通道。</li>
+</ul>
+</li>
+<li><p><strong>ICE（Interactive Connectivity Establishment）</strong>：</p>
+<ul>
+<li>用于发现和选择最佳路径来建立点对点连接。</li>
+</ul>
+</li>
+<li><p><strong>SDP（Session Description Protocol）</strong>：</p>
+<ul>
+<li>用于描述多媒体会话信息的文本协议，包含编解码器、媒体类型和网络参数。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="3-WebRTC-的工作流程"><a href="#3-WebRTC-的工作流程" class="headerlink" title="3. WebRTC 的工作流程"></a><strong>3. WebRTC 的工作流程</strong></h1><p>WebRTC 的完整工作流程包括以下步骤：</p>
+<h2 id="3-1-媒体捕获"><a href="#3-1-媒体捕获" class="headerlink" title="3.1 媒体捕获"></a><strong>3.1 媒体捕获</strong></h2><ul>
+<li>调用 <code>getUserMedia()</code> 捕获摄像头、麦克风或屏幕内容：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">navigator.<span class="property">mediaDevices</span>.<span class="title function_">getUserMedia</span>(&#123; <span class="attr">video</span>: <span class="literal">true</span>, <span class="attr">audio</span>: <span class="literal">true</span> &#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">stream</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 获取媒体流并附加到 HTML 视频标签</span></span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;video&quot;</span>).<span class="property">srcObject</span> = stream;</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;Error accessing media devices:&quot;</span>, error);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-2-信令交换"><a href="#3-2-信令交换" class="headerlink" title="3.2 信令交换"></a><strong>3.2 信令交换</strong></h2><ul>
+<li>使用信令服务器交换 SDP 和 ICE 候选信息。</li>
+</ul>
+<h2 id="3-3-创建-RTCPeerConnection"><a href="#3-3-创建-RTCPeerConnection" class="headerlink" title="3.3 创建 RTCPeerConnection"></a><strong>3.3 创建 RTCPeerConnection</strong></h2><ul>
+<li>创建点对点连接对象：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> peerConnection = <span class="keyword">new</span> <span class="title class_">RTCPeerConnection</span>();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-4-添加媒体流到连接"><a href="#3-4-添加媒体流到连接" class="headerlink" title="3.4 添加媒体流到连接"></a><strong>3.4 添加媒体流到连接</strong></h2><ul>
+<li>将媒体流添加到连接中：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stream.<span class="title function_">getTracks</span>().<span class="title function_">forEach</span>(<span class="function">(<span class="params">track</span>) =&gt;</span> &#123;</span><br><span class="line">  peerConnection.<span class="title function_">addTrack</span>(track, stream);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-5-创建和交换-SDP"><a href="#3-5-创建和交换-SDP" class="headerlink" title="3.5 创建和交换 SDP"></a><strong>3.5 创建和交换 SDP</strong></h2><ul>
+<li>创建本地 SDP 并通过信令服务器发送：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">peerConnection.<span class="title function_">createOffer</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">offer</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> peerConnection.<span class="title function_">setLocalDescription</span>(offer);</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 将 SDP 通过信令发送到对端</span></span><br><span class="line">    <span class="title function_">sendToSignalingServer</span>(peerConnection.<span class="property">localDescription</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-6-ICE-候选处理"><a href="#3-6-ICE-候选处理" class="headerlink" title="3.6 ICE 候选处理"></a><strong>3.6 ICE 候选处理</strong></h2><ul>
+<li>监听 ICE 候选事件，并通过信令服务器发送：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">peerConnection.<span class="property">onicecandidate</span> = <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">candidate</span>) &#123;</span><br><span class="line">    <span class="title function_">sendToSignalingServer</span>(event.<span class="property">candidate</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h1 id="4-WebRTC-的核心-API"><a href="#4-WebRTC-的核心-API" class="headerlink" title="4. WebRTC 的核心 API"></a><strong>4. WebRTC 的核心 API</strong></h1><ol>
+<li><p>**<code>getUserMedia()</code>**：</p>
+<ul>
+<li>用于捕获本地媒体流（摄像头、麦克风、屏幕）。</li>
+<li>返回一个 <code>MediaStream</code> 对象。</li>
+</ul>
+</li>
+<li><p>**<code>RTCPeerConnection</code>**：</p>
+<ul>
+<li>用于建立 P2P 连接并传输音视频数据。</li>
+<li>常用方法：<ul>
+<li><code>addTrack()</code>：向连接中添加媒体轨道。</li>
+<li><code>createOffer()</code>：创建 SDP offer。</li>
+<li><code>createAnswer()</code>：创建 SDP answer。</li>
+<li><code>setLocalDescription()</code>：设置本地 SDP。</li>
+<li><code>setRemoteDescription()</code>：设置远端 SDP。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>**<code>RTCDataChannel</code>**：</p>
+<ul>
+<li>用于点对点传输任意数据。</li>
+<li>创建方式：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dataChannel = peerConnection.<span class="title function_">createDataChannel</span>(<span class="string">&quot;channelName&quot;</span>);</span><br><span class="line">dataChannel.<span class="property">onmessage</span> = <span class="function">(<span class="params">event</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(event.<span class="property">data</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="5-WebRTC-的音视频技术"><a href="#5-WebRTC-的音视频技术" class="headerlink" title="5. WebRTC 的音视频技术"></a><strong>5. WebRTC 的音视频技术</strong></h1><h2 id="5-1-编解码器"><a href="#5-1-编解码器" class="headerlink" title="5.1 编解码器"></a><strong>5.1 编解码器</strong></h2><ul>
+<li><strong>视频编解码器</strong>：<ul>
+<li>VP8、VP9（默认支持）。</li>
+<li>H.264（硬件加速）。</li>
+<li>AV1（实验性支持）。</li>
+</ul>
+</li>
+<li><strong>音频编解码器</strong>：<ul>
+<li>Opus（宽带音频）。</li>
+<li>G.711（兼容性强，但质量低）。</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-2-回音消除与降噪"><a href="#5-2-回音消除与降噪" class="headerlink" title="5.2 回音消除与降噪"></a><strong>5.2 回音消除与降噪</strong></h2><ul>
+<li>WebRTC 内置支持回音消除、降噪和自动增益控制。</li>
+<li>在 <code>getUserMedia()</code> 中启用：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">navigator.<span class="property">mediaDevices</span>.<span class="title function_">getUserMedia</span>(&#123;</span><br><span class="line">  <span class="attr">audio</span>: &#123;</span><br><span class="line">    <span class="attr">echoCancellation</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">noiseSuppression</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">autoGainControl</span>: <span class="literal">true</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h1 id="6-WebRTC-的典型应用场景"><a href="#6-WebRTC-的典型应用场景" class="headerlink" title="6. WebRTC 的典型应用场景"></a><strong>6. WebRTC 的典型应用场景</strong></h1><ol>
+<li><strong>实时视频会议</strong>：<ul>
+<li>多人视频通话（结合 SFU 架构）。</li>
+</ul>
+</li>
+<li><strong>屏幕共享</strong>：<ul>
+<li>使用 <code>getDisplayMedia()</code> 捕获屏幕。</li>
+</ul>
+</li>
+<li><strong>实时数据传输</strong>：<ul>
+<li>通过 <code>RTCDataChannel</code> 传输文件、消息。</li>
+</ul>
+</li>
+<li><strong>实时流媒体</strong>：<ul>
+<li>推流到 CDN 或实时观看流媒体。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="7-WebRTC-的部署架构"><a href="#7-WebRTC-的部署架构" class="headerlink" title="7. WebRTC 的部署架构"></a><strong>7. WebRTC 的部署架构</strong></h1><h2 id="7-1-P2P-架构"><a href="#7-1-P2P-架构" class="headerlink" title="7.1 P2P 架构"></a><strong>7.1 P2P 架构</strong></h2><ul>
+<li>点对点连接，适用于两人通信。</li>
+<li>优点：低延迟。</li>
+<li>缺点：需要有效的 NAT 穿越，难以支持大规模用户。</li>
+</ul>
+<h2 id="7-2-SFU（Selective-Forwarding-Unit）"><a href="#7-2-SFU（Selective-Forwarding-Unit）" class="headerlink" title="7.2 SFU（Selective Forwarding Unit）"></a><strong>7.2 SFU（Selective Forwarding Unit）</strong></h2><ul>
+<li>中心服务器只转发媒体流，不进行解码。</li>
+<li>优点：支持多人通信，带宽占用低。</li>
+<li>缺点：增加了服务器复杂性。</li>
+</ul>
+<h2 id="7-3-MCU（Multipoint-Control-Unit）"><a href="#7-3-MCU（Multipoint-Control-Unit）" class="headerlink" title="7.3 MCU（Multipoint Control Unit）"></a><strong>7.3 MCU（Multipoint Control Unit）</strong></h2><ul>
+<li>中心服务器负责媒体流的解码、混合和转发。</li>
+<li>优点：支持设备性能较低的用户。</li>
+<li>缺点：服务器成本高，延迟较高。</li>
+</ul>
+<hr>
+<h1 id="8-学习资源"><a href="#8-学习资源" class="headerlink" title="8. 学习资源"></a><strong>8. 学习资源</strong></h1><h2 id="8-1-官方文档"><a href="#8-1-官方文档" class="headerlink" title="8.1 官方文档"></a><strong>8.1 官方文档</strong></h2><ul>
+<li>WebRTC 官网：<a target="_blank" rel="noopener" href="https://webrtc.org/">https://webrtc.org/</a></li>
+</ul>
+<h2 id="8-2-推荐教程"><a href="#8-2-推荐教程" class="headerlink" title="8.2 推荐教程"></a><strong>8.2 推荐教程</strong></h2><ul>
+<li>MDN WebRTC 入门：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API">https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API</a></li>
+<li>《深入浅出 WebRTC》</li>
+</ul>
+<h2 id="8-3-开源项目"><a href="#8-3-开源项目" class="headerlink" title="8.3 开源项目"></a><strong>8.3 开源项目</strong></h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/feross/simple-peer">SimplePeer</a>：简化的 WebRTC 库。</li>
+<li><a target="_blank" rel="noopener" href="https://peerjs.com/">PeerJS</a>：易用的 WebRTC 框架。</li>
+</ul>
+<hr>
+<p>通过以上内容，你可以从 WebRTC 的基础概念入手，逐步掌握其核心技术和应用场景，最终能够开发功能完善的实时音视频和数据通信系统。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/WebRTC_%E9%80%9F%E8%A7%88.html" title="WebRTC 速览">https://cmder.github.io/音视频/WebRTC_速览.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%E9%9F%B3%E8%A7%86%E9%A2%91/FFmpeg_%E9%80%9F%E8%A7%88.html" rel="prev" title="FFmpeg 速览">
+      <i class="fa fa-chevron-left"></i> FFmpeg 速览
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/%E6%9E%B6%E6%9E%84/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html" rel="next" title="设计模式">
+      设计模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-WebRTC"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是 WebRTC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-WebRTC-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">2. WebRTC 的核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-WebRTC-%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 WebRTC 的基本架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E4%BF%A1%E4%BB%A4%EF%BC%88Signaling%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 信令（Signaling）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%A0%B8%E5%BF%83%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 核心协议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-WebRTC-%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">3. WebRTC 的工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%AA%92%E4%BD%93%E6%8D%95%E8%8E%B7"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 媒体捕获</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E4%BF%A1%E4%BB%A4%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 信令交换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%88%9B%E5%BB%BA-RTCPeerConnection"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 创建 RTCPeerConnection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%B7%BB%E5%8A%A0%E5%AA%92%E4%BD%93%E6%B5%81%E5%88%B0%E8%BF%9E%E6%8E%A5"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 添加媒体流到连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E5%88%9B%E5%BB%BA%E5%92%8C%E4%BA%A4%E6%8D%A2-SDP"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 创建和交换 SDP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-ICE-%E5%80%99%E9%80%89%E5%A4%84%E7%90%86"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 ICE 候选处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-WebRTC-%E7%9A%84%E6%A0%B8%E5%BF%83-API"><span class="nav-number">4.</span> <span class="nav-text">4. WebRTC 的核心 API</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-WebRTC-%E7%9A%84%E9%9F%B3%E8%A7%86%E9%A2%91%E6%8A%80%E6%9C%AF"><span class="nav-number">5.</span> <span class="nav-text">5. WebRTC 的音视频技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E7%BC%96%E8%A7%A3%E7%A0%81%E5%99%A8"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 编解码器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E5%9B%9E%E9%9F%B3%E6%B6%88%E9%99%A4%E4%B8%8E%E9%99%8D%E5%99%AA"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 回音消除与降噪</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-WebRTC-%E7%9A%84%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">6.</span> <span class="nav-text">6. WebRTC 的典型应用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-WebRTC-%E7%9A%84%E9%83%A8%E7%BD%B2%E6%9E%B6%E6%9E%84"><span class="nav-number">7.</span> <span class="nav-text">7. WebRTC 的部署架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-P2P-%E6%9E%B6%E6%9E%84"><span class="nav-number">7.1.</span> <span class="nav-text">7.1 P2P 架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-SFU%EF%BC%88Selective-Forwarding-Unit%EF%BC%89"><span class="nav-number">7.2.</span> <span class="nav-text">7.2 SFU（Selective Forwarding Unit）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-MCU%EF%BC%88Multipoint-Control-Unit%EF%BC%89"><span class="nav-number">7.3.</span> <span class="nav-text">7.3 MCU（Multipoint Control Unit）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90"><span class="nav-number">8.</span> <span class="nav-text">8. 学习资源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3"><span class="nav-number">8.1.</span> <span class="nav-text">8.1 官方文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-%E6%8E%A8%E8%8D%90%E6%95%99%E7%A8%8B"><span class="nav-number">8.2.</span> <span class="nav-text">8.2 推荐教程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE"><span class="nav-number">8.3.</span> <span class="nav-text">8.3 开源项目</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/images/avatar_new.jpeg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'KkIE2CZVooezveq205W2WJQy-gzGzoHsz',
+      appKey     : 'kuoAHLe3CebE0RL5Bye6SokM',
+      placeholder: "请在此输入您的评论",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

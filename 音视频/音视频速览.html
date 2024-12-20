@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cmder.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、音频技术1. 音频的基本概念 声音与音频信号：声音是由物体振动产生的机械波，音频信号是声音信号的数字表示。音频信号可以是模拟信号（如麦克风采集的声音）或数字信号（如MP3、WAV文件）。  频率与振幅：  频率：声音的高低，单位是Hz。 振幅：声音的响度，通常用dB表示。    2. 音频的数字化过程 采样（Sampling）：将模拟音频信号转换为离散的数字信号。采样率（例如44.1kHz）决">
+<meta property="og:type" content="article">
+<meta property="og:title" content="音视频速览">
+<meta property="og:url" content="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/%E9%9F%B3%E8%A7%86%E9%A2%91%E9%80%9F%E8%A7%88.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="一、音频技术1. 音频的基本概念 声音与音频信号：声音是由物体振动产生的机械波，音频信号是声音信号的数字表示。音频信号可以是模拟信号（如麦克风采集的声音）或数字信号（如MP3、WAV文件）。  频率与振幅：  频率：声音的高低，单位是Hz。 振幅：声音的响度，通常用dB表示。    2. 音频的数字化过程 采样（Sampling）：将模拟音频信号转换为离散的数字信号。采样率（例如44.1kHz）决">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-26T15:58:56.000Z">
+<meta property="article:modified_time" content="2024-12-20T05:27:53.278Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/%E9%9F%B3%E8%A7%86%E9%A2%91%E9%80%9F%E8%A7%88.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>音视频速览 | 说码解字</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">说码解字</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/%E9%9F%B3%E8%A7%86%E9%A2%91%E9%80%9F%E8%A7%88.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_new.jpeg">
+      <meta itemprop="name" content="Bruce Yao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          音视频速览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-11-26 23:58:56" itemprop="dateCreated datePublished" datetime="2024-11-26T23:58:56+08:00">2024-11-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-12-20 13:27:53" itemprop="dateModified" datetime="2024-12-20T13:27:53+08:00">2024-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/" itemprop="url" rel="index"><span itemprop="name">音视频</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/%E9%9F%B3%E8%A7%86%E9%A2%91/%E9%9F%B3%E8%A7%86%E9%A2%91%E9%80%9F%E8%A7%88.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/%E9%9F%B3%E8%A7%86%E9%A2%91/%E9%9F%B3%E8%A7%86%E9%A2%91%E9%80%9F%E8%A7%88.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一、音频技术"><a href="#一、音频技术" class="headerlink" title="一、音频技术"></a><strong>一、音频技术</strong></h1><h2 id="1-音频的基本概念"><a href="#1-音频的基本概念" class="headerlink" title="1. 音频的基本概念"></a>1. <strong>音频的基本概念</strong></h2><ul>
+<li><p><strong>声音与音频信号</strong>：声音是由物体振动产生的机械波，音频信号是声音信号的数字表示。音频信号可以是模拟信号（如麦克风采集的声音）或数字信号（如MP3、WAV文件）。</p>
+</li>
+<li><p>频率与振幅：</p>
+<ul>
+<li><strong>频率</strong>：声音的高低，单位是Hz。</li>
+<li><strong>振幅</strong>：声音的响度，通常用dB表示。</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-音频的数字化过程"><a href="#2-音频的数字化过程" class="headerlink" title="2. 音频的数字化过程"></a>2. <strong>音频的数字化过程</strong></h2><ul>
+<li><strong>采样（Sampling）</strong>：将模拟音频信号转换为离散的数字信号。采样率（例如44.1kHz）决定了采样频率，必须至少是音频信号中最高频率的两倍。</li>
+<li><strong>量化（Quantization）</strong>：对采样得到的模拟信号值进行离散化，转化为数字信号。</li>
+<li><strong>比特深度（Bit Depth）</strong>：表示每个采样点的精度，决定动态范围，常见有16位、24位。</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="3-音频压缩"><a href="#3-音频压缩" class="headerlink" title="3. 音频压缩"></a>3. <strong>音频压缩</strong></h2><ul>
+<li><strong>有损压缩</strong>（如MP3、AAC）：通过去除人耳不敏感的音频信息来减小文件大小。</li>
+<li><strong>无损压缩</strong>（如FLAC、ALAC）：压缩后能完全恢复原始音频。</li>
+</ul>
+<h2 id="4-时序同步：DTS与PTS"><a href="#4-时序同步：DTS与PTS" class="headerlink" title="4. 时序同步：DTS与PTS"></a>4. <strong>时序同步：DTS与PTS</strong></h2><ul>
+<li><strong>DTS</strong>：解码时间戳，指示帧何时解码。</li>
+<li><strong>PTS</strong>：展示时间戳，指示帧何时展示。</li>
+</ul>
+<h2 id="5-音频格式"><a href="#5-音频格式" class="headerlink" title="5. 音频格式"></a>5. <strong>音频格式</strong></h2><ul>
+<li><strong>WAV</strong>：未压缩格式，常用于高质量录制。</li>
+<li><strong>MP3</strong>：有损格式，广泛用于音乐。</li>
+<li><strong>AAC</strong>：高效的有损压缩格式，常用于视频音频部分。</li>
+<li><strong>FLAC</strong>：无损格式，保留音频完整质量。</li>
+</ul>
+<hr>
+<h1 id="二、视频技术"><a href="#二、视频技术" class="headerlink" title="二、视频技术"></a><strong>二、视频技术</strong></h1><h2 id="1-视频的基本概念"><a href="#1-视频的基本概念" class="headerlink" title="1. 视频的基本概念"></a>1. <strong>视频的基本概念</strong></h2><ul>
+<li><strong>视频信号</strong>：由连续的图像帧组成，通过一定的帧率播放产生动态画面。</li>
+<li><strong>帧率（Frame Rate）</strong>：每秒显示的帧数（fps）。常见帧率有24fps（电影）、30fps（电视、在线视频）、60fps（高质量视频）。</li>
+</ul>
+<h2 id="2-视频编码与压缩"><a href="#2-视频编码与压缩" class="headerlink" title="2. 视频编码与压缩"></a>2. <strong>视频编码与压缩</strong></h2><ul>
+<li><p><strong>编码</strong>：将视频信号转换为数字数据的过程。常用的编码标准包括H.264、HEVC、VP9等。</p>
+</li>
+<li><p><strong>压缩</strong>：视频压缩通过去除空间冗余（图像内）和时间冗余（帧间）来减少数据量。</p>
+<ul>
+<li><strong>空间冗余</strong>：图像内相邻像素之间的冗余信息，通过离散余弦变换（DCT）等方法去除。</li>
+<li><strong>时间冗余</strong>：相邻帧之间的冗余信息，使用运动补偿和帧间预测减少数据量。</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-帧类型：I帧、P帧、B帧"><a href="#3-帧类型：I帧、P帧、B帧" class="headerlink" title="3. 帧类型：I帧、P帧、B帧"></a>3. <strong>帧类型：I帧、P帧、B帧</strong></h2><ul>
+<li><strong>I帧</strong>（Intra-coded Frame）：完全自包含的帧，独立编码，无需参考其他帧。</li>
+<li><strong>P帧</strong>（Predicted Frame）：通过参考前一个I帧或P帧来进行压缩。</li>
+<li><strong>B帧</strong>（Bidirectional Predicted Frame）：双向预测帧，依赖前后帧，压缩率高。</li>
+</ul>
+<h2 id="4-帧内压缩（Intra-frame-Compression）"><a href="#4-帧内压缩（Intra-frame-Compression）" class="headerlink" title="4. 帧内压缩（Intra-frame Compression）"></a>4. <strong>帧内压缩（Intra-frame Compression）</strong></h2><ul>
+<li><strong>定义</strong>：每个图像帧独立压缩，不依赖于其他帧。</li>
+<li><strong>特点</strong>：每一帧都是自包含的，解码时不依赖其他帧，压缩效率较低，通常用于I帧。</li>
+<li><strong>应用</strong>：在H.264、HEVC等视频编码中，I帧采用帧内压缩。</li>
+<li><strong>示例</strong>：H.264中的I帧是完全自包含的，每一帧都可以独立解码。</li>
+</ul>
+<h2 id="5-帧间压缩（Inter-frame-Compression）"><a href="#5-帧间压缩（Inter-frame-Compression）" class="headerlink" title="5. 帧间压缩（Inter-frame Compression）"></a>5. <strong>帧间压缩（Inter-frame Compression）</strong></h2><ul>
+<li><strong>定义</strong>：通过参考前后帧的差异来进行压缩，通常用于P帧和B帧。</li>
+<li><strong>特点</strong>：压缩效率高，因为它只编码帧之间的差异，而不是完整的图像数据。依赖其他帧，解码时需要参考前后帧。</li>
+<li><strong>应用</strong>：P帧和B帧使用帧间压缩，减少视频数据量。</li>
+<li><strong>示例</strong>：H.264中的P帧和B帧采用帧间压缩。</li>
+</ul>
+<h2 id="6-NALU（Network-Abstraction-Layer-Unit）"><a href="#6-NALU（Network-Abstraction-Layer-Unit）" class="headerlink" title="6. NALU（Network Abstraction Layer Unit）"></a>6. <strong>NALU（Network Abstraction Layer Unit）</strong></h2><ul>
+<li><strong>定义</strong>：是H.264、HEVC等编码格式中的基本数据单元，用于在网络中传输压缩后的视频数据。</li>
+<li><strong>特点</strong>：包含头部信息和数据部分，数据部分存储具体的编码信息。</li>
+</ul>
+<h2 id="7-IDR帧（Instantaneous-Decoding-Refresh）"><a href="#7-IDR帧（Instantaneous-Decoding-Refresh）" class="headerlink" title="7. IDR帧（Instantaneous Decoding Refresh）"></a>7. <strong>IDR帧（Instantaneous Decoding Refresh）</strong></h2><ul>
+<li><strong>定义</strong>：一种特殊的I帧，允许解码器从此点开始独立解码后续所有帧。</li>
+</ul>
+<h2 id="8-视频格式"><a href="#8-视频格式" class="headerlink" title="8. 视频格式"></a>8. <strong>视频格式</strong></h2><ul>
+<li><strong>MP4</strong>：最常用的视频容器格式，通常封装H.264视频和AAC音频。</li>
+<li><strong>MKV</strong>：支持多种编码格式、字幕、音频流。</li>
+<li><strong>AVI</strong>：较老的容器格式，适用于多种编码格式。</li>
+<li><strong>MOV</strong>：Apple的容器格式，常用于QuickTime。</li>
+</ul>
+<hr>
+<h1 id="三、音视频同步与时序"><a href="#三、音视频同步与时序" class="headerlink" title="三、音视频同步与时序"></a><strong>三、音视频同步与时序</strong></h1><h2 id="1-时间戳：PTS与DTS"><a href="#1-时间戳：PTS与DTS" class="headerlink" title="1. 时间戳：PTS与DTS"></a>1. <strong>时间戳：PTS与DTS</strong></h2><ul>
+<li><strong>PTS（Presentation Time Stamp）</strong>：帧的展示时间，确保音视频同步。</li>
+<li><strong>DTS（Decoding Time Stamp）</strong>：帧的解码时间，确保按正确顺序解码帧。</li>
+</ul>
+<h2 id="2-缓冲与流控制"><a href="#2-缓冲与流控制" class="headerlink" title="2. 缓冲与流控制"></a>2. <strong>缓冲与流控制</strong></h2><ul>
+<li><strong>缓冲区</strong>：用于存储音视频数据，以应对网络延迟和丢包，保证平稳播放。</li>
+<li><strong>流控制</strong>：根据网络状况动态调整音视频质量，避免卡顿和延迟。</li>
+</ul>
+<h2 id="3-关键帧与非关键帧"><a href="#3-关键帧与非关键帧" class="headerlink" title="3. 关键帧与非关键帧"></a>3. <strong>关键帧与非关键帧</strong></h2><ul>
+<li><strong>关键帧</strong>（I帧、IDR帧）：可以独立解码的帧。</li>
+<li><strong>非关键帧</strong>（P帧、B帧）：依赖其他帧的帧，不能独立解码。</li>
+</ul>
+<hr>
+<h1 id="四、音视频编码与解码"><a href="#四、音视频编码与解码" class="headerlink" title="四、音视频编码与解码"></a><strong>四、音视频编码与解码</strong></h1><h2 id="1-编码与压缩原理"><a href="#1-编码与压缩原理" class="headerlink" title="1. 编码与压缩原理"></a>1. <strong>编码与压缩原理</strong></h2><ul>
+<li><strong>有损压缩</strong>：如MP3、AAC、H.264，压缩过程中丢失部分数据，降低文件大小。</li>
+<li><strong>无损压缩</strong>：如FLAC、ALAC，压缩后无数据丢失，文件较大。</li>
+</ul>
+<h2 id="2-运动补偿（Motion-Compensation）"><a href="#2-运动补偿（Motion-Compensation）" class="headerlink" title="2. 运动补偿（Motion Compensation）"></a>2. <strong>运动补偿（Motion Compensation）</strong></h2><ul>
+<li>通过运动估计和补偿技术，减少帧间冗余，提高压缩效率。</li>
+</ul>
+<hr>
+<h1 id="五、流媒体与传输协议"><a href="#五、流媒体与传输协议" class="headerlink" title="五、流媒体与传输协议"></a><strong>五、流媒体与传输协议</strong></h1><h2 id="1-RTMP（Real-Time-Messaging-Protocol）"><a href="#1-RTMP（Real-Time-Messaging-Protocol）" class="headerlink" title="1. RTMP（Real-Time Messaging Protocol）"></a>1. <strong>RTMP（Real-Time Messaging Protocol）</strong></h2><ul>
+<li><strong>RTMP</strong>：实时消息传输协议，广泛用于视频直播。通过TCP传输数据，保证数据的可靠性和实时性。</li>
+</ul>
+<h2 id="2-HLS（HTTP-Live-Streaming）"><a href="#2-HLS（HTTP-Live-Streaming）" class="headerlink" title="2. HLS（HTTP Live Streaming）"></a>2. <strong>HLS（HTTP Live Streaming）</strong></h2><ul>
+<li><strong>HLS</strong>：基于HTTP协议的流媒体协议，视频分段传输，客户端根据网络带宽动态选择不同质量的视频流。具有较高的延迟（15-30秒）。</li>
+</ul>
+<h2 id="3-DASH（Dynamic-Adaptive-Streaming-over-HTTP）"><a href="#3-DASH（Dynamic-Adaptive-Streaming-over-HTTP）" class="headerlink" title="3. DASH（Dynamic Adaptive Streaming over HTTP）"></a>3. <strong>DASH（Dynamic Adaptive Streaming over HTTP）</strong></h2><ul>
+<li><strong>DASH</strong>：开放标准的流媒体协议，支持多种编码格式，能够根据网络状况动态调整视频质量，比HLS具有更低的延迟和更高的自适应性。</li>
+</ul>
+<hr>
+<h1 id="六、容器格式与封装"><a href="#六、容器格式与封装" class="headerlink" title="六、容器格式与封装"></a><strong>六、容器格式与封装</strong></h1><h2 id="1-音视频容器格式"><a href="#1-音视频容器格式" class="headerlink" title="1. 音视频容器格式"></a>1. <strong>音视频容器格式</strong></h2><ul>
+<li><strong>容器格式</strong>：用于存储音频、视频、字幕及元数据。常见的容器格式包括MP4、MKV、AVI、MOV等。<ul>
+<li><strong>MP4</strong>：最常用的视频容器格式，广泛支持H.264、AAC编码。</li>
+<li><strong>MKV</strong>：灵活的容器格式，支持多种编码和附加功能。</li>
+<li><strong>AVI</strong>：老旧格式，逐渐被更现代的容器取代。</li>
+<li><strong>MOV</strong>：Apple开发的容器格式，主要用于QuickTime播放器。</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-封装"><a href="#2-封装" class="headerlink" title="2. 封装"></a>2. <strong>封装</strong></h2><ul>
+<li><strong>封装过程</strong>：将编码后的音频流、视频流及其他附加数据（如字幕、元数据）打包成一个文件。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/%E9%9F%B3%E8%A7%86%E9%A2%91%E9%80%9F%E8%A7%88.html" title="音视频速览">https://cmder.github.io/音视频/音视频速览.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91/%E4%BA%A7%E5%93%81%E7%9B%AE%E5%BD%95.html" rel="prev" title="产品目录">
+      <i class="fa fa-chevron-left"></i> 产品目录
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E7%AE%97%E6%B3%95%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E9%A2%98%E5%B8%B8%E7%94%A8%E5%A5%97%E8%B7%AF.html" rel="next" title="算法题常用套路">
+      算法题常用套路 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%9F%B3%E9%A2%91%E6%8A%80%E6%9C%AF"><span class="nav-number">1.</span> <span class="nav-text">一、音频技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%9F%B3%E9%A2%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1. 音频的基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%9F%B3%E9%A2%91%E7%9A%84%E6%95%B0%E5%AD%97%E5%8C%96%E8%BF%87%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">2. 音频的数字化过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E9%9F%B3%E9%A2%91%E5%8E%8B%E7%BC%A9"><span class="nav-number">1.3.</span> <span class="nav-text">3. 音频压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%97%B6%E5%BA%8F%E5%90%8C%E6%AD%A5%EF%BC%9ADTS%E4%B8%8EPTS"><span class="nav-number">1.4.</span> <span class="nav-text">4. 时序同步：DTS与PTS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E9%9F%B3%E9%A2%91%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.5.</span> <span class="nav-text">5. 音频格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%A7%86%E9%A2%91%E6%8A%80%E6%9C%AF"><span class="nav-number">2.</span> <span class="nav-text">二、视频技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%A7%86%E9%A2%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">1. 视频的基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81%E4%B8%8E%E5%8E%8B%E7%BC%A9"><span class="nav-number">2.2.</span> <span class="nav-text">2. 视频编码与压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%B8%A7%E7%B1%BB%E5%9E%8B%EF%BC%9AI%E5%B8%A7%E3%80%81P%E5%B8%A7%E3%80%81B%E5%B8%A7"><span class="nav-number">2.3.</span> <span class="nav-text">3. 帧类型：I帧、P帧、B帧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%B8%A7%E5%86%85%E5%8E%8B%E7%BC%A9%EF%BC%88Intra-frame-Compression%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">4. 帧内压缩（Intra-frame Compression）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%B8%A7%E9%97%B4%E5%8E%8B%E7%BC%A9%EF%BC%88Inter-frame-Compression%EF%BC%89"><span class="nav-number">2.5.</span> <span class="nav-text">5. 帧间压缩（Inter-frame Compression）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-NALU%EF%BC%88Network-Abstraction-Layer-Unit%EF%BC%89"><span class="nav-number">2.6.</span> <span class="nav-text">6. NALU（Network Abstraction Layer Unit）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-IDR%E5%B8%A7%EF%BC%88Instantaneous-Decoding-Refresh%EF%BC%89"><span class="nav-number">2.7.</span> <span class="nav-text">7. IDR帧（Instantaneous Decoding Refresh）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E8%A7%86%E9%A2%91%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.8.</span> <span class="nav-text">8. 视频格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%9F%B3%E8%A7%86%E9%A2%91%E5%90%8C%E6%AD%A5%E4%B8%8E%E6%97%B6%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text">三、音视频同步与时序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%97%B6%E9%97%B4%E6%88%B3%EF%BC%9APTS%E4%B8%8EDTS"><span class="nav-number">3.1.</span> <span class="nav-text">1. 时间戳：PTS与DTS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%BC%93%E5%86%B2%E4%B8%8E%E6%B5%81%E6%8E%A7%E5%88%B6"><span class="nav-number">3.2.</span> <span class="nav-text">2. 缓冲与流控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%85%B3%E9%94%AE%E5%B8%A7%E4%B8%8E%E9%9D%9E%E5%85%B3%E9%94%AE%E5%B8%A7"><span class="nav-number">3.3.</span> <span class="nav-text">3. 关键帧与非关键帧</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%9F%B3%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81%E4%B8%8E%E8%A7%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">四、音视频编码与解码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%BC%96%E7%A0%81%E4%B8%8E%E5%8E%8B%E7%BC%A9%E5%8E%9F%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">1. 编码与压缩原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%BF%90%E5%8A%A8%E8%A1%A5%E5%81%BF%EF%BC%88Motion-Compensation%EF%BC%89"><span class="nav-number">4.2.</span> <span class="nav-text">2. 运动补偿（Motion Compensation）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%B5%81%E5%AA%92%E4%BD%93%E4%B8%8E%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.</span> <span class="nav-text">五、流媒体与传输协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-RTMP%EF%BC%88Real-Time-Messaging-Protocol%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">1. RTMP（Real-Time Messaging Protocol）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-HLS%EF%BC%88HTTP-Live-Streaming%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">2. HLS（HTTP Live Streaming）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-DASH%EF%BC%88Dynamic-Adaptive-Streaming-over-HTTP%EF%BC%89"><span class="nav-number">5.3.</span> <span class="nav-text">3. DASH（Dynamic Adaptive Streaming over HTTP）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%AE%B9%E5%99%A8%E6%A0%BC%E5%BC%8F%E4%B8%8E%E5%B0%81%E8%A3%85"><span class="nav-number">6.</span> <span class="nav-text">六、容器格式与封装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%9F%B3%E8%A7%86%E9%A2%91%E5%AE%B9%E5%99%A8%E6%A0%BC%E5%BC%8F"><span class="nav-number">6.1.</span> <span class="nav-text">1. 音视频容器格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%B0%81%E8%A3%85"><span class="nav-number">6.2.</span> <span class="nav-text">2. 封装</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/images/avatar_new.jpeg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'KkIE2CZVooezveq205W2WJQy-gzGzoHsz',
+      appKey     : 'kuoAHLe3CebE0RL5Bye6SokM',
+      placeholder: "请在此输入您的评论",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
