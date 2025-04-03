@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cmder.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="分类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式">
+<meta property="og:url" content="https://cmder.github.io/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="分类">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-12T03:20:14.000Z">
+<meta property="article:modified_time" content="2025-04-03T13:00:27.725Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cmder.github.io/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>设计模式 | 说码解字</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">说码解字</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar_new.jpeg">
+      <meta itemprop="name" content="Bruce Yao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          设计模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-12-12 11:20:14" itemprop="dateCreated datePublished" datetime="2024-12-12T11:20:14+08:00">2024-12-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-03 21:00:27" itemprop="dateModified" datetime="2025-04-03T21:00:27+08:00">2025-04-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">软件设计</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><table>
+<thead>
+<tr>
+<th align="left"><strong>分类</strong></th>
+<th align="left"><strong>设计模式</strong></th>
+<th align="left"><strong>简单说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>创建型模式<br>Creational Patterns</strong></td>
+<td align="left">单例模式（Singleton）</td>
+<td align="left">确保类只有一个实例，并提供全局访问点。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">工厂方法（Factory Method）</td>
+<td align="left">定义创建对象的接口，由子类决定实例化。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">抽象工厂（Abstract Factory）</td>
+<td align="left">创建一系列相关对象的工厂。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">建造者（Builder）</td>
+<td align="left">分步构造复杂对象。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">原型模式（Prototype）</td>
+<td align="left">通过克隆创建新对象。</td>
+</tr>
+<tr>
+<td align="left"><strong>结构型模式<br>Structural Patterns</strong></td>
+<td align="left">适配器（Adapter）</td>
+<td align="left">将不兼容的接口转换为兼容接口。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">桥接（Bridge）</td>
+<td align="left">将抽象与实现分离。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">组合（Composite）</td>
+<td align="left">将对象组织成树形结构。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">装饰者（Decorator）</td>
+<td align="left">动态扩展对象功能。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">外观（Facade）</td>
+<td align="left">为复杂子系统提供简单接口。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">享元（Flyweight）</td>
+<td align="left">共享细粒度对象以节省资源。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">代理（Proxy）</td>
+<td align="left">控制对对象的访问。</td>
+</tr>
+<tr>
+<td align="left"><strong>行为型模式<br>Behavioral Patterns</strong></td>
+<td align="left">责任链（Chain of Responsibility）</td>
+<td align="left">将请求沿处理链传递。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">命令（Command）</td>
+<td align="left">将请求封装为对象。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">解释器（Interpreter）</td>
+<td align="left">定义语言的解释规则。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">迭代器（Iterator）</td>
+<td align="left">顺序访问集合元素。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">中介者（Mediator）</td>
+<td align="left">通过中介协调对象交互。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">备忘录（Memento）</td>
+<td align="left">保存和恢复对象状态。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">观察者（Observer）</td>
+<td align="left">对象状态变化时通知依赖者。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">状态（State）</td>
+<td align="left">根据状态改变对象行为。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">策略（Strategy）</td>
+<td align="left">定义可互换的算法家族。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">模板方法（Template Method）</td>
+<td align="left">定义算法骨架，子类实现细节。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">访问者（Visitor）</td>
+<td align="left">在不修改类的情况下增加新操作。</td>
+</tr>
+<tr>
+<td align="left"><strong>扩展模式<br>Extended Patterns</strong></td>
+<td align="left">依赖注入（Dependency Injection）</td>
+<td align="left">通过外部注入依赖，解耦组件。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">发布-订阅（Publish-Subscribe）</td>
+<td align="left">事件驱动的观察者变种。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">模块模式（Module Pattern）</td>
+<td align="left">封装代码，管理私有&#x2F;公有成员。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">MVC（Model-View-Controller）</td>
+<td align="left">分离数据（Model）、界面（View）和逻辑（Controller）。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">MVP（Model-View-Presenter）</td>
+<td align="left">View 和 Presenter 交互，Model 隔离数据。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">MVVM（Model-View-ViewModel）</td>
+<td align="left">通过 ViewModel 绑定 Model 和 View。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">仓储模式（Repository Pattern）</td>
+<td align="left">封装数据访问逻辑。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">服务定位器（Service Locator）</td>
+<td align="left">集中管理服务实例的获取。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">事件溯源（Event Sourcing）</td>
+<td align="left">通过事件记录对象状态。</td>
+</tr>
+</tbody></table>
+<h1 id="图示"><a href="#图示" class="headerlink" title="图示"></a>图示</h1><pre class="mermaid">graph LR
+    A[设计模式<br>Design Patterns]
+    
+    A --> B[创建型模式<br>Creational Patterns]
+    B --> B1[单例模式<br>Singleton]
+    B --> B2[工厂方法<br>Factory Method]
+    B --> B3[抽象工厂<br>Abstract Factory]
+    B --> B4[建造者<br>Builder]
+    B --> B5[原型模式<br>Prototype]
+    
+    A --> C[结构型模式<br>Structural Patterns]
+    C --> C1[适配器<br>Adapter]
+    C --> C2[桥接<br>Bridge]
+    C --> C3[组合<br>Composite]
+    C --> C4[装饰者<br>Decorator]
+    C --> C5[外观<br>Facade]
+    C --> C6[享元<br>Flyweight]
+    C --> C7[代理<br>Proxy]
+    
+    A --> D[行为型模式<br>Behavioral Patterns]
+    D --> D1[责任链<br>Chain of Responsibility]
+    D --> D2[命令<br>Command]
+    D --> D3[解释器<br>Interpreter]
+    D --> D4[迭代器<br>Iterator]
+    D --> D5[中介者<br>Mediator]
+    D --> D6[备忘录<br>Memento]
+    D --> D7[观察者<br>Observer]
+    D --> D8[状态<br>State]
+    D --> D9[策略<br>Strategy]
+    D --> D10[模板方法<br>Template Method]
+    D --> D11[访问者<br>Visitor]
+    
+    A --> E[扩展模式<br>Extended Patterns]
+    E --> E1[依赖注入<br>Dependency Injection]
+    E --> E2[发布-订阅<br>Publish-Subscribe]
+    E --> E3[模块模式<br>Module Pattern]
+    E --> E4[MVC<br>Model-View-Controller]
+    E --> E5[MVP<br>Model-View-Presenter]
+    E --> E6[MVVM<br>Model-View-ViewModel]
+    E --> E7[仓储模式<br>Repository Pattern]
+    E --> E8[服务定位器<br>Service Locator]
+    E --> E9[事件溯源<br>Event Sourcing]</pre>
+
+<h1 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h1><h2 id="创建型模式（Creational-Patterns）"><a href="#创建型模式（Creational-Patterns）" class="headerlink" title="创建型模式（Creational Patterns）"></a>创建型模式（Creational Patterns）</h2><h3 id="单例模式（Singleton）"><a href="#单例模式（Singleton）" class="headerlink" title="单例模式（Singleton）"></a><strong>单例模式（Singleton）</strong></h3><p>单例模式（Singleton Pattern）是一种创建型设计模式，确保一个类只有一个实例，并提供全局访问点。以下是单例模式的各种实现方式，包括线程安全的版本，用 Java 编写。每种实现都会标注其特点、优缺点及适用场景。</p>
+<hr>
+<h4 id="1-饿汉式（Eager-Initialization）"><a href="#1-饿汉式（Eager-Initialization）" class="headerlink" title="1. 饿汉式（Eager Initialization）"></a>1. 饿汉式（Eager Initialization）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonEager</span> &#123;</span><br><span class="line">    <span class="comment">// 类加载时就创建实例</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">SingletonEager</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SingletonEager</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 私有构造方法，防止外部实例化</span></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonEager</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 防止反射创建实例</span></span><br><span class="line">        <span class="keyword">if</span> (INSTANCE != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Singleton instance already exists&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 全局访问点</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SingletonEager <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>特点</strong>：类加载时即创建实例，线程安全。</li>
+<li><strong>优点</strong>：简单，无需同步，天然线程安全。</li>
+<li><strong>缺点</strong>：无论是否使用，都会创建实例，可能浪费资源。</li>
+<li><strong>适用场景</strong>：实例开销小，且肯定会被使用。</li>
+</ul>
+<hr>
+<h4 id="2-懒汉式（Lazy-Initialization，非线程安全）"><a href="#2-懒汉式（Lazy-Initialization，非线程安全）" class="headerlink" title="2. 懒汉式（Lazy Initialization，非线程安全）"></a>2. 懒汉式（Lazy Initialization，非线程安全）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonLazy</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingletonLazy instance;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonLazy</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 防止反射创建实例，这并不能真正防止反射，用饿汉式、枚举或者使用标志位</span></span><br><span class="line">        <span class="keyword">if</span> (instance != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Singleton instance already exists&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SingletonLazy <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">SingletonLazy</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>特点</strong>：延迟加载，第一次调用时创建实例。</li>
+<li><strong>优点</strong>：节省资源，懒加载。</li>
+<li><strong>缺点</strong>：非线程安全，多线程下可能创建多个实例。</li>
+<li><strong>适用场景</strong>：单线程环境，或不在意线程安全。</li>
+</ul>
+<p>添加标志位：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonLazyWithFlag</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingletonLazyWithFlag instance;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> <span class="type">boolean</span> <span class="variable">initialized</span> <span class="operator">=</span> <span class="literal">false</span>;  <span class="comment">// 标志位</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonLazyWithFlag</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (SingletonLazyWithFlag.class) &#123;</span><br><span class="line">            <span class="keyword">if</span> (initialized) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Singleton instance already exists&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            initialized = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SingletonLazyWithFlag <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (SingletonLazyWithFlag.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> <span class="title class_">SingletonLazyWithFlag</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="3-线程安全的懒汉式（Synchronized-方法）"><a href="#3-线程安全的懒汉式（Synchronized-方法）" class="headerlink" title="3. 线程安全的懒汉式（Synchronized 方法）"></a>3. 线程安全的懒汉式（Synchronized 方法）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonSyncMethod</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingletonSyncMethod instance;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonSyncMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Singleton instance already exists&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 使用 synchronized 同步方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> SingletonSyncMethod <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">SingletonSyncMethod</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>特点</strong>：通过同步方法实现线程安全。</li>
+<li><strong>优点</strong>：简单，保证线程安全。</li>
+<li><strong>缺点</strong>：每次调用 <code>getInstance</code> 都要加锁，性能开销大。</li>
+<li><strong>适用场景</strong>：多线程环境，但调用频率不高。</li>
+</ul>
+<hr>
+<h4 id="4-双重检查锁（Double-Checked-Locking-DCL）"><a href="#4-双重检查锁（Double-Checked-Locking-DCL）" class="headerlink" title="4. 双重检查锁（Double-Checked Locking, DCL）"></a>4. 双重检查锁（Double-Checked Locking, DCL）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonDCL</span> &#123;</span><br><span class="line">    <span class="comment">// 使用 volatile 防止指令重排</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> SingletonDCL instance;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonDCL</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Singleton instance already exists&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SingletonDCL <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;  <span class="comment">// 第一次检查（无锁）</span></span><br><span class="line">            <span class="keyword">synchronized</span> (SingletonDCL.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;  <span class="comment">// 第二次检查（加锁）</span></span><br><span class="line">                    instance = <span class="keyword">new</span> <span class="title class_">SingletonDCL</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>特点</strong>：结合懒加载和线程安全，双重检查减少同步开销。</li>
+<li><strong>优点</strong>：高效，只有在实例未创建时加锁。</li>
+<li><strong>缺点</strong>：实现复杂，需使用 <code>volatile</code>（Java 5+）防止指令重排。</li>
+<li><strong>适用场景</strong>：多线程环境，追求性能优化。</li>
+</ul>
+<hr>
+<h4 id="5-静态内部类（Static-Inner-Class）"><a href="#5-静态内部类（Static-Inner-Class）" class="headerlink" title="5. 静态内部类（Static Inner Class）"></a>5. 静态内部类（Static Inner Class）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonStaticInner</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonStaticInner</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (SingletonHolder.INSTANCE != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Singleton instance already exists&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 静态内部类持有实例, 静态内部类只有在第一次被使用的时候才会加载，所以是懒加载。</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonHolder</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">SingletonStaticInner</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SingletonStaticInner</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SingletonStaticInner <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>特点</strong>：利用类加载机制实现懒加载和线程安全。</li>
+<li><strong>优点</strong>：简单、高效，JVM 保证线程安全，无需显式同步。</li>
+<li><strong>缺点</strong>：无法传递构造参数。</li>
+<li><strong>适用场景</strong>：多线程环境，推荐的懒加载方式。</li>
+</ul>
+<hr>
+<h4 id="6-枚举单例（Enum-Singleton）"><a href="#6-枚举单例（Enum-Singleton）" class="headerlink" title="6. 枚举单例（Enum Singleton）"></a>6. 枚举单例（Enum Singleton）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">SingletonEnum</span> &#123;</span><br><span class="line">    INSTANCE;  <span class="comment">// 唯一实例</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 可以添加方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doSomething</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;SingletonEnum is working&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>用法</strong>：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">SingletonEnum</span> <span class="variable">singleton</span> <span class="operator">=</span> SingletonEnum.INSTANCE;</span><br><span class="line">singleton.doSomething();</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>特点</strong>：使用枚举实现单例，JVM 保证唯一性。</li>
+<li><strong>优点</strong>：最简单，天然线程安全，防止反射和序列化破坏。</li>
+<li><strong>缺点</strong>：无法懒加载，枚举类加载时即创建。</li>
+<li><strong>适用场景</strong>：需要绝对安全（如防止反射攻击）的场景。</li>
+</ul>
+<hr>
+<h4 id="7-ThreadLocal-单例（线程局部单例）"><a href="#7-ThreadLocal-单例（线程局部单例）" class="headerlink" title="7. ThreadLocal 单例（线程局部单例）"></a>7. ThreadLocal 单例（线程局部单例）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SingletonThreadLocal</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;SingletonThreadLocal&gt; THREAD_LOCAL = </span><br><span class="line">        ThreadLocal.withInitial(SingletonThreadLocal::<span class="keyword">new</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">SingletonThreadLocal</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SingletonThreadLocal <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> THREAD_LOCAL.get();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 清理 ThreadLocal，防止内存泄漏</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">remove</span><span class="params">()</span> &#123;</span><br><span class="line">        THREAD_LOCAL.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>特点</strong>：每个线程拥有独立的单例实例。</li>
+<li><strong>优点</strong>：线程隔离，适合线程特定的单例需求。</li>
+<li><strong>缺点</strong>：不是全局单例，需注意 ThreadLocal 的内存管理。</li>
+<li><strong>适用场景</strong>：线程私有单例，如线程上下文管理。</li>
+</ul>
+<hr>
+<h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 测试饿汉式</span></span><br><span class="line">        <span class="type">SingletonEager</span> <span class="variable">s1</span> <span class="operator">=</span> SingletonEager.getInstance();</span><br><span class="line">        <span class="type">SingletonEager</span> <span class="variable">s2</span> <span class="operator">=</span> SingletonEager.getInstance();</span><br><span class="line">        System.out.println(<span class="string">&quot;Eager: &quot;</span> + (s1 == s2));  <span class="comment">// true</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 测试双重检查锁（多线程）</span></span><br><span class="line">        <span class="type">Runnable</span> <span class="variable">task</span> <span class="operator">=</span> () -&gt; System.out.println(<span class="string">&quot;DCL: &quot;</span> + SingletonDCL.getInstance());</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(task);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(task);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 测试枚举</span></span><br><span class="line">        <span class="type">SingletonEnum</span> <span class="variable">e1</span> <span class="operator">=</span> SingletonEnum.INSTANCE;</span><br><span class="line">        <span class="type">SingletonEnum</span> <span class="variable">e2</span> <span class="operator">=</span> SingletonEnum.INSTANCE;</span><br><span class="line">        System.out.println(<span class="string">&quot;Enum: &quot;</span> + (e1 == e2));  <span class="comment">// true</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 测试 ThreadLocal</span></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            <span class="type">SingletonThreadLocal</span> <span class="variable">stl1</span> <span class="operator">=</span> SingletonThreadLocal.getInstance();</span><br><span class="line">            System.out.println(<span class="string">&quot;ThreadLocal Thread1: &quot;</span> + stl1);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            <span class="type">SingletonThreadLocal</span> <span class="variable">stl2</span> <span class="operator">=</span> SingletonThreadLocal.getInstance();</span><br><span class="line">            System.out.println(<span class="string">&quot;ThreadLocal Thread2: &quot;</span> + stl2);</span><br><span class="line">        &#125;);</span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><ul>
+<li><strong>线程安全</strong>：<ul>
+<li>饿汉式、静态内部类、枚举天然线程安全。</li>
+<li>懒汉式需加锁（同步方法或 DCL）实现线程安全。</li>
+<li>ThreadLocal 为每个线程提供独立实例。</li>
+</ul>
+</li>
+<li><strong>反射和序列化防护</strong>：<ul>
+<li>枚举单例天然防止反射和序列化破坏。</li>
+<li>其他实现通过检查实例是否存在（构造方法抛异常）防御反射。</li>
+<li>序列化需实现 <code>readResolve</code> 方法：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Object <span class="title function_">readResolve</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> getInstance();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>性能</strong>：<ul>
+<li>饿汉式和枚举无延迟，静态内部类和 DCL 高效懒加载。</li>
+<li>同步方法性能较低。</li>
+</ul>
+</li>
+<li><strong>复杂度</strong>：<ul>
+<li>枚举最简单，DCL 最复杂。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="总结表"><a href="#总结表" class="headerlink" title="总结表"></a>总结表</h4><table>
+<thead>
+<tr>
+<th>实现方式</th>
+<th>懒加载</th>
+<th>线程安全</th>
+<th>复杂度</th>
+<th>防止反射</th>
+<th>防止序列化</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>饿汉式</td>
+<td>否</td>
+<td>是</td>
+<td>低</td>
+<td>是</td>
+<td>需额外实现</td>
+<td>简单实例</td>
+</tr>
+<tr>
+<td>懒汉式</td>
+<td>是</td>
+<td>否</td>
+<td>低</td>
+<td>是</td>
+<td>需额外实现</td>
+<td>单线程</td>
+</tr>
+<tr>
+<td>同步方法</td>
+<td>是</td>
+<td>是</td>
+<td>中</td>
+<td>是</td>
+<td>需额外实现</td>
+<td>调用不频繁</td>
+</tr>
+<tr>
+<td>双重检查锁</td>
+<td>是</td>
+<td>是</td>
+<td>高</td>
+<td>是</td>
+<td>需额外实现</td>
+<td>高性能多线程</td>
+</tr>
+<tr>
+<td>静态内部类</td>
+<td>是</td>
+<td>是</td>
+<td>中</td>
+<td>是</td>
+<td>需额外实现</td>
+<td>推荐的多线程懒加载</td>
+</tr>
+<tr>
+<td>枚举</td>
+<td>否</td>
+<td>是</td>
+<td>低</td>
+<td>是</td>
+<td>是</td>
+<td>最高安全性</td>
+</tr>
+<tr>
+<td>ThreadLocal</td>
+<td>是</td>
+<td>线程内</td>
+<td>中</td>
+<td>是</td>
+<td>需额外实现</td>
+<td>线程私有单例</td>
+</tr>
+</tbody></table>
+<h4 id="如何防止序列化破坏"><a href="#如何防止序列化破坏" class="headerlink" title="如何防止序列化破坏"></a>如何防止序列化破坏</h4><p>为什么会发生序列化破坏：如果一个单例类实现了 Serializable 接口，反序列化时会通过反射创建一个新实例，而不是返回现有的单例实例。这会导致系统中存在多个实例，破坏单例的唯一性。</p>
+<p>在单例类中添加 readResolve 方法，反序列化时 JVM 会调用此方法，返回指定的对象，而不是新建的实例。或者使用枚举。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 添加 readResolve 方法</span></span><br><span class="line">    <span class="keyword">private</span> Object <span class="title function_">readResolve</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;  <span class="comment">// 返回单例实例</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Singleton</span> <span class="variable">s1</span> <span class="operator">=</span> Singleton.getInstance();</span><br><span class="line">        </span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;singleton.ser&quot;</span>));</span><br><span class="line">        oos.writeObject(s1);</span><br><span class="line">        oos.close();</span><br><span class="line">        </span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(<span class="string">&quot;singleton.ser&quot;</span>));</span><br><span class="line">        <span class="type">Singleton</span> <span class="variable">s2</span> <span class="operator">=</span> (Singleton) ois.readObject();</span><br><span class="line">        ois.close();</span><br><span class="line">        </span><br><span class="line">        System.out.println(<span class="string">&quot;s1 == s2: &quot;</span> + (s1 == s2));  <span class="comment">// 输出: true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="工厂方法（Factory-Method）"><a href="#工厂方法（Factory-Method）" class="headerlink" title="工厂方法（Factory Method）"></a><strong>工厂方法（Factory Method）</strong></h3><p>工厂方法模式（Factory Method Pattern）是一种创建型设计模式，它定义了一个用于创建对象的接口，但将具体的对象实例化推迟到子类中实现。相比简单工厂模式，工厂方法模式通过将对象的创建交给具体的工厂类，提升了灵活性和扩展性，遵循了“开闭原则”（对扩展开放，对修改关闭）。</p>
+<p>以下是用 Java 实现工厂方法模式的详细讲解，包括定义、结构、代码示例及其优缺点。</p>
+<hr>
+<h4 id="1-工厂方法模式的定义"><a href="#1-工厂方法模式的定义" class="headerlink" title="1. 工厂方法模式的定义"></a>1. 工厂方法模式的定义</h4><ul>
+<li><strong>核心思想</strong>：定义一个创建对象的接口（工厂方法），由子类决定具体实例化哪种产品。</li>
+<li><strong>目的</strong>：<ul>
+<li>解耦客户端与具体产品类。</li>
+<li>让子类决定创建哪种对象，增加系统的可扩展性。</li>
+</ul>
+</li>
+<li><strong>适用场景</strong>：<ul>
+<li>需要生成的产品种类较多，且可能新增类型。</li>
+<li>客户端不关心对象的具体创建过程，只关心接口。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="2-工厂方法模式的结构"><a href="#2-工厂方法模式的结构" class="headerlink" title="2. 工厂方法模式的结构"></a>2. 工厂方法模式的结构</h4><ul>
+<li><strong>抽象产品（Product）</strong>：定义产品的接口，所有具体产品实现此接口。</li>
+<li><strong>具体产品（Concrete Product）</strong>：实现抽象产品接口的具体类。</li>
+<li><strong>抽象工厂（Creator）</strong>：声明工厂方法，返回抽象产品类型。</li>
+<li><strong>具体工厂（Concrete Creator）</strong>：实现工厂方法，创建具体产品实例。</li>
+</ul>
+<h5 id="UML-图"><a href="#UML-图" class="headerlink" title="UML 图"></a>UML 图</h5><pre class="mermaid">classDiagram
+    class Product {
+        <<interface>>
+        +operation() void
+    }
+    
+    class ConcreteProduct {
+        +operation() void
+    }
+    
+    class Creator {
+        <<abstract>>
+        +factoryMethod() Product
+    }
+    
+    class ConcreteCreator {
+        +factoryMethod() Product
+    }
+    
+    Product <|.. concreteproduct : implements creator <|-- concretecreator extends o--> "1" ConcreteProduct : creates</|..></abstract></interface></pre>
+
+<hr>
+<h4 id="3-Java-实现示例"><a href="#3-Java-实现示例" class="headerlink" title="3. Java 实现示例"></a>3. Java 实现示例</h4><p>以下是一个生产不同类型车辆的工厂方法模式示例：</p>
+<h5 id="3-1-抽象产品接口"><a href="#3-1-抽象产品接口" class="headerlink" title="3.1 抽象产品接口"></a>3.1 抽象产品接口</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 抽象产品：车辆</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">drive</span><span class="params">()</span>;  <span class="comment">// 定义车辆的通用行为</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-具体产品类"><a href="#3-2-具体产品类" class="headerlink" title="3.2 具体产品类"></a>3.2 具体产品类</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 具体产品：汽车</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">drive</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Driving a car&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品：摩托车</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Motorcycle</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">drive</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Riding a motorcycle&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-3-抽象工厂类"><a href="#3-3-抽象工厂类" class="headerlink" title="3.3 抽象工厂类"></a>3.3 抽象工厂类</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 抽象工厂：车辆工厂</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">VehicleFactory</span> &#123;</span><br><span class="line">    <span class="comment">// 工厂方法，子类实现</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> Vehicle <span class="title function_">createVehicle</span><span class="params">()</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 可选：提供默认行为</span></span><br><span class="line">    <span class="keyword">public</span> Vehicle <span class="title function_">getVehicle</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Vehicle</span> <span class="variable">vehicle</span> <span class="operator">=</span> createVehicle();</span><br><span class="line">        vehicle.drive();</span><br><span class="line">        <span class="keyword">return</span> vehicle;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-4-具体工厂类"><a href="#3-4-具体工厂类" class="headerlink" title="3.4 具体工厂类"></a>3.4 具体工厂类</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 具体工厂：汽车工厂</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CarFactory</span> <span class="keyword">extends</span> <span class="title class_">VehicleFactory</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Vehicle <span class="title function_">createVehicle</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Car</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体工厂：摩托车工厂</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MotorcycleFactory</span> <span class="keyword">extends</span> <span class="title class_">VehicleFactory</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Vehicle <span class="title function_">createVehicle</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Motorcycle</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-5-客户端代码"><a href="#3-5-客户端代码" class="headerlink" title="3.5 客户端代码"></a>3.5 客户端代码</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 使用汽车工厂</span></span><br><span class="line">        <span class="type">VehicleFactory</span> <span class="variable">carFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CarFactory</span>();</span><br><span class="line">        <span class="type">Vehicle</span> <span class="variable">car</span> <span class="operator">=</span> carFactory.getVehicle();  <span class="comment">// 输出: Driving a car</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 使用摩托车工厂</span></span><br><span class="line">        <span class="type">VehicleFactory</span> <span class="variable">motorcycleFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MotorcycleFactory</span>();</span><br><span class="line">        <span class="type">Vehicle</span> <span class="variable">motorcycle</span> <span class="operator">=</span> motorcycleFactory.getVehicle();  <span class="comment">// 输出: Riding a motorcycle</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="4-工作原理"><a href="#4-工作原理" class="headerlink" title="4. 工作原理"></a>4. 工作原理</h4><ol>
+<li><strong>客户端</strong>选择具体的工厂类（<code>CarFactory</code> 或 <code>MotorcycleFactory</code>）。</li>
+<li>调用工厂的 <code>createVehicle()</code> 方法，创建具体产品（<code>Car</code> 或 <code>Motorcycle</code>）。</li>
+<li>返回的 <code>Vehicle</code> 对象由客户端使用，客户端无需知道具体产品类。</li>
+</ol>
+<hr>
+<h4 id="5-优点"><a href="#5-优点" class="headerlink" title="5. 优点"></a>5. 优点</h4><ul>
+<li><strong>灵活性</strong>：新增产品只需添加新产品类和对应的工厂类，无需修改现有代码。</li>
+<li><strong>解耦</strong>：客户端只依赖抽象接口（<code>Vehicle</code> 和 <code>VehicleFactory</code>），不关心具体实现。</li>
+<li><strong>单一职责</strong>：每个工厂负责创建一种产品，职责清晰。</li>
+</ul>
+<hr>
+<h4 id="6-缺点"><a href="#6-缺点" class="headerlink" title="6. 缺点"></a>6. 缺点</h4><ul>
+<li><strong>类数量增加</strong>：每增加一种产品，就需要新增一个具体产品类和一个具体工厂类，导致类数量增多。</li>
+<li><strong>复杂度提升</strong>：相比简单工厂模式，代码结构更复杂。</li>
+</ul>
+<hr>
+<h4 id="7-与简单工厂的对比"><a href="#7-与简单工厂的对比" class="headerlink" title="7. 与简单工厂的对比"></a>7. 与简单工厂的对比</h4><h5 id="简单工厂（非工厂方法模式）"><a href="#简单工厂（非工厂方法模式）" class="headerlink" title="简单工厂（非工厂方法模式）"></a>简单工厂（非工厂方法模式）</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SimpleVehicleFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Vehicle <span class="title function_">createVehicle</span><span class="params">(String type)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;car&quot;</span>.equals(type)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Car</span>();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;motorcycle&quot;</span>.equals(type)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Motorcycle</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Vehicle</span> <span class="variable">car</span> <span class="operator">=</span> SimpleVehicleFactory.createVehicle(<span class="string">&quot;car&quot;</span>);</span><br><span class="line">        car.drive();  <span class="comment">// 输出: Driving a car</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>区别</strong>：<ul>
+<li>简单工厂将创建逻辑集中在一个类中，违反“开闭原则”（新增类型需修改工厂类）。</li>
+<li>工厂方法将创建逻辑分散到子类中，符合“开闭原则”。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="8-扩展示例：带参数的工厂方法"><a href="#8-扩展示例：带参数的工厂方法" class="headerlink" title="8. 扩展示例：带参数的工厂方法"></a>8. 扩展示例：带参数的工厂方法</h4><p>如果需要根据参数创建不同配置的产品，可以这样扩展：</p>
+<h5 id="修改抽象工厂"><a href="#修改抽象工厂" class="headerlink" title="修改抽象工厂"></a>修改抽象工厂</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">VehicleFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> Vehicle <span class="title function_">createVehicle</span><span class="params">(String color)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="修改具体工厂"><a href="#修改具体工厂" class="headerlink" title="修改具体工厂"></a>修改具体工厂</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CarFactory</span> <span class="keyword">extends</span> <span class="title class_">VehicleFactory</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Vehicle <span class="title function_">createVehicle</span><span class="params">(String color)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Car</span>(color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Car</span><span class="params">(String color)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">drive</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Driving a &quot;</span> + color + <span class="string">&quot; car&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">VehicleFactory</span> <span class="variable">carFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CarFactory</span>();</span><br><span class="line">        <span class="type">Vehicle</span> <span class="variable">redCar</span> <span class="operator">=</span> carFactory.createVehicle(<span class="string">&quot;red&quot;</span>);</span><br><span class="line">        redCar.drive();  <span class="comment">// 输出: Driving a red car</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="9-实际应用场景"><a href="#9-实际应用场景" class="headerlink" title="9. 实际应用场景"></a>9. 实际应用场景</h4><ul>
+<li><strong>日志框架</strong>：如 SLF4J 的 <code>LoggerFactory</code>，根据配置创建不同类型的日志记录器。</li>
+<li><strong>数据库连接</strong>：根据驱动类型创建不同的 <code>Connection</code> 对象。</li>
+<li><strong>UI 组件</strong>：根据主题创建不同样式的按钮或窗口。</li>
+</ul>
+<hr>
+<h4 id="10-源码中的例子"><a href="#10-源码中的例子" class="headerlink" title="10. 源码中的例子"></a>10. 源码中的例子</h4><p>Java 中的 <code>java.util.Calendar</code> 使用了类似工厂方法模式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Calendar</span> <span class="variable">calendar</span> <span class="operator">=</span> Calendar.getInstance();  <span class="comment">// getInstance 是工厂方法</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Calendar</code> 是抽象类，<code>getInstance()</code> 根据区域和时区返回具体子类（如 <code>GregorianCalendar</code>）。</li>
+</ul>
+<hr>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li><strong>工厂方法模式</strong>通过抽象工厂接口和具体工厂类实现对象的创建，提供了扩展性和解耦性。</li>
+<li><strong>Java 实现</strong>的关键是定义抽象产品和工厂接口，然后由具体子类实现。</li>
+<li><strong>核心优势</strong>是支持新增产品而无需修改现有代码。</li>
+</ul>
+<h3 id="抽象工厂（Abstract-Factory）"><a href="#抽象工厂（Abstract-Factory）" class="headerlink" title="抽象工厂（Abstract Factory）"></a><strong>抽象工厂（Abstract Factory）</strong></h3><ul>
+<li><strong>描述</strong>：创建一系列相关对象的工厂。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Button</span> &#123;&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">GUIFactory</span> &#123;</span><br><span class="line">  Button <span class="title function_">createButton</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WinFactory</span> <span class="keyword">implements</span> <span class="title class_">GUIFactory</span> &#123;</span><br><span class="line">  Button <span class="title function_">createButton</span><span class="params">()</span> &#123; <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">WinButton</span>(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[GUIFactory]
+  B --> C[WinFactory]
+  B --> D[MacFactory]
+  C -->|createButton| E[WinButton]
+  D -->|createButton| F[MacButton]</pre></li>
+</ul>
+<h3 id="建造者（Builder）"><a href="#建造者（Builder）" class="headerlink" title="建造者（Builder）"></a><strong>建造者（Builder）</strong></h3><ul>
+<li><strong>描述</strong>：分步构造复杂对象。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span> &#123;</span><br><span class="line">  String partA, partB;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Builder</span> &#123;</span><br><span class="line">  <span class="type">Product</span> <span class="variable">p</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Product</span>();</span><br><span class="line">  Builder <span class="title function_">setPartA</span><span class="params">(String a)</span> &#123; p.partA = a; <span class="keyword">return</span> <span class="built_in">this</span>; &#125;</span><br><span class="line">  Product <span class="title function_">build</span><span class="params">()</span> &#123; <span class="keyword">return</span> p; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Builder]
+  B -->|setPartA| B
+  B -->|build| C[Product]</pre></li>
+</ul>
+<h3 id="原型模式（Prototype）"><a href="#原型模式（Prototype）" class="headerlink" title="原型模式（Prototype）"></a><strong>原型模式（Prototype）</strong></h3><ul>
+<li><strong>描述</strong>：通过克隆创建新对象。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Prototype</span> <span class="keyword">implements</span> <span class="title class_">Cloneable</span> &#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> Prototype <span class="title function_">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException &#123;</span><br><span class="line">    <span class="keyword">return</span> (Prototype) <span class="built_in">super</span>.clone();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Prototype]
+  B -->|clone| C[新实例]</pre></li>
+</ul>
+<h2 id="结构型模式（Structural-Patterns）"><a href="#结构型模式（Structural-Patterns）" class="headerlink" title="结构型模式（Structural Patterns）"></a>结构型模式（Structural Patterns）</h2><h3 id="适配器（Adapter）"><a href="#适配器（Adapter）" class="headerlink" title="适配器（Adapter）"></a><strong>适配器（Adapter）</strong></h3><ul>
+<li><strong>描述</strong>：将不兼容的接口转换为兼容接口。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Target</span> &#123; <span class="keyword">void</span> <span class="title function_">request</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Adaptee</span> &#123; <span class="keyword">void</span> <span class="title function_">specificRequest</span><span class="params">()</span> &#123;&#125; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Adapter</span> <span class="keyword">implements</span> <span class="title class_">Target</span> &#123;</span><br><span class="line">  Adaptee adaptee;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">request</span><span class="params">()</span> &#123; adaptee.specificRequest(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] -->|request| B[Adapter]
+  B -->|specificRequest| C[Adaptee]</pre></li>
+</ul>
+<h3 id="桥接（Bridge）"><a href="#桥接（Bridge）" class="headerlink" title="桥接（Bridge）"></a><strong>桥接（Bridge）</strong></h3><ul>
+<li><strong>描述</strong>：将抽象与实现分离。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Implementor</span> &#123; <span class="keyword">void</span> <span class="title function_">operationImpl</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Abstraction</span> &#123;</span><br><span class="line">  Implementor impl;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span> &#123; impl.operationImpl(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Abstraction]
+  B -->|operationImpl| C[Implementor]
+  C --> D[ConcreteImplementor]</pre></li>
+</ul>
+<h3 id="组合（Composite）"><a href="#组合（Composite）" class="headerlink" title="组合（Composite）"></a><strong>组合（Composite）</strong></h3><ul>
+<li><strong>描述</strong>：将对象组织成树形结构。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Component</span> &#123; <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Leaf</span> <span class="keyword">implements</span> <span class="title class_">Component</span> &#123; <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span> &#123;&#125; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Composite</span> <span class="keyword">implements</span> <span class="title class_">Component</span> &#123;</span><br><span class="line">  List&lt;Component&gt; children;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span> &#123; <span class="keyword">for</span> (Component c : children) c.operation(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Composite]
+  B --> C[Leaf1]
+  B --> D[Leaf2]
+  B --> E[Composite]
+  E --> F[Leaf3]</pre></li>
+</ul>
+<h3 id="装饰者（Decorator）"><a href="#装饰者（Decorator）" class="headerlink" title="装饰者（Decorator）"></a><strong>装饰者（Decorator）</strong></h3><ul>
+<li><strong>描述</strong>：动态扩展对象功能。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Component</span> &#123; <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteComponent</span> <span class="keyword">implements</span> <span class="title class_">Component</span> &#123; <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span> &#123;&#125; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Decorator</span> <span class="keyword">implements</span> <span class="title class_">Component</span> &#123;</span><br><span class="line">  Component component;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span> &#123; component.operation(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Decorator]
+  B -->|operation| C[ConcreteComponent]</pre></li>
+</ul>
+<h3 id="外观（Facade）"><a href="#外观（Facade）" class="headerlink" title="外观（Facade）"></a><strong>外观（Facade）</strong></h3><ul>
+<li><strong>描述</strong>：为复杂子系统提供简单接口。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Subsystem</span> &#123; <span class="keyword">void</span> <span class="title function_">complexOperation</span><span class="params">()</span> &#123;&#125; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Facade</span> &#123;</span><br><span class="line">  Subsystem subsystem;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">simpleOperation</span><span class="params">()</span> &#123; subsystem.complexOperation(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] -->|simpleOperation| B[Facade]
+  B -->|complexOperation| C[Subsystem]</pre></li>
+</ul>
+<h3 id="享元（Flyweight）"><a href="#享元（Flyweight）" class="headerlink" title="享元（Flyweight）"></a><strong>享元（Flyweight）</strong></h3><ul>
+<li><strong>描述</strong>：共享细粒度对象以节省资源。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Flyweight</span> &#123; String intrinsicState; <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">(String extrinsicState)</span> &#123;&#125; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FlyweightFactory</span> &#123;</span><br><span class="line">  Map&lt;String, Flyweight&gt; flyweights;</span><br><span class="line">  Flyweight <span class="title function_">getFlyweight</span><span class="params">(String key)</span> &#123; <span class="keyword">return</span> flyweights.getOrDefault(key, <span class="keyword">new</span> <span class="title class_">Flyweight</span>()); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[FlyweightFactory]
+  B -->|getFlyweight| C[Flyweight]</pre></li>
+</ul>
+<h3 id="代理（Proxy）"><a href="#代理（Proxy）" class="headerlink" title="代理（Proxy）"></a><strong>代理（Proxy）</strong></h3><ul>
+<li><strong>描述</strong>：控制对对象的访问。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Subject</span> &#123; <span class="keyword">void</span> <span class="title function_">request</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RealSubject</span> <span class="keyword">implements</span> <span class="title class_">Subject</span> &#123; <span class="keyword">void</span> <span class="title function_">request</span><span class="params">()</span> &#123;&#125; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Proxy</span> <span class="keyword">implements</span> <span class="title class_">Subject</span> &#123;</span><br><span class="line">  RealSubject real;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">request</span><span class="params">()</span> &#123; real.request(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] -->|request| B[Proxy]
+  B -->|request| C[RealSubject]</pre></li>
+</ul>
+<h2 id="行为型模式（Behavioral-Patterns）"><a href="#行为型模式（Behavioral-Patterns）" class="headerlink" title="行为型模式（Behavioral Patterns）"></a>行为型模式（Behavioral Patterns）</h2><h3 id="责任链（Chain-of-Responsibility）"><a href="#责任链（Chain-of-Responsibility）" class="headerlink" title="责任链（Chain of Responsibility）"></a><strong>责任链（Chain of Responsibility）</strong></h3><ul>
+<li><strong>描述</strong>：将请求沿处理链传递。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Handler</span> &#123;</span><br><span class="line">  Handler next;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">handleRequest</span><span class="params">(String request)</span> &#123; <span class="keyword">if</span> (next != <span class="literal">null</span>) next.handleRequest(request); &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteHandler</span> <span class="keyword">extends</span> <span class="title class_">Handler</span> &#123;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">handleRequest</span><span class="params">(String request)</span> &#123; <span class="comment">/* 处理 */</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Handler1]
+  B -->|next| C[Handler2]
+  C -->|next| D[Handler3]</pre></li>
+</ul>
+<h3 id="命令（Command）"><a href="#命令（Command）" class="headerlink" title="命令（Command）"></a><strong>命令（Command）</strong></h3><ul>
+<li><strong>描述</strong>：将请求封装为对象。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Command</span> &#123; <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteCommand</span> <span class="keyword">implements</span> <span class="title class_">Command</span> &#123;</span><br><span class="line">  Receiver receiver;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">()</span> &#123; receiver.action(); &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Invoker</span> &#123;</span><br><span class="line">  Command command;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">invoke</span><span class="params">()</span> &#123; command.execute(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Invoker]
+  B -->|execute| C[Command]
+  C -->|action| D[Receiver]</pre></li>
+</ul>
+<h3 id="解释器（Interpreter）"><a href="#解释器（Interpreter）" class="headerlink" title="解释器（Interpreter）"></a><strong>解释器（Interpreter）</strong></h3><ul>
+<li><strong>描述</strong>：定义语言的解释规则。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Expression</span> &#123; <span class="type">int</span> <span class="title function_">interpret</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Number</span> <span class="keyword">implements</span> <span class="title class_">Expression</span> &#123; <span class="type">int</span> value; <span class="type">int</span> <span class="title function_">interpret</span><span class="params">()</span> &#123; <span class="keyword">return</span> value; &#125; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Plus</span> <span class="keyword">implements</span> <span class="title class_">Expression</span> &#123;</span><br><span class="line">  Expression left, right;</span><br><span class="line">  <span class="type">int</span> <span class="title function_">interpret</span><span class="params">()</span> &#123; <span class="keyword">return</span> left.interpret() + right.interpret(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Plus]
+  B --> C[Number1]
+  B --> D[Number2]</pre></li>
+</ul>
+<h3 id="迭代器（Iterator）"><a href="#迭代器（Iterator）" class="headerlink" title="迭代器（Iterator）"></a><strong>迭代器（Iterator）</strong></h3><ul>
+<li><strong>描述</strong>：顺序访问集合元素。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Iterator</span> &#123; <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span>; Object <span class="title function_">next</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteIterator</span> <span class="keyword">implements</span> <span class="title class_">Iterator</span> &#123;</span><br><span class="line">  List items;</span><br><span class="line">  <span class="type">int</span> pos;</span><br><span class="line">  <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span> &#123; <span class="keyword">return</span> pos &lt; items.size(); &#125;</span><br><span class="line">  Object <span class="title function_">next</span><span class="params">()</span> &#123; <span class="keyword">return</span> items.get(pos++); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Iterator]
+  B -->|next| C[Collection]</pre></li>
+</ul>
+<h3 id="中介者（Mediator）"><a href="#中介者（Mediator）" class="headerlink" title="中介者（Mediator）"></a><strong>中介者（Mediator）</strong></h3><ul>
+<li><strong>描述</strong>：通过中介协调对象交互。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Mediator</span> &#123; <span class="keyword">void</span> <span class="title function_">notify</span><span class="params">(Object sender)</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteMediator</span> <span class="keyword">implements</span> <span class="title class_">Mediator</span> &#123;</span><br><span class="line">  Colleague a, b;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">notify</span><span class="params">(Object sender)</span> &#123; <span class="comment">/* 协调 */</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Colleague</span> &#123; Mediator mediator; &#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Colleague1] -->|notify| B[Mediator]
+  B --> C[Colleague2]</pre></li>
+</ul>
+<h3 id="备忘录（Memento）"><a href="#备忘录（Memento）" class="headerlink" title="备忘录（Memento）"></a><strong>备忘录（Memento）</strong></h3><ul>
+<li><strong>描述</strong>：保存和恢复对象状态。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Memento</span> &#123; String state; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Originator</span> &#123;</span><br><span class="line">  String state;</span><br><span class="line">  Memento <span class="title function_">createMemento</span><span class="params">()</span> &#123; <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Memento</span>(state); &#125;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">restore</span><span class="params">(Memento m)</span> &#123; state = m.state; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Originator]
+  B -->|createMemento| C[Memento]
+  C -->|restore| B</pre></li>
+</ul>
+<h3 id="观察者（Observer）"><a href="#观察者（Observer）" class="headerlink" title="观察者（Observer）"></a><strong>观察者（Observer）</strong></h3><ul>
+<li><strong>描述</strong>：对象状态变化时通知依赖者。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Observer</span> &#123; <span class="keyword">void</span> <span class="title function_">update</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Subject</span> &#123;</span><br><span class="line">  List&lt;Observer&gt; observers;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">notify</span><span class="params">()</span> &#123; <span class="keyword">for</span> (Observer o : observers) o.update(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Subject] -->|notify| B[Observer1]
+  A -->|notify| C[Observer2]</pre></li>
+</ul>
+<h3 id="状态（State）"><a href="#状态（State）" class="headerlink" title="状态（State）"></a><strong>状态（State）</strong></h3><ul>
+<li><strong>描述</strong>：根据状态改变对象行为。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">State</span> &#123; <span class="keyword">void</span> <span class="title function_">handle</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Context</span> &#123; State state; <span class="keyword">void</span> <span class="title function_">request</span><span class="params">()</span> &#123; state.handle(); &#125; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteState</span> <span class="keyword">implements</span> <span class="title class_">State</span> &#123; <span class="keyword">void</span> <span class="title function_">handle</span><span class="params">()</span> &#123;&#125; &#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Context]
+  B -->|handle| C[State]</pre></li>
+</ul>
+<h3 id="策略（Strategy）"><a href="#策略（Strategy）" class="headerlink" title="策略（Strategy）"></a><strong>策略（Strategy）</strong></h3><ul>
+<li><strong>描述</strong>：定义可互换的算法家族。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Strategy</span> &#123; <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Context</span> &#123; Strategy strategy; <span class="keyword">void</span> <span class="title function_">executeStrategy</span><span class="params">()</span> &#123; strategy.execute(); &#125; &#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Context]
+  B -->|execute| C[Strategy]</pre></li>
+</ul>
+<h3 id="模板方法（Template-Method）"><a href="#模板方法（Template-Method）" class="headerlink" title="模板方法（Template Method）"></a><strong>模板方法（Template Method）</strong></h3><ul>
+<li><strong>描述</strong>：定义算法骨架，子类实现细节。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">AbstractClass</span> &#123;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">templateMethod</span><span class="params">()</span> &#123; step1(); step2(); &#125;</span><br><span class="line">  <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">step1</span><span class="params">()</span>;</span><br><span class="line">  <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">step2</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[AbstractClass]
+  B --> C[ConcreteClass]</pre></li>
+</ul>
+<h3 id="访问者（Visitor）"><a href="#访问者（Visitor）" class="headerlink" title="访问者（Visitor）"></a><strong>访问者（Visitor）</strong></h3><ul>
+<li><strong>描述</strong>：在不修改类的情况下增加新操作。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Visitor</span> &#123; <span class="keyword">void</span> <span class="title function_">visit</span><span class="params">(Element e)</span>; &#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Element</span> &#123; <span class="keyword">void</span> <span class="title function_">accept</span><span class="params">(Visitor v)</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteElement</span> <span class="keyword">implements</span> <span class="title class_">Element</span> &#123;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">accept</span><span class="params">(Visitor v)</span> &#123; v.visit(<span class="built_in">this</span>); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Element]
+  B -->|accept| C[Visitor]</pre></li>
+</ul>
+<h2 id="扩展模式（Extended-Patterns）"><a href="#扩展模式（Extended-Patterns）" class="headerlink" title="扩展模式（Extended Patterns）"></a>扩展模式（Extended Patterns）</h2><h3 id="依赖注入（Dependency-Injection）"><a href="#依赖注入（Dependency-Injection）" class="headerlink" title="依赖注入（Dependency Injection）"></a><strong>依赖注入（Dependency Injection）</strong></h3><ul>
+<li><strong>描述</strong>：通过外部注入依赖，解耦组件。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Service</span> &#123;&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">Service</span> &#123;&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Client</span> &#123;</span><br><span class="line">  Service service;</span><br><span class="line">  Client(Service service) &#123; <span class="built_in">this</span>.service = service; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] -->|注入| B[Service]
+  B --> C[ServiceImpl]</pre></li>
+</ul>
+<h3 id="发布-订阅（Publish-Subscribe）"><a href="#发布-订阅（Publish-Subscribe）" class="headerlink" title="发布-订阅（Publish-Subscribe）"></a><strong>发布-订阅（Publish-Subscribe）</strong></h3><ul>
+<li><strong>描述</strong>：事件驱动的观察者变种。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Publisher</span> &#123;</span><br><span class="line">  List&lt;Subscriber&gt; subscribers;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">publish</span><span class="params">(String msg)</span> &#123; <span class="keyword">for</span> (Subscriber s : subscribers) s.receive(msg); &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Subscriber</span> &#123; <span class="keyword">void</span> <span class="title function_">receive</span><span class="params">(String msg)</span>; &#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Publisher] -->|publish| B[Subscriber1]
+  A -->|publish| C[Subscriber2]</pre></li>
+</ul>
+<h3 id="模块模式（Module-Pattern）"><a href="#模块模式（Module-Pattern）" class="headerlink" title="模块模式（Module Pattern）"></a><strong>模块模式（Module Pattern）</strong></h3><ul>
+<li><strong>描述</strong>：封装代码，管理私有&#x2F;公有成员。</li>
+<li><strong>代码示例</strong>：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="title class_">Module</span> = (<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> privateVar = <span class="string">&#x27;secret&#x27;</span>;</span><br><span class="line">  <span class="keyword">return</span> &#123; <span class="attr">publicMethod</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123; <span class="keyword">return</span> privateVar; &#125; &#125;;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Module]
+  B --> C[Public API]
+  B --> D[Private Data]</pre></li>
+</ul>
+<h3 id="MVC（Model-View-Controller）"><a href="#MVC（Model-View-Controller）" class="headerlink" title="MVC（Model-View-Controller）"></a><strong>MVC（Model-View-Controller）</strong></h3><ul>
+<li><strong>描述</strong>：分离数据（Model）、界面（View）和逻辑（Controller）。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span> &#123; String data; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">View</span> &#123; <span class="keyword">void</span> <span class="title function_">display</span><span class="params">(String data)</span> &#123;&#125; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Controller</span> &#123;</span><br><span class="line">  Model model;</span><br><span class="line">  View view;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">updateView</span><span class="params">()</span> &#123; view.display(model.data); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Controller] -->|更新| B[Model]
+  A -->|显示| C[View]
+  B -->|通知| A</pre></li>
+</ul>
+<h3 id="MVP（Model-View-Presenter）"><a href="#MVP（Model-View-Presenter）" class="headerlink" title="MVP（Model-View-Presenter）"></a><strong>MVP（Model-View-Presenter）</strong></h3><ul>
+<li><strong>描述</strong>：View 和 Presenter 交互，Model 隔离数据。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">View</span> &#123; <span class="keyword">void</span> <span class="title function_">showData</span><span class="params">(String data)</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Presenter</span> &#123;</span><br><span class="line">  Model model;</span><br><span class="line">  View view;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">loadData</span><span class="params">()</span> &#123; view.showData(model.getData()); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[View] -->|调用| B[Presenter]
+  B -->|获取| C[Model]
+  B -->|显示| A</pre></li>
+</ul>
+<h3 id="MVVM（Model-View-ViewModel）"><a href="#MVVM（Model-View-ViewModel）" class="headerlink" title="MVVM（Model-View-ViewModel）"></a><strong>MVVM（Model-View-ViewModel）</strong></h3><ul>
+<li><strong>描述</strong>：通过 ViewModel 绑定 Model 和 View。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ViewModel</span> &#123;</span><br><span class="line">  Model model;</span><br><span class="line">  String data;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">refresh</span><span class="params">()</span> &#123; data = model.getData(); &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">View</span> &#123;</span><br><span class="line">  ViewModel vm;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">bind</span><span class="params">()</span> &#123; display(vm.data); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[View] -->|绑定| B[ViewModel]
+  B -->|获取| C[Model]</pre></li>
+</ul>
+<h3 id="仓储模式（Repository-Pattern）"><a href="#仓储模式（Repository-Pattern）" class="headerlink" title="仓储模式（Repository Pattern）"></a><strong>仓储模式（Repository Pattern）</strong></h3><ul>
+<li><strong>描述</strong>：封装数据访问逻辑。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Repository</span> &#123; List&lt;Entity&gt; <span class="title function_">findAll</span><span class="params">()</span>; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SqlRepository</span> <span class="keyword">implements</span> <span class="title class_">Repository</span> &#123;</span><br><span class="line">  List&lt;Entity&gt; <span class="title function_">findAll</span><span class="params">()</span> &#123; <span class="comment">/* SQL 查询 */</span> <span class="keyword">return</span> list; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] -->|调用| B[Repository]
+  B --> C[Data Source]</pre></li>
+</ul>
+<h3 id="服务定位器（Service-Locator）"><a href="#服务定位器（Service-Locator）" class="headerlink" title="服务定位器（Service Locator）"></a><strong>服务定位器（Service Locator）</strong></h3><ul>
+<li><strong>描述</strong>：集中管理服务实例的获取。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ServiceLocator</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> Map&lt;String, Service&gt; services;</span><br><span class="line">  <span class="keyword">static</span> Service <span class="title function_">getService</span><span class="params">(String key)</span> &#123; <span class="keyword">return</span> services.get(key); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] -->|获取| B[ServiceLocator]
+  B --> C[Service]</pre></li>
+</ul>
+<h3 id="事件溯源（Event-Sourcing）"><a href="#事件溯源（Event-Sourcing）" class="headerlink" title="事件溯源（Event Sourcing）"></a><strong>事件溯源（Event Sourcing）</strong></h3><ul>
+<li><strong>描述</strong>：通过事件记录对象状态。</li>
+<li><strong>代码示例</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Event</span> &#123; String type; Object data; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Aggregate</span> &#123;</span><br><span class="line">  List&lt;Event&gt; events;</span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">apply</span><span class="params">(Event e)</span> &#123; events.add(e); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>Mermaid 示意图</strong>：<pre class="mermaid">  graph TB
+  A[Client] --> B[Aggregate]
+  B -->|记录| C[Event Store]</pre></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://cmder.github.io/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html" title="设计模式">https://cmder.github.io/软件设计/设计模式.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++.html" rel="prev" title="C++">
+      <i class="fa fa-chevron-left"></i> C++
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.html" rel="next" title="算法和数据结构">
+      算法和数据结构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%A4%BA"><span class="nav-number">2.</span> <span class="nav-text">图示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%A6%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%88Creational-Patterns%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">创建型模式（Creational Patterns）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%EF%BC%88Singleton%EF%BC%89"><span class="nav-number">3.1.1.</span> <span class="nav-text">单例模式（Singleton）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%A5%BF%E6%B1%89%E5%BC%8F%EF%BC%88Eager-Initialization%EF%BC%89"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">1. 饿汉式（Eager Initialization）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%87%92%E6%B1%89%E5%BC%8F%EF%BC%88Lazy-Initialization%EF%BC%8C%E9%9D%9E%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%EF%BC%89"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">2. 懒汉式（Lazy Initialization，非线程安全）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%87%92%E6%B1%89%E5%BC%8F%EF%BC%88Synchronized-%E6%96%B9%E6%B3%95%EF%BC%89"><span class="nav-number">3.1.1.3.</span> <span class="nav-text">3. 线程安全的懒汉式（Synchronized 方法）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%E9%94%81%EF%BC%88Double-Checked-Locking-DCL%EF%BC%89"><span class="nav-number">3.1.1.4.</span> <span class="nav-text">4. 双重检查锁（Double-Checked Locking, DCL）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E9%9D%99%E6%80%81%E5%86%85%E9%83%A8%E7%B1%BB%EF%BC%88Static-Inner-Class%EF%BC%89"><span class="nav-number">3.1.1.5.</span> <span class="nav-text">5. 静态内部类（Static Inner Class）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%9E%9A%E4%B8%BE%E5%8D%95%E4%BE%8B%EF%BC%88Enum-Singleton%EF%BC%89"><span class="nav-number">3.1.1.6.</span> <span class="nav-text">6. 枚举单例（Enum Singleton）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-ThreadLocal-%E5%8D%95%E4%BE%8B%EF%BC%88%E7%BA%BF%E7%A8%8B%E5%B1%80%E9%83%A8%E5%8D%95%E4%BE%8B%EF%BC%89"><span class="nav-number">3.1.1.7.</span> <span class="nav-text">7. ThreadLocal 单例（线程局部单例）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.1.8.</span> <span class="nav-text">测试代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">3.1.1.9.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E8%A1%A8"><span class="nav-number">3.1.1.10.</span> <span class="nav-text">总结表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%BA%8F%E5%88%97%E5%8C%96%E7%A0%B4%E5%9D%8F"><span class="nav-number">3.1.1.11.</span> <span class="nav-text">如何防止序列化破坏</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%EF%BC%88Factory-Method%EF%BC%89"><span class="nav-number">3.1.2.</span> <span class="nav-text">工厂方法（Factory Method）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">1. 工厂方法模式的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">2. 工厂方法模式的结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#UML-%E5%9B%BE"><span class="nav-number">3.1.2.2.1.</span> <span class="nav-text">UML 图</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Java-%E5%AE%9E%E7%8E%B0%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.1.2.3.</span> <span class="nav-text">3. Java 实现示例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-%E6%8A%BD%E8%B1%A1%E4%BA%A7%E5%93%81%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.1.2.3.1.</span> <span class="nav-text">3.1 抽象产品接口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-%E5%85%B7%E4%BD%93%E4%BA%A7%E5%93%81%E7%B1%BB"><span class="nav-number">3.1.2.3.2.</span> <span class="nav-text">3.2 具体产品类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E7%B1%BB"><span class="nav-number">3.1.2.3.3.</span> <span class="nav-text">3.3 抽象工厂类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-%E5%85%B7%E4%BD%93%E5%B7%A5%E5%8E%82%E7%B1%BB"><span class="nav-number">3.1.2.3.4.</span> <span class="nav-text">3.4 具体工厂类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-5-%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.2.3.5.</span> <span class="nav-text">3.5 客户端代码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">3.1.2.4.</span> <span class="nav-text">4. 工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E4%BC%98%E7%82%B9"><span class="nav-number">3.1.2.5.</span> <span class="nav-text">5. 优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E7%BC%BA%E7%82%B9"><span class="nav-number">3.1.2.6.</span> <span class="nav-text">6. 缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E4%B8%8E%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">3.1.2.7.</span> <span class="nav-text">7. 与简单工厂的对比</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%EF%BC%88%E9%9D%9E%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="nav-number">3.1.2.7.1.</span> <span class="nav-text">简单工厂（非工厂方法模式）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E6%89%A9%E5%B1%95%E7%A4%BA%E4%BE%8B%EF%BC%9A%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95"><span class="nav-number">3.1.2.8.</span> <span class="nav-text">8. 扩展示例：带参数的工厂方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82"><span class="nav-number">3.1.2.8.1.</span> <span class="nav-text">修改抽象工厂</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%85%B7%E4%BD%93%E5%B7%A5%E5%8E%82"><span class="nav-number">3.1.2.8.2.</span> <span class="nav-text">修改具体工厂</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">3.1.2.8.3.</span> <span class="nav-text">客户端</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">3.1.2.9.</span> <span class="nav-text">9. 实际应用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-%E6%BA%90%E7%A0%81%E4%B8%AD%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">3.1.2.10.</span> <span class="nav-text">10. 源码中的例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.1.2.11.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%EF%BC%88Abstract-Factory%EF%BC%89"><span class="nav-number">3.1.3.</span> <span class="nav-text">抽象工厂（Abstract Factory）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E9%80%A0%E8%80%85%EF%BC%88Builder%EF%BC%89"><span class="nav-number">3.1.4.</span> <span class="nav-text">建造者（Builder）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%88Prototype%EF%BC%89"><span class="nav-number">3.1.5.</span> <span class="nav-text">原型模式（Prototype）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%88Structural-Patterns%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">结构型模式（Structural Patterns）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%EF%BC%88Adapter%EF%BC%89"><span class="nav-number">3.2.1.</span> <span class="nav-text">适配器（Adapter）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%A5%E6%8E%A5%EF%BC%88Bridge%EF%BC%89"><span class="nav-number">3.2.2.</span> <span class="nav-text">桥接（Bridge）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E5%90%88%EF%BC%88Composite%EF%BC%89"><span class="nav-number">3.2.3.</span> <span class="nav-text">组合（Composite）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E9%A5%B0%E8%80%85%EF%BC%88Decorator%EF%BC%89"><span class="nav-number">3.2.4.</span> <span class="nav-text">装饰者（Decorator）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E8%A7%82%EF%BC%88Facade%EF%BC%89"><span class="nav-number">3.2.5.</span> <span class="nav-text">外观（Facade）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%AB%E5%85%83%EF%BC%88Flyweight%EF%BC%89"><span class="nav-number">3.2.6.</span> <span class="nav-text">享元（Flyweight）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%EF%BC%88Proxy%EF%BC%89"><span class="nav-number">3.2.7.</span> <span class="nav-text">代理（Proxy）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%88Behavioral-Patterns%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">行为型模式（Behavioral Patterns）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%A3%E4%BB%BB%E9%93%BE%EF%BC%88Chain-of-Responsibility%EF%BC%89"><span class="nav-number">3.3.1.</span> <span class="nav-text">责任链（Chain of Responsibility）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%EF%BC%88Command%EF%BC%89"><span class="nav-number">3.3.2.</span> <span class="nav-text">命令（Command）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%87%8A%E5%99%A8%EF%BC%88Interpreter%EF%BC%89"><span class="nav-number">3.3.3.</span> <span class="nav-text">解释器（Interpreter）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%EF%BC%88Iterator%EF%BC%89"><span class="nav-number">3.3.4.</span> <span class="nav-text">迭代器（Iterator）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E4%BB%8B%E8%80%85%EF%BC%88Mediator%EF%BC%89"><span class="nav-number">3.3.5.</span> <span class="nav-text">中介者（Mediator）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%87%E5%BF%98%E5%BD%95%EF%BC%88Memento%EF%BC%89"><span class="nav-number">3.3.6.</span> <span class="nav-text">备忘录（Memento）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%EF%BC%88Observer%EF%BC%89"><span class="nav-number">3.3.7.</span> <span class="nav-text">观察者（Observer）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%EF%BC%88State%EF%BC%89"><span class="nav-number">3.3.8.</span> <span class="nav-text">状态（State）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%96%E7%95%A5%EF%BC%88Strategy%EF%BC%89"><span class="nav-number">3.3.9.</span> <span class="nav-text">策略（Strategy）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%EF%BC%88Template-Method%EF%BC%89"><span class="nav-number">3.3.10.</span> <span class="nav-text">模板方法（Template Method）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E8%80%85%EF%BC%88Visitor%EF%BC%89"><span class="nav-number">3.3.11.</span> <span class="nav-text">访问者（Visitor）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E6%A8%A1%E5%BC%8F%EF%BC%88Extended-Patterns%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">扩展模式（Extended Patterns）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%88Dependency-Injection%EF%BC%89"><span class="nav-number">3.4.1.</span> <span class="nav-text">依赖注入（Dependency Injection）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%EF%BC%88Publish-Subscribe%EF%BC%89"><span class="nav-number">3.4.2.</span> <span class="nav-text">发布-订阅（Publish-Subscribe）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E6%A8%A1%E5%BC%8F%EF%BC%88Module-Pattern%EF%BC%89"><span class="nav-number">3.4.3.</span> <span class="nav-text">模块模式（Module Pattern）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVC%EF%BC%88Model-View-Controller%EF%BC%89"><span class="nav-number">3.4.4.</span> <span class="nav-text">MVC（Model-View-Controller）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVP%EF%BC%88Model-View-Presenter%EF%BC%89"><span class="nav-number">3.4.5.</span> <span class="nav-text">MVP（Model-View-Presenter）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVVM%EF%BC%88Model-View-ViewModel%EF%BC%89"><span class="nav-number">3.4.6.</span> <span class="nav-text">MVVM（Model-View-ViewModel）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%93%E5%82%A8%E6%A8%A1%E5%BC%8F%EF%BC%88Repository-Pattern%EF%BC%89"><span class="nav-number">3.4.7.</span> <span class="nav-text">仓储模式（Repository Pattern）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%BD%8D%E5%99%A8%EF%BC%88Service-Locator%EF%BC%89"><span class="nav-number">3.4.8.</span> <span class="nav-text">服务定位器（Service Locator）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E6%BA%AF%E6%BA%90%EF%BC%88Event-Sourcing%EF%BC%89"><span class="nav-number">3.4.9.</span> <span class="nav-text">事件溯源（Event Sourcing）</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/images/avatar_new.jpeg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
