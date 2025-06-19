@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cmder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.23.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"atom-one-light","dark":"atom-one-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="播放器">
+<meta property="og:url" content="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/%E6%92%AD%E6%94%BE%E5%99%A8.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="结构">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-11T09:43:38.000Z">
+<meta property="article:modified_time" content="2025-06-19T14:00:23.819Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/%E6%92%AD%E6%94%BE%E5%99%A8.html">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/%E6%92%AD%E6%94%BE%E5%99%A8.html","path":"音视频/播放器.html","title":"播放器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>播放器 | 说码解字</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"forest","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.5.0/mermaid.min.js","integrity":"sha256-2obLuIPcceEhkE3G09G33hBdmE55ivVcZUlcKcGNHjU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">说码解字</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E7%A0%94%E7%A9%B6"><span class="nav-number">2.</span> <span class="nav-text">问题研究</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#exoplayer-%E5%9C%A8%E4%BD%8E%E6%80%A7%E8%83%BD%E8%AE%BE%E5%A4%87%E4%B8%8A%E8%A7%A3%E7%A0%81%E6%B8%B2%E6%9F%934k%E8%A7%86%E9%A2%91"><span class="nav-number">2.1.</span> <span class="nav-text">ExoPlayer
+在低性能设备上解码渲染4K视频</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E8%A7%A3%E7%A0%81%E6%94%AF%E6%8C%81"><span class="nav-number">2.1.1.</span> <span class="nav-text">1. 硬件解码支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-number">2.1.2.</span> <span class="nav-text">2. 性能优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">2.1.3.</span> <span class="nav-text">3. 内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E4%BC%98%E5%8C%96"><span class="nav-number">2.1.4.</span> <span class="nav-text">4. 渲染优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%80%97%E5%92%8C%E6%95%A3%E7%83%AD"><span class="nav-number">2.1.5.</span> <span class="nav-text">5. 功耗和散热</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exoplayer-%E9%85%8D%E7%BD%AE%E5%BB%BA%E8%AE%AE"><span class="nav-number">2.1.6.</span> <span class="nav-text">6. ExoPlayer 配置建议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E4%B8%8E%E8%B0%83%E8%AF%95"><span class="nav-number">2.1.7.</span> <span class="nav-text">7. 测试与调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.1.8.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exoplayer-%E6%92%AD%E6%94%BE-drm-%E5%8A%A0%E5%AF%86%E8%A7%86%E9%A2%91%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">ExoPlayer 播放 DRM
+加密视频的过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-number">2.2.1.</span> <span class="nav-text">流程图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.2.2.</span> <span class="nav-text">代码示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E"><span class="nav-number">2.2.3.</span> <span class="nav-text">补充说明</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/%E6%92%AD%E6%94%BE%E5%99%A8.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Bruce Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="播放器 | 说码解字">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          播放器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-03-11 17:43:38" itemprop="dateCreated datePublished" datetime="2025-03-11T17:43:38+08:00">2025-03-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-19 22:00:23" itemprop="dateModified" datetime="2025-06-19T22:00:23+08:00">2025-06-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/" itemprop="url" rel="index"><span itemprop="name">音视频</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="结构">结构</h1>
+<pre><code class="highlight mermaid">flowchart TD
+ subgraph s1[&quot;核心播放流程&quot;]
+        P(&quot;音频渲染&quot;)
+        N(&quot;音频缓冲区&quot;)
+        M(&quot;音频解码器&quot;)
+        K(&quot;音频流&quot;)
+        J(&quot;解复用器&quot;)
+        I(&quot;格式解析器&quot;)
+        H(&quot;文件输入&quot;)
+        T(&quot;视频渲染&quot;)
+        R(&quot;视频缓冲区&quot;)
+        Q(&quot;视频解码器&quot;)
+        L(&quot;视频流&quot;)
+        U(&quot;音画同步模块&quot;)
+        S(&quot;视频后处理&quot;)
+        O(&quot;音频后处理&quot;)
+  end
+ subgraph s2[&quot;用户交互&quot;]
+        AC[&quot;设置模块&quot;]
+        B(&quot;播放控制模块&quot;)
+        A[&quot;用户界面&quot;]
+        Y(&quot;播放状态管理&quot;)
+  end
+    A --&gt; B &amp; Y
+    B --&gt; C(&quot;播放/暂停/停止/快进/快退/音量/调速&quot;) &amp; G(&quot;媒体加载模块&quot;) &amp; Y
+    G --&gt; H
+    H --&gt; I
+    I --&gt; J
+    J --&gt; K &amp; L
+    K --&gt; M
+    M --&gt; N
+    N --&gt; O
+    O --&gt; U
+    L --&gt; Q
+    Q --&gt; R
+    R --&gt; S
+    S --&gt; U
+    U --&gt; P &amp; T
+    P --&gt; W(&quot;音频输出设备&quot;)
+    T --&gt; X(&quot;视频输出设备&quot;)
+    Y --&gt; Z(&quot;进度跟踪&quot;) &amp; AA(&quot;播放时间显示&quot;) &amp; AB(&quot;缓冲状态监控&quot;)
+    AC --&gt; B &amp; AD(&quot;字幕管理&quot;)
+    AD --&gt; T
+    AE[&quot;错误处理模块&quot;] --&gt; G &amp; U &amp; Y</code></pre>
+<h1 id="问题研究">问题研究</h1>
+<h2 id="exoplayer-在低性能设备上解码渲染4k视频">ExoPlayer
+在低性能设备上解码渲染4K视频</h2>
+<p>在低性能设备上使用 ExoPlayer 解码和渲染 4K
+视频时，确实有一些特别需要注意的地方，因为 4K 视频（通常是 3840x2160
+分辨率）对硬件资源的需求较高，而低性能设备的处理能力、内存和功耗都有限。以下是一些关键点和优化建议：</p>
+<h3 id="硬件解码支持">1. <strong>硬件解码支持</strong></h3>
+<ul>
+<li><strong>检查硬件解码能力</strong>：低性能设备可能不支持高效的硬件解码（如
+H.264 或 H.265/HEVC 的 4K 解码）。在 ExoPlayer
+中，默认会优先尝试硬件解码，但你需要确保设备的媒体解码器（MediaCodec）支持目标视频的编解码格式和分辨率。</li>
+<li><strong>解决方法</strong>：使用 <code>MediaCodecInfo</code>
+检查设备的解码能力。如果硬件不支持
+4K，可以考虑降低分辨率（通过预处理或选择较低分辨率的流）或切换到软件解码（尽管这可能会导致性能瓶颈）。</li>
+<li><strong>注意事项</strong>：硬件解码通常比软件解码更省电，但在低端设备上可能出现卡顿或崩溃，需做好异常处理。</li>
+</ul>
+<h3 id="性能优化">2. <strong>性能优化</strong></h3>
+<ul>
+<li><strong>降低分辨率或比特率</strong>：如果设备无法流畅处理
+4K，可以通过自适应流媒体（如 HLS 或 DASH）选择较低分辨率的流。ExoPlayer
+支持
+<code>AdaptiveTrackSelection</code>，可以根据设备性能动态调整。</li>
+<li><strong>帧率控制</strong>：4K 视频可能是 60fps
+或更高，但低性能设备可能难以保持流畅播放。优先选择 24fps 或 30fps
+的视频流。</li>
+<li><strong>缓冲区管理</strong>：调整 ExoPlayer 的
+<code>LoadControl</code> 参数（例如
+<code>DefaultLoadControl</code>），减少缓冲区大小（如
+<code>setMaxBufferMs</code>），以避免内存溢出。</li>
+</ul>
+<h3 id="内存管理">3. <strong>内存管理</strong></h3>
+<ul>
+<li><strong>内存限制</strong>：4K
+视频解码需要大量内存，低性能设备可能只有 1-2GB
+RAM。过大的缓冲区或未优化的渲染可能导致 OOM（Out of Memory）。</li>
+<li><strong>解决方法</strong>：
+<ul>
+<li>使用 <code>DefaultAllocator</code> 并设置较小的缓冲区大小。</li>
+<li>避免同时加载多个视频流。</li>
+<li>确保及时释放资源（如调用 <code>player.release()</code>）。</li>
+</ul></li>
+</ul>
+<h3 id="渲染优化">4. <strong>渲染优化</strong></h3>
+<ul>
+<li><strong>Surface 使用</strong>：在低性能设备上，尽量使用
+<code>SurfaceView</code> 而不是
+<code>TextureView</code>，因为前者对硬件加速支持更好，渲染效率更高。</li>
+<li><strong>避免复杂
+UI</strong>：如果视频播放器上叠加了复杂界面（如大量控件或动画），会增加
+GPU 负担。尽量简化播放界面。</li>
+<li><strong>分辨率适配</strong>：如果设备屏幕分辨率远低于 4K（如
+720p），解码 4K
+后再缩放到屏幕分辨率会浪费资源。可以考虑在解码前调整视频输出分辨率（需要服务器端支持或额外的预处理）。</li>
+</ul>
+<h3 id="功耗和散热">5. <strong>功耗和散热</strong></h3>
+<ul>
+<li><strong>问题</strong>：低性能设备的 CPU/GPU 在处理 4K
+视频时可能长时间满载，导致过热或电量快速消耗。</li>
+<li><strong>解决方法</strong>：
+<ul>
+<li>监控设备温度和性能状态（Android API 如
+<code>Thermal API</code>），必要时降低播放质量。</li>
+<li>尽量避免后台持续解码（如通过
+<code>player.setPlayWhenReady(false)</code> 暂停未显示的视频）。</li>
+</ul></li>
+</ul>
+<h3 id="exoplayer-配置建议">6. <strong>ExoPlayer 配置建议</strong></h3>
+<p>以下是一个简单的 ExoPlayer 配置示例，适用于低性能设备：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建自定义 LoadControl 以优化缓冲</span></span><br><span class="line"><span class="type">DefaultLoadControl</span> <span class="variable">loadControl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultLoadControl</span>.Builder()</span><br><span class="line">    .setBufferDurationsMs(</span><br><span class="line">        <span class="number">1000</span>,  <span class="comment">// minBufferMs</span></span><br><span class="line">        <span class="number">5000</span>,  <span class="comment">// maxBufferMs</span></span><br><span class="line">        <span class="number">500</span>,   <span class="comment">// bufferForPlaybackMs</span></span><br><span class="line">        <span class="number">1000</span>)  <span class="comment">// bufferForPlaybackAfterRebufferMs</span></span><br><span class="line">    .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建渲染器工厂，优先硬件解码</span></span><br><span class="line"><span class="type">DefaultRenderersFactory</span> <span class="variable">renderersFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultRenderersFactory</span>(context)</span><br><span class="line">    .setEnableDecoderFallback(<span class="literal">true</span>); <span class="comment">// 如果硬件解码失败，尝试软件解码</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化 ExoPlayer</span></span><br><span class="line"><span class="type">ExoPlayer</span> <span class="variable">player</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ExoPlayer</span>.Builder(context)</span><br><span class="line">    .setRenderersFactory(renderersFactory)</span><br><span class="line">    .setLoadControl(loadControl)</span><br><span class="line">    .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置自适应流选择</span></span><br><span class="line">TrackSelection.<span class="type">Factory</span> <span class="variable">trackSelectionFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AdaptiveTrackSelection</span>.Factory();</span><br><span class="line">player.setTrackSelector(<span class="keyword">new</span> <span class="title class_">DefaultTrackSelector</span>(context, trackSelectionFactory));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加载媒体</span></span><br><span class="line">player.setMediaItem(MediaItem.fromUri(<span class="string">&quot;your_4k_video_url&quot;</span>));</span><br><span class="line">player.prepare();</span><br><span class="line">player.setPlayWhenReady(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="测试与调试">7. <strong>测试与调试</strong></h3>
+<ul>
+<li><strong>设备测试</strong>：在目标低性能设备上反复测试，观察 CPU/GPU
+使用率、掉帧率和崩溃情况。</li>
+<li><strong>日志分析</strong>：启用 ExoPlayer 的
+<code>AnalyticsListener</code>，收集播放过程中的性能数据（如
+<code>onDroppedFrames</code> 或
+<code>onDecoderInitialized</code>）。</li>
+<li><strong>降级策略</strong>：如果检测到播放卡顿（例如通过
+<code>onPlaybackStateChanged</code>
+判断缓冲时间过长），提示用户切换到较低质量。</li>
+</ul>
+<h3 id="总结">总结</h3>
+<p>在低性能设备上解码渲染 4K
+视频，核心是权衡性能与体验。优先利用硬件解码，优化内存和缓冲策略，必要时通过自适应流降低分辨率或帧率。同时，密切关注设备的实际表现，确保播放稳定且不过载硬件。如果你的应用场景允许，建议提供用户手动切换画质的选项，以应对不同设备能力的差异。</p>
+<h2 id="exoplayer-播放-drm-加密视频的过程">ExoPlayer 播放 DRM
+加密视频的过程</h2>
+<p>ExoPlayer 是 Android 平台上一个功能强大的开源媒体播放器，支持播放
+DRM（数字版权管理）加密的视频。它通过与设备的 DRM
+框架和内容解密模块（CDM）协作，解密并播放受保护的内容。以下是 ExoPlayer
+播放 DRM 加密视频的详细过程：</p>
+<ol type="1">
+<li><strong>初始化 ExoPlayer</strong>
+<ul>
+<li>创建 ExoPlayer 实例，并配置媒体源（MediaSource），通常是 DASH 或 HLS
+格式的加密视频流。<br />
+</li>
+<li>指定视频的 URI 和 DRM 配置（如 Widevine 的 UUID 和许可服务器
+URL）。</li>
+</ul></li>
+<li><strong>检测 DRM 保护</strong>
+<ul>
+<li>ExoPlayer 解析媒体流时，检测到内容已加密（例如通过 CENC
+标准）。<br />
+</li>
+<li>它会识别加密方案（例如 Widevine、PlayReady）并加载对应的 DRM
+会话。</li>
+</ul></li>
+<li><strong>创建 DRM 会话</strong>
+<ul>
+<li>ExoPlayer 使用
+<code>DefaultDrmSessionManager</code>（或自定义实现）与 Android 的
+<code>MediaDrm</code> API 交互。<br />
+</li>
+<li>根据 DRM 配置，初始化一个 DRM
+会话（DrmSession），准备与许可服务器通信。</li>
+</ul></li>
+<li><strong>请求许可（License Request）</strong>
+<ul>
+<li>ExoPlayer 从加密视频的元数据中提取密钥 ID（Key ID）。<br />
+</li>
+<li>使用 Key ID 向 DRM
+许可服务器发送请求，附带设备信息和用户认证数据（如 token）。<br />
+</li>
+<li>请求通过 HTTP（通常是 POST）发送到许可服务器。</li>
+</ul></li>
+<li><strong>接收并处理许可（License Response）</strong>
+<ul>
+<li>许可服务器验证请求后，返回包含内容加密密钥（CEK）的许可数据。<br />
+</li>
+<li>ExoPlayer 将许可传递给 <code>MediaDrm</code>，由底层的
+CDM（内容解密模块）处理并存储 CEK。</li>
+</ul></li>
+<li><strong>解密视频流</strong>
+<ul>
+<li>ExoPlayer 将加密的视频数据（通常是分段的 MP4 或 TS 文件）传递给
+<code>MediaCodec</code>，由其调用 CDM 使用 CEK 进行解密。<br />
+</li>
+<li>解密过程在硬件级别完成，确保密钥和内容安全。</li>
+</ul></li>
+<li><strong>渲染与播放</strong>
+<ul>
+<li>解密后的视频帧被解码并渲染到 <code>Surface</code>
+上，用户即可观看视频。<br />
+</li>
+<li>ExoPlayer 继续处理后续视频分段，重复解密和播放流程。</li>
+</ul></li>
+</ol>
+<hr />
+<h3 id="流程图">流程图</h3>
+<pre><code class="highlight mermaid">graph TD
+    A[初始化 ExoPlayer] --&gt; B[加载加密视频流&lt;br&gt;（DASH/HLS）]
+    B --&gt; C[检测DRM保护]
+    C --&gt; D[创建DRM会话&lt;br&gt;（DefaultDrmSessionManager）]
+    D --&gt; E[提取Key ID]
+    E --&gt; F[向许可服务器请求许可]
+    F --&gt; G[服务器验证请求]
+    G --&gt;|返回许可| H[接收并处理许可]
+    H --&gt; I[将CEK传递给MediaDrm]
+    I --&gt; J[解密视频流&lt;br&gt;（MediaCodec + CDM）]
+    J --&gt; K[解码并渲染视频]
+    K --&gt; L[播放视频]
+    G --&gt;|验证失败| M[播放失败]</code></pre>
+<hr />
+<h3 id="代码示例">代码示例</h3>
+<p>以下是一个简单的 ExoPlayer 配置 DRM 的代码片段：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建 DRM 配置</span></span><br><span class="line"><span class="type">Uuid</span> <span class="variable">drmSchemeUuid</span> <span class="operator">=</span> C.WIDEVINE_UUID; <span class="comment">// Widevine 的 UUID</span></span><br><span class="line"><span class="type">String</span> <span class="variable">licenseUrl</span> <span class="operator">=</span> <span class="string">&quot;https://drm-server.com/license&quot;</span>;</span><br><span class="line"><span class="type">DrmSessionManager</span> <span class="variable">drmSessionManager</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultDrmSessionManager</span>.Builder()</span><br><span class="line">    .setUuidAndExoMediaDrmProvider(drmSchemeUuid, FrameworkMediaDrm::<span class="keyword">new</span>)</span><br><span class="line">    .build(<span class="keyword">new</span> <span class="title class_">HttpMediaDrmCallback</span>(licenseUrl, <span class="keyword">new</span> <span class="title class_">DefaultHttpDataSource</span>.Factory()));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建 ExoPlayer</span></span><br><span class="line"><span class="type">ExoPlayer</span> <span class="variable">player</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ExoPlayer</span>.Builder(context)</span><br><span class="line">    .setDrmSessionManager(drmSessionManager)</span><br><span class="line">    .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置媒体源</span></span><br><span class="line"><span class="type">Uri</span> <span class="variable">uri</span> <span class="operator">=</span> Uri.parse(<span class="string">&quot;https://example.com/video.mpd&quot;</span>);</span><br><span class="line"><span class="type">MediaSource</span> <span class="variable">mediaSource</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DashMediaSource</span>.Factory(dataSourceFactory)</span><br><span class="line">    .setDrmSessionManager(drmSessionManager)</span><br><span class="line">    .createMediaSource(MediaItem.fromUri(uri));</span><br><span class="line">player.setMediaSource(mediaSource);</span><br><span class="line">player.prepare();</span><br><span class="line">player.play();</span><br></pre></td></tr></table></figure>
+<hr />
+<h3 id="补充说明">补充说明</h3>
+<ul>
+<li><strong>支持的 DRM 系统</strong>：ExoPlayer 默认支持
+Widevine，也可以通过自定义扩展支持 FairPlay 或 PlayReady。</li>
+<li><strong>安全性</strong>：解密过程依赖设备的硬件安全模块（如
+TEE），防止密钥泄露。</li>
+<li><strong>错误处理</strong>：如果许可请求失败（例如网络问题或未授权），ExoPlayer
+会抛出异常，需在应用中处理。</li>
+<li>通常情况下，私钥在设备制造过程中由硬件厂商生成，通常在芯片生产或设备组装阶段完成。从
+DRM 服务器获取的是公钥。</li>
+<li><strong>解密</strong>：DRM 的 CDM（内容解密模块）使用
+CEK（内容加密密钥）将加密的视频流（例如 AES-128 加密的 MPEG-TS 或 MP4
+分段）转换为明文数据。</li>
+<li><strong>解码</strong>：解密后的明文数据（通常是压缩格式，如
+H.264、H.265）被 MediaCodec 解码为原始的视频帧（YUV 或 RGB 格式）。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/%E6%92%AD%E6%94%BE%E5%99%A8.html" title="播放器">https://cmder.github.io/音视频/播放器.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E9%9F%B3%E8%A7%86%E9%A2%91/OpenGL.html" rel="prev" title="OpenGL">
+                  <i class="fa fa-angle-left"></i> OpenGL
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E6%95%B0%E5%AD%A6/%E8%A1%A5%E7%A0%81%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E7%9A%84%E6%95%B0%E5%AD%A6%E8%A1%A8%E8%BE%BE.html" rel="next" title="补码系统设计的数学表达">
+                  补码系统设计的数学表达 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: false,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+if (window.darkmode && !window.darkmode.isActivated()) {
+  window.darkmode.toggle();
+  var toggleButtons = document.getElementsByClassName("darkmode-toggle");
+  if (toggleButtons && toggleButtons.length > 0) {
+    for (i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.add("darkmode-toggle--white");
+    }
+  }
+}
+</script>
+
+</body>
+</html>
