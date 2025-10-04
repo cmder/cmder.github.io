@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.0.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cmder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.25.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"atom-one-light","dark":"atom-one-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="ExoPlayer 的 Timeline、Timeline.Period 和 Timeline.Window 是其核心组件，用于描述媒体内容的结构和时间信息，特别是在处理直播、点播和复杂播放列表（如多段内容或动态窗口）时。这些类共同定义了媒体的时间轴（Timeline），帮助 ExoPlayer 管理播放位置、导航和内容切换。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ExoPlayer 中的 Timeline、Period 和 Window">
+<meta property="og:url" content="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/ExoPlayer/ExoPlayer-%E4%B8%AD%E7%9A%84-Timeline%E3%80%81Period-%E5%92%8C-Window.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="ExoPlayer 的 Timeline、Timeline.Period 和 Timeline.Window 是其核心组件，用于描述媒体内容的结构和时间信息，特别是在处理直播、点播和复杂播放列表（如多段内容或动态窗口）时。这些类共同定义了媒体的时间轴（Timeline），帮助 ExoPlayer 管理播放位置、导航和内容切换。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-28T12:59:05.000Z">
+<meta property="article:modified_time" content="2025-10-04T12:31:54.705Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/ExoPlayer/ExoPlayer-%E4%B8%AD%E7%9A%84-Timeline%E3%80%81Period-%E5%92%8C-Window.html">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/ExoPlayer/ExoPlayer-%E4%B8%AD%E7%9A%84-Timeline%E3%80%81Period-%E5%92%8C-Window.html","path":"音视频/ExoPlayer/ExoPlayer-中的-Timeline、Period-和-Window.html","title":"ExoPlayer 中的 Timeline、Period 和 Window"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ExoPlayer 中的 Timeline、Period 和 Window | 说码解字</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"forest","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">说码解字</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">1. 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#timelines-for-various-use-cases"><span class="nav-number">1.1.</span> <span class="nav-text">Timelines for various use
+cases</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%A6%E7%BB%86%E8%AE%B2%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">2. 详细讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#timeline"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Timeline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#timeline.window"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Timeline.Window</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#timeline.period"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 Timeline.Period</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">3. 关系与工作流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E7%94%A8%E6%B3%95%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">4.</span> <span class="nav-text">4. 典型用法与注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E7%94%A8%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 典型用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 注意事项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">5. 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">6.</span> <span class="nav-text">6. 参考链接</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/ExoPlayer/ExoPlayer-%E4%B8%AD%E7%9A%84-Timeline%E3%80%81Period-%E5%92%8C-Window.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Bruce Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ExoPlayer 中的 Timeline、Period 和 Window | 说码解字">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ExoPlayer 中的 Timeline、Period 和 Window
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-28 20:59:05" itemprop="dateCreated datePublished" datetime="2025-04-28T20:59:05+08:00">2025-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-10-04 20:31:54" itemprop="dateModified" datetime="2025-10-04T20:31:54+08:00">2025-10-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/" itemprop="url" rel="index"><span itemprop="name">音视频</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/ExoPlayer/" itemprop="url" rel="index"><span itemprop="name">ExoPlayer</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>ExoPlayer 的 <code>Timeline</code>、<code>Timeline.Period</code> 和
+<code>Timeline.Window</code>
+是其核心组件，用于描述媒体内容的结构和时间信息，特别是在处理直播、点播和复杂播放列表（如多段内容或动态窗口）时。这些类共同定义了媒体的时间轴（Timeline），帮助
+ExoPlayer 管理播放位置、导航和内容切换。</p>
+<hr />
+<h1 id="概述">1. 概述</h1>
+<p>ExoPlayer 的 <code>Timeline</code>
+系统设计用于抽象化媒体内容的组织方式，无论是点播视频、直播流还是多内容播放列表。<code>Timeline</code>
+提供了一个统一的方式来描述内容的时间范围、结构和元数据，而
+<code>Timeline.Period</code> 和 <code>Timeline.Window</code>
+分别是其更细粒度的子结构。</p>
+<ul>
+<li><strong><code>Timeline</code></strong>：表示整个媒体内容的全局时间轴，包含一个或多个窗口（<code>Window</code>）和周期（<code>Period</code>）。</li>
+<li><strong><code>Timeline.Window</code></strong>：表示时间轴上的一个逻辑窗口，通常对应一个播放内容的持续时间段（如直播流的当前可用窗口或点播视频的整个时长）。</li>
+<li><strong><code>Timeline.Period</code></strong>：表示窗口内的更小时间段，通常对应内容的逻辑分段（如
+DASH 的周期或 HLS 的片段组）。</li>
+</ul>
+<h2 id="timelines-for-various-use-cases">Timelines for various use
+cases</h2>
+<p>Single media file or on-demand stream</p>
+<p><img
+src="https://developer.android.com/static/images/reference/androidx/media3/common/timeline-single-file.svg" /></p>
+<p>Playlist of media files or on-demand streams</p>
+<p><img
+src="https://developer.android.com/static/images/reference/androidx/media3/common/timeline-playlist.svg" /></p>
+<p>Live stream with limited availability</p>
+<p><img
+src="https://developer.android.com/static/images/reference/androidx/media3/common/timeline-live-limited.svg" /></p>
+<p>Live stream with indefinite availability</p>
+<p><img
+src="https://developer.android.com/static/images/reference/androidx/media3/common/timeline-live-indefinite.svg" /></p>
+<p>Live stream with multiple periods</p>
+<p><img
+src="https://developer.android.com/static/images/reference/androidx/media3/common/timeline-live-multi-period.svg" /></p>
+<p>On-demand stream followed by live stream</p>
+<p><img
+src="https://developer.android.com/static/images/reference/androidx/media3/common/timeline-advanced.svg" /></p>
+<p>On-demand stream with mid-roll ads</p>
+<p><img
+src="https://developer.android.com/static/images/reference/androidx/media3/common/timeline-single-file-midrolls.svg" /></p>
+<p>The figure below shows some of the information defined by a period,
+as well as how this information relates to a corresponding
+<code>Window</code> in the timeline.</p>
+<p><img
+src="https://developer.android.com/static/images/reference/androidx/media3/common/timeline-window.svg" /></p>
+<p>这些类在 ExoPlayer 中广泛用于： - 确定当前播放位置和内容边界。 -
+支持直播流的滑动窗口（动态更新）。 -
+管理多内容播放列表（如广告插入或拼接视频）。 - 处理时间相关逻辑。</p>
+<hr />
+<h1 id="详细讲解">2. 详细讲解</h1>
+<h2 id="timeline">2.1 <code>Timeline</code></h2>
+<ul>
+<li><strong>定义</strong>：
+<ul>
+<li><code>Timeline</code> 是 ExoPlayer
+的抽象基类，表示媒体内容的整体时间轴结构。</li>
+<li>它包含一组窗口（<code>Window</code>）和周期（<code>Period</code>），每个窗口可能包含一个或多个周期。</li>
+<li><code>Timeline</code>
+可以是静态的（如点播视频，固定时长）或动态的（如直播流，窗口随时间滑动）。</li>
+</ul></li>
+<li><strong>主要方法</strong>：
+<ul>
+<li><code>getWindowCount()</code>：返回时间轴中的窗口数量。</li>
+<li><code>getWindow(int windowIndex, Timeline.Window window)</code>：获取指定索引的窗口信息，填充到提供的
+<code>Timeline.Window</code> 对象。</li>
+<li><code>getPeriodCount()</code>：返回时间轴中的周期数量。</li>
+<li><code>getPeriod(int periodIndex, Timeline.Period period)</code>：获取指定索引的周期信息。</li>
+<li><code>getLastWindowIndex(boolean shuffleModeEnabled)</code>：返回最后一个窗口的索引（在直播中通常是当前可用窗口）。</li>
+<li><code>getIndexOfPeriod(Object uid)</code>：根据周期的唯一 ID
+查找其索引。</li>
+</ul></li>
+<li><strong>作用</strong>：
+<ul>
+<li>提供媒体内容的全局视图，描述窗口和周期的组织方式。</li>
+<li>支持导航（如跳转到特定窗口或周期）。</li>
+<li>在直播场景中，<code>Timeline</code>
+会动态更新以反映滑动窗口的变化。</li>
+</ul></li>
+<li><strong>典型场景</strong>：
+<ul>
+<li>点播：一个 <code>Timeline</code>
+包含一个窗口（整个视频）和一个或多个周期（章节或广告）。</li>
+<li>直播：一个 <code>Timeline</code>
+包含一个动态窗口（当前可用的直播内容）和多个周期（流的分段）。</li>
+<li>播放列表：一个 <code>Timeline</code>
+包含多个窗口（每个视频）和对应的周期。</li>
+</ul></li>
+<li><strong>代码示例</strong>： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Timeline</span> <span class="variable">timeline</span> <span class="operator">=</span> player.getCurrentTimeline();</span><br><span class="line"><span class="keyword">if</span> (!timeline.isEmpty()) &#123;</span><br><span class="line">    Timeline.<span class="type">Window</span> <span class="variable">window</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Timeline</span>.Window();</span><br><span class="line">    timeline.getWindow(timeline.getLastWindowIndex(<span class="literal">false</span>), window);</span><br><span class="line">    Log.d(TAG, <span class="string">&quot;Window duration: &quot;</span> + window.getDurationMs());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="timeline.window">2.2 <code>Timeline.Window</code></h2>
+<ul>
+<li><strong>定义</strong>：
+<ul>
+<li><code>Timeline.Window</code>
+表示时间轴上的一个逻辑时间窗口，通常对应一个连续的播放内容段。</li>
+<li>每个窗口有自己的时间范围（开始时间、持续时间）和元数据（如是否动态、是否可寻址）。</li>
+</ul></li>
+<li><strong>关键字段</strong>：
+<ul>
+<li><code>long presentationStartTimeMs</code>：窗口内容的“呈现”开始时间（以毫秒为单位），通常是内容的逻辑开始时间（例如，直播流的节目开始时间）。如果未知，设为
+<code>C.TIME_UNSET</code>。</li>
+<li><code>long windowStartTimeMs</code>：窗口在时间轴上的实际开始时间（以毫秒为单位），通常用于直播流的时间计算。如果未知，设为
+<code>C.TIME_UNSET</code>。</li>
+<li><code>long durationUs</code>：窗口的持续时间（以微秒为单位）。如果是直播流，可能是当前窗口的可用时长。</li>
+<li><code>boolean isDynamic</code>：指示窗口是否动态（即内容可能随时间更新，如直播流的滑动窗口）。</li>
+<li><code>boolean isSeekable</code>：指示窗口是否支持寻址（seek），通常点播为
+<code>true</code>，直播可能为 <code>false</code>。</li>
+<li><code>long defaultPositionUs</code>：窗口的默认播放起始位置（以微秒为单位），用于初始化播放。</li>
+</ul></li>
+<li><strong>作用</strong>：
+<ul>
+<li>描述媒体内容的宏观时间范围（如直播流的当前窗口或点播视频的总时长）。</li>
+<li>提供时间基准，用于计算播放位置（如你的
+<code>currentPositionMs</code>）。</li>
+<li>支持直播流的动态更新（<code>isDynamic = true</code>
+时，窗口内容随时间变化）。</li>
+</ul></li>
+<li><strong>典型场景</strong>：
+<ul>
+<li>直播：窗口表示当前可用的直播内容（滑动窗口），<code>windowStartTimeMs</code>
+和 <code>durationUs</code> 定义其时间范围。</li>
+<li>点播：窗口表示整个视频，<code>durationUs</code> 是视频总时长。</li>
+<li>广告：窗口可能表示主内容或广告段。</li>
+</ul></li>
+<li><strong>代码示例</strong>： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Timeline.<span class="type">Window</span> <span class="variable">window</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Timeline</span>.Window();</span><br><span class="line">timeline.getWindow(timeline.getLastWindowIndex(<span class="literal">false</span>), window);</span><br><span class="line"><span class="keyword">if</span> (window.isDynamic) &#123;</span><br><span class="line">    Log.d(TAG, <span class="string">&quot;Live window, duration: &quot;</span> + C.usToMs(window.durationUs) + <span class="string">&quot;ms&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="timeline.period">2.3 <code>Timeline.Period</code></h2>
+<ul>
+<li><strong>定义</strong>：
+<ul>
+<li><code>Timeline.Period</code>
+表示窗口内的一个逻辑分段，通常对应媒体内容的子部分（如 DASH 的一个
+Period 或 HLS 的一个片段组）。</li>
+<li>周期是窗口的更细粒度划分，可能包含多个媒体片段（chunk）。</li>
+</ul></li>
+<li><strong>关键字段</strong>：
+<ul>
+<li><code>Object id</code>：周期的唯一标识符，用于区分不同的周期。</li>
+<li><code>long durationUs</code>：周期的持续时间（以微秒为单位）。如果未知，设为
+<code>C.TIME_UNSET</code>。</li>
+<li><code>long positionInWindowUs</code>：周期相对于窗口开始的偏移量（以微秒为单位）。</li>
+<li><code>int windowIndex</code>：周期所属的窗口索引。</li>
+<li><code>boolean isAd</code>：指示周期是否为广告内容。</li>
+</ul></li>
+<li><strong>作用</strong>：
+<ul>
+<li>描述窗口内的内容分段，允许 ExoPlayer 精确导航到特定周期。</li>
+<li>提供周期级别的元数据（如广告标记或内容切换点）。</li>
+<li>在直播场景中，周期通常对应流的分段，动态添加或移除。</li>
+</ul></li>
+<li><strong>典型场景</strong>：
+<ul>
+<li>直播：周期表示 HLS 或 DASH 流中的一个时间段（例如，10
+秒的媒体片段）。</li>
+<li>点播：周期可能表示视频的章节或广告插入点。</li>
+<li>播放列表：每个窗口的子内容可能由多个周期组成。</li>
+</ul></li>
+<li><strong>代码示例</strong>： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Timeline.<span class="type">Period</span> <span class="variable">period</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Timeline</span>.Period();</span><br><span class="line">timeline.getPeriod(timeline.getCurrentPeriodIndex(), period);</span><br><span class="line">Log.d(TAG, <span class="string">&quot;Period duration: &quot;</span> + C.usToMs(period.durationUs) + <span class="string">&quot;ms&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr />
+<h1 id="关系与工作流程">3. 关系与工作流程</h1>
+<p><code>Timeline</code>、<code>Timeline.Window</code> 和
+<code>Timeline.Period</code> 的关系可以用以下结构表示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Timeline</span><br><span class="line">├── Window 0</span><br><span class="line">│   ├── Period 0</span><br><span class="line">│   ├── Period 1</span><br><span class="line">│   └── ...</span><br><span class="line">├── Window 1</span><br><span class="line">│   ├── Period 0</span><br><span class="line">│   └── ...</span><br><span class="line">└── ...</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>层级关系</strong>：
+<ul>
+<li>一个 <code>Timeline</code> 包含多个 <code>Window</code>，每个
+<code>Window</code> 包含一个或多个 <code>Period</code>。</li>
+<li><code>Window</code>
+定义宏观时间范围（如直播流的当前窗口），<code>Period</code>
+定义窗口内的细粒度分段（如流的一个片段）。</li>
+</ul></li>
+<li><strong>时间映射</strong>：
+<ul>
+<li><code>Window</code> 的 <code>windowStartTimeMs</code> 和
+<code>durationUs</code> 定义全局时间范围。</li>
+<li><code>Period</code> 的 <code>positionInWindowUs</code>
+表示其在窗口中的相对位置。</li>
+<li>播放位置（<code>positionUs</code>）通常相对于某个周期，通过
+<code>Period</code> 映射到窗口时间，再通过 <code>Window</code>
+映射到全局时间。</li>
+</ul></li>
+<li><strong>动态更新</strong>：
+<ul>
+<li>在直播场景中，<code>Timeline</code>
+是动态的（<code>isDynamic = true</code>），新窗口或周期会随时间添加，旧周期可能被移除（滑动窗口）。</li>
+<li>ExoPlayer 通过 <code>Player.EventListener</code> 的
+<code>onTimelineChanged</code> 事件通知 <code>Timeline</code>
+更新。</li>
+</ul></li>
+<li><strong>工作流程</strong>：
+<ol type="1">
+<li>ExoPlayer 从 <code>MediaSource</code>（如
+<code>DashMediaSource</code> 或 <code>HlsMediaSource</code>）加载
+<code>Timeline</code>。</li>
+<li><code>Timeline</code> 提供窗口和周期信息，ExoPlayer
+使用它们确定播放位置（<code>player.getCurrentPosition()</code>）和内容边界。</li>
+<li>直播流的 <code>Timeline</code>
+定期更新，反映新的窗口或周期（例如，HLS 播放列表刷新）。</li>
+<li>播放器通过 <code>Timeline</code> 导航内容（如
+<code>seekTo(windowIndex, positionMs)</code>）。</li>
+</ol></li>
+</ul>
+<hr />
+<h1 id="典型用法与注意事项">4. 典型用法与注意事项</h1>
+<h2 id="典型用法">4.1 典型用法</h2>
+<ul>
+<li><p><strong>获取当前播放位置</strong>： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Timeline</span> <span class="variable">timeline</span> <span class="operator">=</span> player.getCurrentTimeline();</span><br><span class="line">Timeline.<span class="type">Window</span> <span class="variable">window</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Timeline</span>.Window();</span><br><span class="line">Timeline.<span class="type">Period</span> <span class="variable">period</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Timeline</span>.Period();</span><br><span class="line">timeline.getWindow(player.getCurrentWindowIndex(), window);</span><br><span class="line">timeline.getPeriod(player.getCurrentPeriodIndex(), period);</span><br><span class="line"><span class="type">long</span> <span class="variable">positionMs</span> <span class="operator">=</span> player.getCurrentPosition();</span><br><span class="line">Log.d(TAG, <span class="string">&quot;Window: &quot;</span> + window.windowStartTimeMs + <span class="string">&quot;, Period: &quot;</span> + period.positionInWindowUs + <span class="string">&quot;, Position: &quot;</span> + positionMs);</span><br></pre></td></tr></table></figure></p></li>
+<li><p><strong>处理直播滑动窗口</strong>： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">player.addListener(<span class="keyword">new</span> <span class="title class_">Player</span>.Listener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onTimelineChanged</span><span class="params">(Timeline timeline, <span class="type">int</span> reason)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (timeline.isEmpty()) <span class="keyword">return</span>;</span><br><span class="line">        Timeline.<span class="type">Window</span> <span class="variable">window</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Timeline</span>.Window();</span><br><span class="line">        timeline.getWindow(timeline.getLastWindowIndex(<span class="literal">false</span>), window);</span><br><span class="line">        <span class="keyword">if</span> (window.isDynamic) &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">&quot;Live window updated, duration: &quot;</span> + C.usToMs(window.durationUs));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p></li>
+<li><p><strong>跳转到直播边缘</strong>： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Timeline</span> <span class="variable">timeline</span> <span class="operator">=</span> player.getCurrentTimeline();</span><br><span class="line">Timeline.<span class="type">Window</span> <span class="variable">window</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Timeline</span>.Window();</span><br><span class="line">timeline.getWindow(timeline.getLastWindowIndex(<span class="literal">false</span>), window);</span><br><span class="line">player.seekTo(window.windowIndex, window.getDefaultPositionUs());</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+<h2 id="注意事项">4.2 注意事项</h2>
+<ul>
+<li><strong>动态更新</strong>：
+<ul>
+<li>直播流的 <code>Timeline</code> 是动态的，需通过
+<code>onTimelineChanged</code>
+监听更新，避免使用过时的窗口或周期数据。</li>
+</ul></li>
+<li><strong>时间戳准确性</strong>：
+<ul>
+<li><code>windowStartTimeMs</code> 和
+<code>presentationStartTimeMs</code> 依赖直播流的元数据（如 DASH MPD 或
+HLS 播放列表），可能因流提供商错误导致不准确。</li>
+<li>在你的代码中，负值 <code>currentLatencyMs</code>
+可能与时间戳超前有关，需验证元数据。</li>
+</ul></li>
+<li><strong>周期与窗口映射</strong>：
+<ul>
+<li>确保 <code>periodPositionUsToWindowPositionMs</code>
+正确处理周期切换，特别是在直播流中周期频繁更新时。</li>
+</ul></li>
+<li><strong>性能考虑</strong>：
+<ul>
+<li>频繁调用 <code>getWindow</code> 或 <code>getPeriod</code>
+可能影响性能，建议缓存 <code>Timeline</code> 数据或在必要时更新。</li>
+</ul></li>
+<li><strong>错误处理</strong>：
+<ul>
+<li>检查 <code>C.TIME_UNSET</code>
+的情况，确保代码对未知时间戳有回退逻辑（如你的代码中对
+<code>presentationStartTimeMs</code> 和 <code>windowStartTimeMs</code>
+的检查）。</li>
+</ul></li>
+</ul>
+<hr />
+<h1 id="总结">5. 总结</h1>
+<ul>
+<li><strong><code>Timeline</code></strong>：全局时间轴，管理窗口和周期，提供媒体内容的结构化视图。</li>
+<li><strong><code>Timeline.Window</code></strong>：表示一个播放窗口，定义时间范围（<code>windowStartTimeMs</code>、<code>durationUs</code>）和动态性（<code>isDynamic</code>），在直播中表示滑动窗口。</li>
+<li><strong><code>Timeline.Period</code></strong>：窗口内的细粒度分段，定义周期时间（<code>durationUs</code>）和位置（<code>positionInWindowUs</code>），用于精确导航。</li>
+<li><strong>关系</strong>：<code>Timeline</code> 包含多个
+<code>Window</code>，每个 <code>Window</code> 包含多个
+<code>Period</code>，共同映射播放位置和时间。</li>
+</ul>
+<h1 id="参考链接">6. 参考链接</h1>
+<p><a
+target="_blank" rel="noopener" href="https://developer.android.com/reference/androidx/media3/common/Timeline">Timeline</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://developer.android.com/reference/androidx/media3/common/Timeline.Window">Timeline.Window</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://developer.android.com/reference/androidx/media3/common/Timeline.Period">Timeline.Period</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/ExoPlayer/ExoPlayer-%E4%B8%AD%E7%9A%84-Timeline%E3%80%81Period-%E5%92%8C-Window.html" title="ExoPlayer 中的 Timeline、Period 和 Window">https://cmder.github.io/音视频/ExoPlayer/ExoPlayer-中的-Timeline、Period-和-Window.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++/C++-RAII.html" rel="prev" title="C++ RAII">
+                  <i class="fa fa-angle-left"></i> C++ RAII
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E9%9F%B3%E8%A7%86%E9%A2%91/%E5%A6%82%E4%BD%95%E7%B3%BB%E7%BB%9F%E5%AD%A6%E4%B9%A0%E9%9F%B3%E8%A7%86%E9%A2%91.html" rel="next" title="如何系统学习音视频">
+                  如何系统学习音视频 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: false,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+if (window.darkmode && !window.darkmode.isActivated()) {
+  window.darkmode.toggle();
+  var toggleButtons = document.getElementsByClassName("darkmode-toggle");
+  if (toggleButtons && toggleButtons.length > 0) {
+    for (i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.add("darkmode-toggle--white");
+    }
+  }
+}
+</script>
+
+</body>
+</html>
