@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.0.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cmder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.25.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"atom-one-light","dark":"atom-one-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="标记为 suspend 的函数成为挂起函数，可以在协程上下文中运行，能够暂停执行（不阻塞线程）并在适当的时候恢复执行。通过挂起和恢复机制，挂起函数允许非阻塞的异步编程，适合处理 I&#x2F;O 操作、耗时任务等场景。挂起函数只能在另一个挂起函数或协程作用域（如 CoroutineScope）中调用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin suspend 函数的实现机制">
+<meta property="og:url" content="https://cmder.github.io/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Kotlin/Kotlin-suspend-%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="标记为 suspend 的函数成为挂起函数，可以在协程上下文中运行，能够暂停执行（不阻塞线程）并在适当的时候恢复执行。通过挂起和恢复机制，挂起函数允许非阻塞的异步编程，适合处理 I&#x2F;O 操作、耗时任务等场景。挂起函数只能在另一个挂起函数或协程作用域（如 CoroutineScope）中调用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-12T09:37:10.000Z">
+<meta property="article:modified_time" content="2025-10-05T04:45:01.422Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cmder.github.io/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Kotlin/Kotlin-suspend-%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6.html">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cmder.github.io/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Kotlin/Kotlin-suspend-%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6.html","path":"编程语言/Kotlin/Kotlin-suspend-函数的实现机制.html","title":"Kotlin suspend 函数的实现机制"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Kotlin suspend 函数的实现机制 | 说码解字</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"forest","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">说码解字</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Kotlin/Kotlin-suspend-%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Bruce Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Kotlin suspend 函数的实现机制 | 说码解字">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kotlin suspend 函数的实现机制
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-08-12 17:37:10" itemprop="dateCreated datePublished" datetime="2025-08-12T17:37:10+08:00">2025-08-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-10-05 12:45:01" itemprop="dateModified" datetime="2025-10-05T12:45:01+08:00">2025-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Kotlin/" itemprop="url" rel="index"><span itemprop="name">Kotlin</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>标记为 <code>suspend</code>
+的函数成为挂起函数，可以在协程上下文中运行，能够暂停执行（不阻塞线程）并在适当的时候恢复执行。通过挂起和恢复机制，挂起函数允许非阻塞的异步编程，适合处理
+I/O 操作、耗时任务等场景。挂起函数只能在另一个挂起函数或协程作用域（如
+<code>CoroutineScope</code>）中调用。</p>
+<p>Kotlin 的挂起函数并不是直接由 JVM
+提供支持，而是通过编译器将挂起函数的代码转换为普通的 JVM
+字节码，利用状态机（Continuation）机制来实现暂停和恢复。</p>
+<p>Kotlin 编译器将挂起函数的代码重写为<strong>Continuation-Passing
+Style</strong>（延续传递风格）。这意味着挂起函数的每次暂停点都会被拆分成一个状态机的状态，函数的执行状态通过
+<code>Continuation</code> 对象保存和恢复。</p>
+<p><code>Continuation&lt;T&gt;</code>是Kotlin 协程的核心接口是
+，它表示一个执行的延续点，包含两个主要方法：</p>
+<ol type="1">
+<li><code>resumeWith(result: Result&lt;T&gt;)</code>：恢复协程的执行，传递结果或异常。</li>
+<li><code>context: CoroutineContext</code>：协程的上下文，包含调度器、异常处理器等信息。每个挂起函数在编译时会额外接受一个
+<code>Continuation</code> 参数，用于传递执行状态。</li>
+</ol>
+<p>一个挂起函数会被编译器分解为多个状态（对应每个 <code>suspend</code>
+点）。编译器生成一个状态机，状态机记录当前执行到哪个暂停点，并存储局部变量、参数等信息。每次调用挂起函数时，实际上是调用状态机的某个状态，恢复时从上一次暂停的状态继续执行。</p>
+<p>挂起函数的每次暂停和恢复都被表示为状态机的状态切换。状态机通过一个整数
+<code>label</code>
+来跟踪当前的状态。编译器将挂起函数的代码分成多个块，每个块对应一个暂停点（<code>suspend</code>
+点）。每个暂停点会保存函数的局部变量、参数等到 <code>Continuation</code>
+对象中。当协程恢复时，状态机根据 <code>label</code>
+跳转到正确的代码块，继续执行。</p>
+<p><strong>伪代码示例</strong>： <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">suspend</span> <span class="function"><span class="keyword">fun</span> <span class="title">myFunction</span><span class="params">()</span></span>: String &#123;</span><br><span class="line">    println(<span class="string">&quot;Step 1&quot;</span>)</span><br><span class="line">    delay(<span class="number">1000</span>) <span class="comment">// 暂停点</span></span><br><span class="line">    println(<span class="string">&quot;Step 2&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Result&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 编译后大致等价于：
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">myFunction</span><span class="params">(continuation: <span class="type">Continuation</span>&lt;<span class="type">String</span>&gt;)</span></span>: Any &#123;</span><br><span class="line">    <span class="keyword">val</span> state = continuation <span class="keyword">as</span>? MyFunctionContinuation ?: MyFunctionContinuation()</span><br><span class="line">    <span class="keyword">when</span> (state.label) &#123;</span><br><span class="line">        <span class="number">0</span> -&gt; &#123;</span><br><span class="line">            println(<span class="string">&quot;Step 1&quot;</span>)</span><br><span class="line">            state.label = <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> (DelayKt.delay(<span class="number">1000</span>, state) == COROUTINE_SUSPENDED) <span class="keyword">return</span> COROUTINE_SUSPENDED</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="number">1</span> -&gt; &#123;</span><br><span class="line">            println(<span class="string">&quot;Step 2&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Result&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> <code>COROUTINE_SUSPENDED</code>
+是一个特殊标记，表示协程已暂停。<code>state.label</code>
+用于记录当前状态，<code>0</code> 表示初始状态，<code>1</code>
+表示第一个暂停点之后的恢复状态。</p>
+<p>当挂起函数调用另一个挂起函数（如
+<code>delay</code>、<code>withContext</code>），会返回
+<code>COROUTINE_SUSPENDED</code>，表示协程暂停。当协程恢复时，<code>Continuation.resumeWith</code>
+被调用，传递上一次暂停的结果。状态机根据 <code>label</code>
+跳转到对应的代码块，继续执行。挂起函数的暂停和恢复通常涉及
+<code>CoroutineDispatcher</code>，它决定协程在哪个线程上运行。例如，<code>Dispatchers.IO</code>
+用于 I/O 操作，<code>Dispatchers.Main</code> 用于 UI 线程。</p>
+<p>Kotlin 协程的运行时由 <code>kotlinx.coroutines</code>
+库提供，包含调度器、协程作用域、Continuation
+等核心组件。每个协程都有一个上下文<code>CoroutineContext</code>，存储调度器、异常处理器等信息，控制协程的行为。调度器<code>Dispatcher</code>决定协程在哪个线程上执行或恢复。例如，<code>Dispatchers.Default</code>
+用于 CPU 密集型任务，<code>Dispatchers.IO</code> 用于阻塞操作。</p>
+<p>假设有以下挂起函数： <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">suspend</span> <span class="function"><span class="keyword">fun</span> <span class="title">fetchData</span><span class="params">()</span></span>: String &#123;</span><br><span class="line">    println(<span class="string">&quot;Fetching data...&quot;</span>)</span><br><span class="line">    delay(<span class="number">1000</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Data&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 调用时：编译器将
+<code>fetchData</code> 转换为接受 <code>Continuation</code>
+参数的普通函数。调用 <code>fetchData</code> 时，传递一个
+<code>Continuation</code>
+对象，包含当前状态（<code>label</code>）和上下文。</p>
+<p>暂停时：执行到 <code>delay(1000)</code> 时，<code>delay</code>
+函数返回
+<code>COROUTINE_SUSPENDED</code>，协程暂停。状态机保存当前状态（<code>label = 1</code>）和局部变量到
+<code>Continuation</code>。</p>
+<p>恢复时：调度器（例如
+<code>Dispatchers.Default</code>）在延时结束后调用
+<code>Continuation.resumeWith</code>，恢复协程。状态机根据
+<code>label</code> 跳转到暂停点后的代码，继续执行
+<code>return "Data"</code>。</p>
+<p>挂起函数不保留完整的调用栈，而是通过 <code>Continuation</code>
+保存状态，减少内存占用。暂停时线程可以执行其他任务，恢复时根据调度器选择合适的线程。Kotlin
+编译器尽量减少状态机的开销，确保性能接近手写异步代码。</p>
+<p>传统 Java 异步编程依赖回调，容易导致“回调地狱”。Kotlin
+协程通过挂起函数提供结构化的异步编程，代码更简洁。Java 的
+<code>CompletableFuture</code>
+类似协程，但需要显式处理回调和线程切换，而协程通过编译器和运行时自动管理。Kotlin
+协程的调度器（如
+<code>Dispatchers.IO</code>）底层基于线程池，但通过挂起机制减少线程切换的开销。</p>
+<p>Kotlin 协程提供 <code>kotlinx.coroutines.debug</code>
+模块，可以打印协程的运行状态。IntelliJ IDEA 等 IDE
+支持协程调试，显示暂停点和状态机信息。挂起函数中的异常通过
+<code>Continuation.resumeWith</code>
+传递，<code>CoroutineExceptionHandler</code> 可以捕获和处理异常。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://cmder.github.io/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Kotlin/Kotlin-suspend-%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6.html" title="Kotlin suspend 函数的实现机制">https://cmder.github.io/编程语言/Kotlin/Kotlin-suspend-函数的实现机制.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Android/Framework/Android-%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E6%A1%86%E6%9E%B6.html" rel="prev" title="Android 图形渲染框架">
+                  <i class="fa fa-angle-left"></i> Android 图形渲染框架
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Android/%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Android-RecyclerView-%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6.html" rel="next" title="Android RecyclerView 缓存机制">
+                  Android RecyclerView 缓存机制 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: false,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+if (window.darkmode && !window.darkmode.isActivated()) {
+  window.darkmode.toggle();
+  var toggleButtons = document.getElementsByClassName("darkmode-toggle");
+  if (toggleButtons && toggleButtons.length > 0) {
+    for (i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.add("darkmode-toggle--white");
+    }
+  }
+}
+</script>
+
+</body>
+</html>
