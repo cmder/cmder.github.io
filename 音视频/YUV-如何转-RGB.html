@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cmder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"atom-one-light","dark":"atom-one-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="YUV和RGB是两种常见的颜色编码格式，主要用于图像和视频处理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YUV 如何转 RGB">
+<meta property="og:url" content="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/YUV-%E5%A6%82%E4%BD%95%E8%BD%AC-RGB.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="YUV和RGB是两种常见的颜色编码格式，主要用于图像和视频处理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-14T02:56:04.000Z">
+<meta property="article:modified_time" content="2026-01-02T11:29:49.881Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/YUV-%E5%A6%82%E4%BD%95%E8%BD%AC-RGB.html">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/YUV-%E5%A6%82%E4%BD%95%E8%BD%AC-RGB.html","path":"音视频/YUV-如何转-RGB.html","title":"YUV 如何转 RGB"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>YUV 如何转 RGB | 说码解字</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"forest","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">说码解字</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/YUV-%E5%A6%82%E4%BD%95%E8%BD%AC-RGB.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Bruce Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="YUV 如何转 RGB | 说码解字">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          YUV 如何转 RGB
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-08-14 10:56:04" itemprop="dateCreated datePublished" datetime="2025-08-14T10:56:04+08:00">2025-08-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-02 19:29:49" itemprop="dateModified" datetime="2026-01-02T19:29:49+08:00">2026-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/" itemprop="url" rel="index"><span itemprop="name">音视频</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>YUV和RGB是两种常见的颜色编码格式，主要用于图像和视频处理。</p>
+<p>RGB（红绿蓝）是一种基于加色模型的颜色表示方法，广泛用于显示设备（如屏幕）和图像处理。它由R（Red，红色）、G（Green，绿色）、B（Blue，蓝色）三个通道组成。每个通道通常用8位表示（0-255），因此RGB图像每个像素需要24位（3字节）来存储全彩信息。例如，纯红色的像素值为(255,
+0, 0)，白色为(255, 255, 255)。</p>
+<p>RGB直接对应人眼感知的红、绿、蓝三原色，适合显示和渲染。每个像素存储三个分量，数据量较大，不适合视频压缩和传输。主要用于显示器、相机传感器、图像编辑软件等需要高保真的场景。</p>
+<p>RGB
+有两个变种。1.RGBA增加了Alpha通道，用于表示透明度。2.16位/通道或浮点格式用于高动态范围（HDR）图像。</p>
+<p>YUV
+是一种颜色编码方式，常见于视频压缩和传输（如MPEG、H.264）。它将颜色信息分为亮度（Y）和色度（U、V）两个部分。Y（Luma，亮度）表示图像的明暗信息（灰度值），不含颜色信息。Y值决定了图像的黑白效果。U（Cb，蓝色色度）表示蓝色分量与亮度的差值。V（Cr，红色色度）表示红色分量与亮度的差值。色度（U、V）结合亮度（Y）可以重建出完整的颜色信息。</p>
+<p>人眼对亮度变化更敏感，对色度变化的感知较弱。因此，YUV允许对色度（U、V）进行亚采样（减少分辨率），从而显著降低数据量。亚采样常见有三种类型，<strong>4:4:4</strong>（YUV444）：每个像素都有完整的Y、U、V分量，数据量与RGB相当。<strong>4:2:2</strong>（YUV422）：每两个像素共享一组U、V值，色度数据减半，常用于高质量视频。<strong>4:2:0</strong>（YUV420）：每四个像素（2x2块）共享一组U、V值，色度数据只有1/4，常见于视频压缩（如H.264、JPEG），这种采样方式是最常用的，如
+NV12 / NV21。通过亚采样，YUV格式显著减少数据量，适合视频编码和传输。</p>
+<p>YUV
+适用于视频编码和解码（如MPEG、H.264、H.265）、电视广播、流媒体、图像压缩格式（如JPEG）。</p>
+<p><strong>YUV与RGB的比较</strong>：</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 38%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>特性</th>
+<th>RGB</th>
+<th>YUV</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>颜色表示</strong></td>
+<td>红、绿、蓝三原色</td>
+<td>亮度（Y）+色度（U、V）</td>
+</tr>
+<tr class="even">
+<td><strong>数据量</strong></td>
+<td>较大（每个像素3字节）</td>
+<td>可通过亚采样减少数据量（如4:2:0）</td>
+</tr>
+<tr class="odd">
+<td><strong>人眼感知</strong></td>
+<td>直接对应显示颜色</td>
+<td>亮度优先，色度可压缩</td>
+</tr>
+<tr class="even">
+<td><strong>应用场景</strong></td>
+<td>显示、图像编辑</td>
+<td>视频压缩、传输、广播</td>
+</tr>
+<tr class="odd">
+<td><strong>转换复杂度</strong></td>
+<td>直接使用，无需转换</td>
+<td>需要与RGB相互转换</td>
+</tr>
+<tr class="even">
+<td><strong>压缩效率</strong></td>
+<td>较低</td>
+<td>较高</td>
+</tr>
+</tbody>
+</table>
+<p>YUV 转 RGB 有多种标准（BT.601、BT.709）。下面用 BT.601 标准（SD
+视频）：</p>
+<p>假设 YUV 范围：</p>
+<ul>
+<li>Y ∈ [0, 255]</li>
+<li>U ∈ [0, 255]</li>
+<li>V ∈ [0, 255]</li>
+</ul>
+<p>转换公式：</p>
+<p><span class="math inline">\(\begin{cases} R = Y + 1.402 \times (V -
+128) \\ G = Y - 0.344136 \times (U - 128) - 0.714136 \times (V - 128) \\
+B = Y + 1.772 \times (U - 128) \end{cases}\)</span></p>
+<p>注意：</p>
+<ul>
+<li>转换后需要 <strong>截断</strong>，保证 R/G/B ∈ [0, 255]。</li>
+<li>如果使用浮点计算，效果最好。整型近似也可，但会有误差。</li>
+</ul>
+<p>代码示例：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">yuvToRgb</span><span class="params">(y: <span class="type">Int</span>, u: <span class="type">Int</span>, v: <span class="type">Int</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">val</span> c = y - <span class="number">16</span></span><br><span class="line">    <span class="keyword">val</span> d = u - <span class="number">128</span></span><br><span class="line">    <span class="keyword">val</span> e = v - <span class="number">128</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> r = (<span class="number">1.164</span> * c + <span class="number">1.596</span> * e).toInt()</span><br><span class="line">    <span class="keyword">var</span> g = (<span class="number">1.164</span> * c - <span class="number">0.392</span> * d - <span class="number">0.813</span> * e).toInt()</span><br><span class="line">    <span class="keyword">var</span> b = (<span class="number">1.164</span> * c + <span class="number">2.017</span> * d).toInt()</span><br><span class="line"></span><br><span class="line">    r = r.coerceIn(<span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">    g = g.coerceIn(<span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">    b = b.coerceIn(<span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (<span class="number">0xFF</span> shl <span class="number">24</span>) or (r shl <span class="number">16</span>) or (g shl <span class="number">8</span>) or b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过预计算 YUV 到 RGB
+的映射表，可以在转换时直接查表，避免重复计算。</p>
+<p>示例代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> yuvToRgbLut = Array(<span class="number">256</span>) &#123; Array(<span class="number">256</span>) &#123; Array(<span class="number">256</span>) &#123; <span class="number">0</span> &#125; &#125; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">initYuvToRgbLut</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (y <span class="keyword">in</span> <span class="number">0.</span><span class="number">.255</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (u <span class="keyword">in</span> <span class="number">0.</span><span class="number">.255</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (v <span class="keyword">in</span> <span class="number">0.</span><span class="number">.255</span>) &#123;</span><br><span class="line">                <span class="keyword">val</span> r = (y + <span class="number">1.402</span> * (v - <span class="number">128</span>)).toInt().coerceIn(<span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">                <span class="keyword">val</span> g = (y - <span class="number">0.344136</span> * (u - <span class="number">128</span>) - <span class="number">0.714136</span> * (v - <span class="number">128</span>)).toInt().coerceIn(<span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">                <span class="keyword">val</span> b = (y + <span class="number">1.772</span> * (u - <span class="number">128</span>)).toInt().coerceIn(<span class="number">0</span>, <span class="number">255</span>)</span><br><span class="line">                yuvToRgbLut[y][u][v] = (<span class="number">0xFF</span> shl <span class="number">24</span>) or (r shl <span class="number">16</span>) or (g shl <span class="number">8</span>) or b</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用现代CPU的SIMD（Single Instruction, Multiple
+Data，单指令多数据）指令集（如SSE、AVX、NEON）可以加速YUV到RGB的转换。每个像素的转换公式相同，适合SIMD的并行处理。图像数据通常是连续的像素数组，可以一次性加载多个像素到SIMD寄存器中。SIMD指令（如SSE处理128位，AVX处理256位）允许同时处理多个像素（例如，SSE一次处理4个像素的YUV值，AVX可处理8个）。SIMD指令集（如SSE、AVX、NEON）通过宽寄存器和专用指令（如加法、乘法、打包/解包）并行执行这些运算，从而显著提高性能。</p>
+<p>YUV数据通常存储为连续的Y、U、V分量（例如，YUV420格式中Y是单独的平面，U和V是交错或分开的平面）。需要确保数据加载到SIMD寄存器时是内存对齐的（16字节对齐用于SSE，32字节对齐用于AVX），以避免性能损失。视频处理中，YUV数据通常是8位无符号整数（uint8_t），RGB输出也是8位。SIMD整数指令（如_mm_add_epi16、
+_mm_madd_epi16）可以高效处理这些数据。如果需要更高的精度（如浮点系数），可以使用32位浮点SIMD指令（如_mm_mul_ps、
+_mm_add_ps），但需要额外的类型转换。YUV的Y范围通常是16-235，U、V范围是16-240，需在转换前进行偏移校正（例如，Y
+= Y - 16）。</p>
+<p>将Y、U、V值加载到SIMD寄存器后，使用向量乘法和加法指令并行计算。例如
+SSE
+使用_mm_mul_ps进行系数乘法，_mm_add_ps进行加法。一次处理4个（SSE）或8个（AVX）像素的Y、U、V值，生成对应的R、G、B值。由于不同的亚采样的
+Y、U、V
+分量的比例不同，需要分别处理。4:4:4格式：每个像素都有独立的Y、U、V值，直接加载并处理。4:2:0格式：需要对U、V值进行插值或重复，如使用SIMD的广播指令（如_mm_set1_epi16）将单个U、V值复制到多个像素的寄存器中。对于高质量转换，可以使用SIMD指令实现双线性插值，平滑U、V值的过渡。</p>
+<p>RGB值需限制在0-255范围内。SIMD提供饱和指令（如SSE的_mm_packus_epi16或NEON的vqmovn_u16）以防止溢出。使用对齐存储指令（如_mm_store_si128或_mm256_store_si256）将结果写回内存。</p>
+<p>以下是一个简化的SSE实现，用于4:4:4
+YUV到RGB的转换（假设输入是8位整数，输出也是8位）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;emmintrin.h&gt;</span> <span class="comment">// SSE2</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">yuv_to_rgb_sse</span><span class="params">(<span class="type">uint8_t</span>* yuv, <span class="type">uint8_t</span>* rgb, <span class="type">int</span> width, <span class="type">int</span> height)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; width * height; i += <span class="number">4</span>) &#123;</span><br><span class="line">        <span class="comment">// 加载4个像素的Y、U、V</span></span><br><span class="line">        __m128i y = _mm_loadu_si128((__m128i*)(yuv + i * <span class="number">3</span>)); <span class="comment">// Y0, Y1, Y2, Y3</span></span><br><span class="line">        __m128i u = _mm_loadu_si128((__m128i*)(yuv + i * <span class="number">3</span> + <span class="number">1</span>)); <span class="comment">// U0, U1, U2, U3</span></span><br><span class="line">        __m128i v = _mm_loadu_si128((__m128i*)(yuv + i * <span class="number">3</span> + <span class="number">2</span>)); <span class="comment">// V0, V1, V2, V3</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 偏移校正：Y -= 16, U -= 128, V -= 128</span></span><br><span class="line">        y = _mm_sub_epi16(y, _mm_set1_epi16(<span class="number">16</span>));</span><br><span class="line">        u = _mm_sub_epi16(u, _mm_set1_epi16(<span class="number">128</span>));</span><br><span class="line">        v = _mm_sub_epi16(v, _mm_set1_epi16(<span class="number">128</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 计算R = Y + 1.140V</span></span><br><span class="line">        __m128i r = _mm_add_epi16(y, _mm_mullo_epi16(v, _mm_set1_epi16(<span class="number">1.140</span> * <span class="number">256</span>))); <span class="comment">// 固定点运算</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 计算G = Y - 0.395U - 0.581V</span></span><br><span class="line">        __m128i g = _mm_sub_epi16(y, _mm_add_epi16(</span><br><span class="line">            _mm_mullo_epi16(u, _mm_set1_epi16(<span class="number">0.395</span> * <span class="number">256</span>)),</span><br><span class="line">            _mm_mullo_epi16(v, _mm_set1_epi16(<span class="number">0.581</span> * <span class="number">256</span>))</span><br><span class="line">        ));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 计算B = Y + 2.032U</span></span><br><span class="line">        __m128i b = _mm_add_epi16(y, _mm_mullo_epi16(u, _mm_set1_epi16(<span class="number">2.032</span> * <span class="number">256</span>)));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 饱和到0-255</span></span><br><span class="line">        r = _mm_packus_epi16(r, r);</span><br><span class="line">        g = _mm_packus_epi16(g, g);</span><br><span class="line">        b = _mm_packus_epi16(b, b);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 存储到RGB（交错存储：R0, G0, B0, R1, G1, B1, ...）</span></span><br><span class="line">        <span class="comment">// 需额外处理交错存储逻辑</span></span><br><span class="line">        _mm_storeu_si128((__m128i*)(rgb + i * <span class="number">3</span>), r); <span class="comment">// 简化，实际需交错</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>FFmpeg的libswscale库已高度优化YUV到RGB转换，支持SIMD（SSE、AVX、NEON）。</p>
+<p>在 Android 平台上，可直接使用 OpenGL Shader
+进行转换。这个方案适合适合 Android 相机预览或视频播放器，支持
+NV12/NV21。它的原理是把 YUV 数据上传成纹理，通过 Shader 在 GPU 上做
+YUV→RGB 转换，性能极高，几乎不占 CPU。</p>
+<p>顶点 Shader 示例代码：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vertex_shader.glsl</span></span><br><span class="line"><span class="keyword">attribute</span> <span class="type">vec4</span> aPosition;</span><br><span class="line"><span class="keyword">attribute</span> <span class="type">vec2</span> aTexCoord;</span><br><span class="line"><span class="keyword">varying</span> <span class="type">vec2</span> vTexCoord;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main() &#123;</span><br><span class="line">    <span class="built_in">gl_Position</span> = aPosition;</span><br><span class="line">    vTexCoord = aTexCoord;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>片元 Shader（支持 NV21/NV12）示例代码： <figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fragment_shader.glsl</span></span><br><span class="line"><span class="keyword">precision</span> <span class="keyword">mediump</span> <span class="type">float</span>;</span><br><span class="line"><span class="keyword">varying</span> <span class="type">vec2</span> vTexCoord;</span><br><span class="line"><span class="keyword">uniform</span> <span class="type">sampler2D</span> yTexture;</span><br><span class="line"><span class="keyword">uniform</span> <span class="type">sampler2D</span> uvTexture;</span><br><span class="line"><span class="keyword">uniform</span> <span class="type">int</span> isNV21; <span class="comment">// 0 = NV12, 1 = NV21</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main() &#123;</span><br><span class="line">    <span class="type">float</span> y = <span class="built_in">texture2D</span>(yTexture, vTexCoord).r;</span><br><span class="line">    <span class="type">vec2</span> uv = <span class="built_in">texture2D</span>(uvTexture, vTexCoord).ra; <span class="comment">// R-&gt;U, A-&gt;V for two-channel texture</span></span><br><span class="line"></span><br><span class="line">    <span class="type">float</span> u = uv.x - <span class="number">0.5</span>;</span><br><span class="line">    <span class="type">float</span> v = <span class="keyword">if</span>(isNV21 == <span class="number">1</span>) uv.x - <span class="number">0.5</span> <span class="keyword">else</span> uv.y - <span class="number">0.5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">float</span> r = y + <span class="number">1.402</span> * v;</span><br><span class="line">    <span class="type">float</span> g = y - <span class="number">0.344136</span> * u - <span class="number">0.714136</span> * v;</span><br><span class="line">    <span class="type">float</span> b = y + <span class="number">1.772</span> * u;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">gl_FragColor</span> = <span class="type">vec4</span>(r, g, b, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> UV
+通道根据上传纹理时 NV12/NV21 数据安排，如果是 NV21 需交换 U/V。</p>
+<p>上传 YUV 纹理示例代码： <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">uploadYUVTextures</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    yData: <span class="type">ByteArray</span>, uvData: <span class="type">ByteArray</span>, width: <span class="type">Int</span>, height: <span class="type">Int</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>: IntArray &#123;</span><br><span class="line">    <span class="keyword">val</span> textures = IntArray(<span class="number">2</span>)</span><br><span class="line">    GLES20.glGenTextures(<span class="number">2</span>, textures, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Y 纹理</span></span><br><span class="line">    GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[<span class="number">0</span>])</span><br><span class="line">    GLES20.glTexImage2D(</span><br><span class="line">        GLES20.GL_TEXTURE_2D, <span class="number">0</span>, GLES20.GL_LUMINANCE,</span><br><span class="line">        width, height, <span class="number">0</span>, GLES20.GL_LUMINANCE, GLES20.GL_UNSIGNED_BYTE, ByteBuffer.wrap(yData)</span><br><span class="line">    )</span><br><span class="line">    GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)</span><br><span class="line">    GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// UV 纹理 (宽/2 x 高/2)</span></span><br><span class="line">    GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[<span class="number">1</span>])</span><br><span class="line">    GLES20.glTexImage2D(</span><br><span class="line">        GLES20.GL_TEXTURE_2D, <span class="number">0</span>, GLES20.GL_LUMINANCE_ALPHA,</span><br><span class="line">        width / <span class="number">2</span>, height / <span class="number">2</span>, <span class="number">0</span>, GLES20.GL_LUMINANCE_ALPHA, GLES20.GL_UNSIGNED_BYTE,</span><br><span class="line">        ByteBuffer.wrap(uvData)</span><br><span class="line">    )</span><br><span class="line">    GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)</span><br><span class="line">    GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> textures</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>获取 RGB 数据示例代码： <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getRGBData</span><span class="params">(textureId: <span class="type">Int</span>, width: <span class="type">Int</span>, height: <span class="type">Int</span>)</span></span>: ByteArray &#123;</span><br><span class="line">    <span class="keyword">val</span> rgbData = ByteArray(width * height * <span class="number">4</span>) <span class="comment">// RGBA</span></span><br><span class="line">    GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, framebufferId)</span><br><span class="line">    GLES20.glReadPixels(<span class="number">0</span>, <span class="number">0</span>, width, height, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, ByteBuffer.wrap(rgbData))</span><br><span class="line">    GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> rgbData</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过 GPU 加速，1080p/4K 的视频可以实现实时的 YUV 到 RGB
+的转换，极大地提高了性能和效率。通过调整纹理上传，可以支持不同的 YUV
+格式，例如 NV12、NV21、I420 等，灵活扩展。在 Android
+平台上，这种方法可以与视频播放器和相机预览无缝集成。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/YUV-%E5%A6%82%E4%BD%95%E8%BD%AC-RGB.html" title="YUV 如何转 RGB">https://cmder.github.io/音视频/YUV-如何转-RGB.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Android/%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Android-RecyclerView-%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6.html" rel="prev" title="Android RecyclerView 缓存机制">
+                  <i class="fa fa-angle-left"></i> Android RecyclerView 缓存机制
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E9%9F%B3%E8%A7%86%E9%A2%91/Android-%E7%A4%BA%E4%BE%8B%EF%BC%9AYUV-%E8%BD%AC-RGB.html" rel="next" title="Android 示例：YUV 转 RGB">
+                  Android 示例：YUV 转 RGB <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: false,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+if (window.darkmode && !window.darkmode.isActivated()) {
+  window.darkmode.toggle();
+  var toggleButtons = document.getElementsByClassName("darkmode-toggle");
+  if (toggleButtons && toggleButtons.length > 0) {
+    for (i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.add("darkmode-toggle--white");
+    }
+  }
+}
+</script>
+
+</body>
+</html>

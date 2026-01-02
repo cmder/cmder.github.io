@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cmder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"atom-one-light","dark":"atom-one-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Android 的图形渲染框架负责将应用程序的 UI 元素（View、Canvas、OpenGL 等）渲染到屏幕上。它的核心目标是高效、流畅地将图形内容从应用程序传递到硬件显示设备。整个框架涉及多个层次，包括应用层、系统层、图形 API 以及硬件层。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 图形渲染框架">
+<meta property="og:url" content="https://cmder.github.io/Android/Framework/Android-%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E6%A1%86%E6%9E%B6.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="Android 的图形渲染框架负责将应用程序的 UI 元素（View、Canvas、OpenGL 等）渲染到屏幕上。它的核心目标是高效、流畅地将图形内容从应用程序传递到硬件显示设备。整个框架涉及多个层次，包括应用层、系统层、图形 API 以及硬件层。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-08T05:44:33.000Z">
+<meta property="article:modified_time" content="2026-01-02T11:29:49.873Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cmder.github.io/Android/Framework/Android-%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E6%A1%86%E6%9E%B6.html">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cmder.github.io/Android/Framework/Android-%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E6%A1%86%E6%9E%B6.html","path":"Android/Framework/Android-图形渲染框架.html","title":"Android 图形渲染框架"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Android 图形渲染框架 | 说码解字</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"forest","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">说码解字</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/Android/Framework/Android-%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E6%A1%86%E6%9E%B6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Bruce Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Android 图形渲染框架 | 说码解字">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android 图形渲染框架
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-08-08 13:44:33" itemprop="dateCreated datePublished" datetime="2025-08-08T13:44:33+08:00">2025-08-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-02 19:29:49" itemprop="dateModified" datetime="2026-01-02T19:29:49+08:00">2026-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Android/Framework/" itemprop="url" rel="index"><span itemprop="name">Framework</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Android 的图形渲染框架负责将应用程序的 UI 元素（View、Canvas、OpenGL
+等）渲染到屏幕上。它的核心目标是高效、流畅地将图形内容从应用程序传递到硬件显示设备。整个框架涉及多个层次，包括应用层、系统层、图形
+API 以及硬件层。</p>
+<p>用户交互、动画、布局变化等会调用 <code>View.invalidate()</code> 或
+<code>requestLayout()</code>。<code>Choreographer</code>
+会在下一帧（VSync 信号到来时）调用
+<code>ViewRootImpl.doFrame()</code>。这个绘制必须在VSync
+屏幕刷新信号发送时间间隔完成，否则会导致掉帧。</p>
+<p>绘制包括以下三个流程：</p>
+<ol type="1">
+<li><strong>measure</strong>：测量每个 View
+的大小（<code>View.measure()</code> → <code>onMeasure()</code>）。</li>
+<li><strong>layout</strong>：确定 View
+在父布局中的位置（<code>View.layout()</code> →
+<code>onLayout()</code>）。</li>
+<li><strong>draw</strong>：绘制内容（<code>View.draw()</code> →
+<code>dispatchDraw()</code>）。</li>
+</ol>
+<p>绘制到 Canvas 有两种模式，一种是通过 CPU 绘制 Bitmap
+位图，称为软绘制，另一种是通过 GPU
+进行绘制，即硬件加速，<code>Canvas</code> 是
+<code>HardwareCanvas</code>，绘制操作会记录为渲染命令列表
+<code>DisplayList</code>，不直接画到屏幕。</p>
+<p>从 Android 3.0+ 开始默认开启硬件加速模式，在这个模式下，在
+<code>View.draw()</code> 中，绘制命令不是立即执行，而是调用
+<code>RecordingCanvas</code> 把
+<code>drawRect</code>、<code>drawBitmap</code> 这些指令录制成 GPU
+可以理解的命令列表。这样可以避免每次绘制都经过
+<code>Java → Native</code> 的高频调用。从 Android 5.0 开始引入了
+<code>RenderThread</code>，通过独立线程处理 GPU 绘制，减少 UI
+线程卡顿。UI 线程只生成 DisplayList，提交给 RenderThread。RenderThread
+用 OpenGL ES（或 Vulkan）把 DisplayList 转换成 GPU 绘制指令，并绘制到
+Surface 的缓冲区。Android 默认使用 <strong>Skia</strong> 图形库调用
+OpenGL ES。从 Android 10 开始支持 <strong>Vulkan
+Renderer</strong>（更高性能）。</p>
+<p>绘制结果需要存放到一个 Surface，Surface 可以理解成显存中的画布，由
+<code>SurfaceView</code>、<code>TextureView</code> 或 Window
+产生，内部持有一个 <strong>BufferQueue</strong>。BufferQueue
+是生产者-消费者模型，其中的生产者是应用进程的 RenderThread，消费者是
+SurfaceFlinger。BufferQueue
+使用双缓冲和三缓冲工作模式，双缓冲和三缓冲的概念源自更底层的图形缓冲机制，BufferQueue
+只是 Android 中承载这种机制的实现载体。在 Android 图形渲染中，CPU（UI
+Thread/RenderThread）和 GPU（绘制）是异步工作的。如果只有一个缓冲区，CPU
+正在写数据时，GPU 就不能读，会造成撕裂或花屏，必须等 CPU 写完，GPU
+才能渲染，这样就容易卡顿，无法充分利用硬件并行性，因此需要
+<strong>多缓冲</strong> 来解耦 <strong>生产者（绘制端）</strong> 和
+<strong>消费者（显示端）</strong>
+的速度。三缓冲比双缓冲多一个备用缓冲，防止生产者被阻塞，提升流畅度。</p>
+<p>接下来 Android 的系统服务 <strong>SurfaceFlinger</strong>
+负责把多个应用窗口的 Surface
+合成到最终屏幕图像中。<strong>SurfaceFlinger</strong> 从每个应用的
+BufferQueue 中取出最新的图像缓冲，这些 Surface
+可能来自主界面、弹窗、系统栏等不同应用，如果硬件支持 HWC，由
+<strong>Hardware Composer</strong> 合成，性能更好，否则由 GPU
+合成。SurfaceFlinger 等待硬件发来的 VSync
+屏幕刷新信号来提交下一帧。这就是为什么 Android 的绘制频率通常是 60Hz /
+90Hz / 120Hz。</p>
+<p>如果硬件支持，<strong>Hardware Composer HAL</strong> 提供接口让
+SurfaceFlinger 把图层交给硬件直接合成，避免 GPU 额外消耗。HWC
+会直接把合成结果交给显示驱动
+Framebuffer。显示驱动负责把像素信号传给屏幕的 TCON（Timing
+Controller），最终刷新到 LCD/OLED 面板。</p>
+<p>这其中，Skia 是 Android 的底层 2D 图形库（Chrome 也用它），它支持 CPU
+渲染（软件）和GPU 渲染（OpenGL ES / Vulkan），Canvas 的所有 API（如
+drawLine、drawPath）最终都会调用 Skia。</p>
+<p>总结一下，在这个图形绘制过程中存在 4 个关键线程：</p>
+<ol type="1">
+<li>UI Thread：执行 View 的 measure/layout/draw，生成 DisplayList。</li>
+<li>RenderThread：处理 GPU 绘制命令，渲染到 Surface。</li>
+<li>SurfaceFlinger Thread：合成多个 Surface，提交到屏幕。</li>
+<li>HWC Thread：硬件合成，驱动输出到屏幕。</li>
+</ol>
+<p>根据这个过程，可以得出一些性能优化的方向。由于绘制内容在 UI
+主线程生成，开发者应避免阻塞 UI 线程的操作，如复杂计算或 I/O。View
+的绘制指令被缓存为 DisplayList
+以避免重复计算，开发者可以通过仅重绘发生变化的 View（通过
+<code>invalidate()</code> 或 <code>requestLayout()</code>
+）来优化重绘，同时尽量减少 View
+树的变化，优化布局复杂度。同一像素被多次绘制会导致性能浪费，可以使用
+<code>clipRect</code> 或 <code>clipPath</code>
+限制绘制区域，避免不必要的背景重叠，同时使用 Android Studio 的 GPU
+渲染分析工具来检测 Overdraw 。</p>
+<p>一些常见的渲染问题及解决方法：</p>
+<ol type="1">
+<li>掉帧（Jank）。原因：UI 线程或 RenderThread
+过载。解决：优化布局、减少复杂动画、使用异步任务。</li>
+<li>画面撕裂。原因：渲染与屏幕刷新不同步。解决：确保 VSync
+正常工作，避免禁用硬件加速。</li>
+<li>高内存占用。原因：过多的 GraphicBuffer 或复杂的 View 树。解决：优化
+View 层级，使用轻量级组件（如 ConstraintLayout）。</li>
+<li>兼容性问题。原因：不同设备对 OpenGL ES 或 Vulkan
+的支持不同。解决：提供软件渲染作为回退方案，测试多款设备。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://cmder.github.io/Android/Framework/Android-%E5%9B%BE%E5%BD%A2%E6%B8%B2%E6%9F%93%E6%A1%86%E6%9E%B6.html" title="Android 图形渲染框架">https://cmder.github.io/Android/Framework/Android-图形渲染框架.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E9%9F%B3%E8%A7%86%E9%A2%91/%E9%9F%B3%E8%A7%86%E9%A2%91%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E9%94%A6.html" rel="prev" title="音视频面试题集锦">
+                  <i class="fa fa-angle-left"></i> 音视频面试题集锦
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Kotlin/Kotlin-suspend-%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6.html" rel="next" title="Kotlin suspend 函数的实现机制">
+                  Kotlin suspend 函数的实现机制 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: false,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+if (window.darkmode && !window.darkmode.isActivated()) {
+  window.darkmode.toggle();
+  var toggleButtons = document.getElementsByClassName("darkmode-toggle");
+  if (toggleButtons && toggleButtons.length > 0) {
+    for (i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.add("darkmode-toggle--white");
+    }
+  }
+}
+</script>
+
+</body>
+</html>

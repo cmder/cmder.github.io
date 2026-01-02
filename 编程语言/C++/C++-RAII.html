@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cmder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"atom-one-light","dark":"atom-one-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="RAII（Resource Acquisition Is Initialization，资源获取即初始化）是 C++ 编程中的核心设计理念，用于管理资源的分配和释放。它通过将资源的生命周期绑定到对象的生命周期，利用 C++ 的自动对象管理机制（主要是栈对象的构造和析构），确保资源在使用完毕后被正确释放，避免资源泄漏。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ RAII">
+<meta property="og:url" content="https://cmder.github.io/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++/C++-RAII.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="RAII（Resource Acquisition Is Initialization，资源获取即初始化）是 C++ 编程中的核心设计理念，用于管理资源的分配和释放。它通过将资源的生命周期绑定到对象的生命周期，利用 C++ 的自动对象管理机制（主要是栈对象的构造和析构），确保资源在使用完毕后被正确释放，避免资源泄漏。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-27T06:01:10.000Z">
+<meta property="article:modified_time" content="2026-01-02T11:29:49.877Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cmder.github.io/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++/C++-RAII.html">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cmder.github.io/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++/C++-RAII.html","path":"编程语言/C++/C++-RAII.html","title":"C++ RAII"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++ RAII | 说码解字</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"forest","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">说码解字</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#raii-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">RAII 的工作原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#raii-%E7%9A%84%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">RAII 的代码示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#raii-%E7%9A%84%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">RAII 的典型应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#raii-%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">RAII 的优点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#raii-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">5.</span> <span class="nav-text">RAII 的注意事项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-c-%E4%B8%8D%E9%9C%80%E8%A6%81-finally-%E7%BB%93%E6%9E%84"><span class="nav-number">6.</span> <span class="nav-text">为什么 C++ 不需要
+finally 结构？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-raii-%E9%98%B2%E6%AD%A2%E8%B5%84%E6%BA%90%E6%B3%84%E6%BC%8F"><span class="nav-number">7.</span> <span class="nav-text">使用 RAII 防止资源泄漏</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-number">7.1.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">7.2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">7.3.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++/C++-RAII.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Bruce Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C++ RAII | 说码解字">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++ RAII
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-27 14:01:10" itemprop="dateCreated datePublished" datetime="2025-04-27T14:01:10+08:00">2025-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-02 19:29:49" itemprop="dateModified" datetime="2026-01-02T19:29:49+08:00">2026-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>RAII（Resource Acquisition Is Initialization，资源获取即初始化）是
+C++
+编程中的核心设计理念，用于管理资源的分配和释放。它通过将资源的生命周期绑定到对象的生命周期，利用
+C++
+的自动对象管理机制（主要是栈对象的构造和析构），确保资源在使用完毕后被正确释放，避免资源泄漏。</p>
+<p>RAII 的核心思想是：</p>
+<ul>
+<li><strong>资源获取</strong>（如内存、文件句柄、锁、网络连接等）在对象构造时完成。</li>
+<li><strong>资源释放</strong>在对象析构时自动完成。</li>
+<li>利用 C++
+的<strong>栈对象生命周期</strong>，当对象离开作用域（无论是正常退出还是抛出异常）时，析构函数会自动调用，确保资源正确清理。</li>
+</ul>
+<p>RAII 是 C++ 异常安全性和资源管理的基石，广泛应用于标准库和现代 C++
+编程。</p>
+<hr />
+<h1 id="raii-的工作原理">RAII 的工作原理</h1>
+<ol type="1">
+<li><strong>资源与对象绑定</strong>：
+<ul>
+<li>在对象的构造函数中获取资源（如分配内存、打开文件、加锁）。</li>
+<li>资源的释放逻辑在析构函数中实现。</li>
+</ul></li>
+<li><strong>自动管理</strong>：
+<ul>
+<li>C++ 保证栈上对象离开作用域时，其析构函数会被自动调用。</li>
+<li>资源释放无需程序员手动干预。</li>
+</ul></li>
+<li><strong>异常安全</strong>：
+<ul>
+<li>即使抛出异常，栈解退（stack
+unwinding）机制确保对象按逆序析构，防止资源泄漏。</li>
+</ul></li>
+</ol>
+<hr />
+<h1 id="raii-的代码示例">RAII 的代码示例</h1>
+<p>以下是一个管理动态分配内存的 RAII 示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Resource</span> &#123;</span><br><span class="line">    <span class="type">int</span>* data; <span class="comment">// 动态分配的资源</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Resource</span>() &#123;</span><br><span class="line">        data = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">42</span>); <span class="comment">// 构造函数获取资源</span></span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Resource acquired: &quot;</span> &lt;&lt; *data &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">Resource</span>() &#123;</span><br><span class="line">        <span class="keyword">delete</span> data; <span class="comment">// 析构函数释放资源</span></span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Resource released&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getValue</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> *data; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">useResource</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Resource r; <span class="comment">// 栈上对象，自动管理</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Using resource: &quot;</span> &lt;&lt; r.<span class="built_in">getValue</span>() &lt;&lt; std::endl;</span><br><span class="line">&#125; <span class="comment">// r 离开作用域，自动调用析构函数</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">useResource</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>输出</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Resource acquired: 42</span><br><span class="line">Using resource: 42</span><br><span class="line">Resource released</span><br></pre></td></tr></table></figure>
+<p>在这个例子中：</p>
+<ul>
+<li>构造函数分配内存（<code>new int</code>）。</li>
+<li>析构函数释放内存（<code>delete data</code>）。</li>
+<li>栈对象 <code>r</code>
+离开作用域时自动释放资源，即使发生异常也能保证清理。</li>
+</ul>
+<hr />
+<h1 id="raii-的典型应用">RAII 的典型应用</h1>
+<p>RAII 在 C++ 中应用广泛，以下是常见场景：</p>
+<ol type="1">
+<li><p><strong>动态内存管理</strong>：</p>
+<ul>
+<li><p>标准库的智能指针（如 <code>std::unique_ptr</code> 和
+<code>std::shared_ptr</code>）是 RAII 的经典实现。</p></li>
+<li><p>示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::unique_ptr&lt;<span class="type">int</span>&gt; ptr = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">10</span>);</span><br><span class="line">    <span class="comment">// 使用 ptr</span></span><br><span class="line">&#125; <span class="comment">// ptr 离开作用域，内存自动释放</span></span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p><strong>文件管理</strong>：</p>
+<ul>
+<li><p><code>std::fstream</code>（如
+<code>std::ifstream</code>、<code>std::ofstream</code>）使用 RAII
+管理文件句柄。</p></li>
+<li><p>示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">writeFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::ofstream <span class="title">file</span><span class="params">(<span class="string">&quot;example.txt&quot;</span>)</span></span>;</span><br><span class="line">    file &lt;&lt; <span class="string">&quot;Hello, RAII!&quot;</span>;</span><br><span class="line">&#125; <span class="comment">// file 离开作用域，自动关闭文件</span></span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p><strong>互斥锁管理</strong>：</p>
+<ul>
+<li><p><code>std::lock_guard</code> 和 <code>std::unique_lock</code>
+使用 RAII 管理线程同步中的锁。</p></li>
+<li><p>示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line">std::mutex mtx;</span><br><span class="line"><span class="type">int</span> counter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; ++i) &#123;</span><br><span class="line">        <span class="function">std::lock_guard&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>; <span class="comment">// RAII 管理锁</span></span><br><span class="line">        ++counter;</span><br><span class="line">    &#125; <span class="comment">// lock 离开作用域，自动解锁</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p><strong>其他资源</strong>：</p>
+<ul>
+<li>网络连接（如 <code>std::socket</code> 封装）。</li>
+<li>数据库连接。</li>
+<li>图形资源（如 OpenGL 上下文）。</li>
+</ul></li>
+</ol>
+<hr />
+<h1 id="raii-的优点">RAII 的优点</h1>
+<ol type="1">
+<li><strong>自动资源管理</strong>：
+<ul>
+<li>资源释放由析构函数自动完成，避免手动调用
+<code>delete</code>、<code>close</code> 等。</li>
+</ul></li>
+<li><strong>异常安全</strong>：
+<ul>
+<li>栈解退机制确保即使抛出异常，资源也能正确释放。</li>
+</ul></li>
+<li><strong>代码简洁</strong>：
+<ul>
+<li>减少手动管理资源的代码，降低出错概率。</li>
+</ul></li>
+<li><strong>确定性释放</strong>：
+<ul>
+<li>资源在对象离开作用域时立即释放，行为可预测。</li>
+</ul></li>
+</ol>
+<hr />
+<h1 id="raii-的注意事项">RAII 的注意事项</h1>
+<ol type="1">
+<li><strong>避免手动管理</strong>：
+<ul>
+<li>不要在 RAII 对象之外手动释放资源（如
+<code>delete ptr.get()</code>），否则可能导致未定义行为。</li>
+</ul></li>
+<li><strong>析构函数不抛异常</strong>：
+<ul>
+<li>析构函数应标记为
+<code>noexcept</code>，避免抛出异常，否则可能导致程序终止（<code>std::terminate</code>）。</li>
+</ul></li>
+<li><strong>拷贝和移动</strong>：
+<ul>
+<li>独占资源（如
+<code>std::unique_ptr</code>）通常禁用拷贝，允许移动。</li>
+<li>共享资源（如 <code>std::shared_ptr</code>）需明确定义拷贝语义。</li>
+</ul></li>
+<li><strong>性能开销</strong>：
+<ul>
+<li>RAII
+对象的构造和析构可能引入少量开销，但通常被安全性和简洁性抵消。</li>
+</ul></li>
+</ol>
+<hr />
+<h1 id="为什么-c-不需要-finally-结构">为什么 C++ 不需要
+<code>finally</code> 结构？</h1>
+<p>C++ 不提供 <code>finally</code> 结构，因为 RAII
+提供了更优雅、系统化的替代方案。<code>finally</code>
+通常用于确保资源在代码块结束时释放，但 RAII
+通过以下方式实现相同的目标，且更简洁：</p>
+<ol type="1">
+<li><p><strong>RAII 的优势</strong>：</p>
+<ul>
+<li><p>RAII
+将资源管理封装在对象中，析构函数自动释放资源，无需为每次资源获取添加
+<code>finally</code> 子句。</p></li>
+<li><p>示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">File_handle</span> &#123;</span><br><span class="line">    FILE* p;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">File_handle</span>(<span class="type">const</span> <span class="type">char</span>* n, <span class="type">const</span> <span class="type">char</span>* a) &#123;</span><br><span class="line">        p = <span class="built_in">fopen</span>(n, a);</span><br><span class="line">        <span class="keyword">if</span> (!p) <span class="keyword">throw</span> <span class="built_in">Open_error</span>(errno);</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">File_handle</span>() &#123; <span class="built_in">fclose</span>(p); &#125;</span><br><span class="line">    <span class="keyword">operator</span> FILE*() &#123; <span class="keyword">return</span> p; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* fn)</span> </span>&#123;</span><br><span class="line">    <span class="function">File_handle <span class="title">f</span><span class="params">(fn, <span class="string">&quot;rw&quot;</span>)</span></span>; <span class="comment">// 打开文件</span></span><br><span class="line">    <span class="comment">// 使用 f</span></span><br><span class="line">&#125; <span class="comment">// f 离开作用域，文件自动关闭</span></span><br></pre></td></tr></table></figure></li>
+<li><p>相比之下，<code>finally</code>
+需要显式编写清理代码，增加代码量和出错风险。</p></li>
+</ul></li>
+<li><p><strong>减少代码量</strong>：</p>
+<ul>
+<li>在大型系统中，资源获取次数远多于资源种类。RAII
+通过为每种资源定义一个“句柄”类，复用清理逻辑，而 <code>finally</code>
+需要为每次获取重复编写清理代码。</li>
+</ul></li>
+<li><p><strong>异常安全</strong>：</p>
+<ul>
+<li>RAII
+利用栈解退机制，确保异常发生时资源仍被释放。<code>finally</code>
+也能做到，但需要手动管理，容易遗漏。</li>
+</ul></li>
+</ol>
+<hr />
+<h1 id="使用-raii-防止资源泄漏">使用 RAII 防止资源泄漏</h1>
+<h2 id="原因">原因</h2>
+<ul>
+<li><strong>泄漏不可接受</strong>：资源泄漏（如内存、文件句柄）会导致程序性能下降或崩溃。</li>
+<li><strong>手动释放易错</strong>：程序员可能忘记释放资源，尤其在复杂代码或异常情况下。</li>
+<li><strong>RAII 是最优解</strong>：RAII
+是最简单、系统化的防止泄漏方法，利用对象的生命周期自动管理资源。</li>
+</ul>
+<h2 id="示例">示例</h2>
+<ol type="1">
+<li><p><strong>错误示例（可能泄漏）</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f1</span><span class="params">(<span class="type">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span>* p = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">12</span>];</span><br><span class="line">    <span class="keyword">if</span> (i &lt; <span class="number">17</span>) <span class="keyword">throw</span> Bad&#123;<span class="string">&quot;in f()&quot;</span>, i&#125;;</span><br><span class="line">    <span class="comment">// 抛出异常，未释放 p</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>手动释放（繁琐且易错）</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f2</span><span class="params">(<span class="type">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span>* p = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">12</span>];</span><br><span class="line">    <span class="keyword">if</span> (i &lt; <span class="number">17</span>) &#123;</span><br><span class="line">        <span class="keyword">delete</span>[] p; <span class="comment">// 手动释放</span></span><br><span class="line">        <span class="keyword">throw</span> Bad&#123;<span class="string">&quot;in f()&quot;</span>, i&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span>[] p; <span class="comment">// 正常退出时释放</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>代码冗长，多个 <code>throw</code>
+点需要重复释放逻辑，容易遗漏。</li>
+</ul></li>
+<li><p><strong>使用 RAII（推荐）</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f3</span><span class="params">(<span class="type">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> p = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>[]&gt;(<span class="number">12</span>);</span><br><span class="line">    <span class="keyword">if</span> (i &lt; <span class="number">17</span>) <span class="keyword">throw</span> Bad&#123;<span class="string">&quot;in f()&quot;</span>, i&#125;;</span><br><span class="line">    <span class="comment">// p 离开作用域，自动释放</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>std::unique_ptr</code> 管理内存，异常安全且简洁。</li>
+</ul></li>
+<li><p><strong>更优选择（本地对象）</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f5</span><span class="params">(<span class="type">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="function">std::vector&lt;<span class="type">int</span>&gt; <span class="title">v</span><span class="params">(<span class="number">12</span>)</span></span>;</span><br><span class="line">    <span class="built_in">helper</span>(i); <span class="comment">// 可能抛出异常</span></span><br><span class="line">    <span class="comment">// v 离开作用域，自动释放</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 <code>std::vector</code> 替代裸指针，更安全且高效。</li>
+</ul></li>
+<li><p><strong>隐式异常</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f4</span><span class="params">(<span class="type">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> p = std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>[]&gt;(<span class="number">12</span>);</span><br><span class="line">    <span class="built_in">helper</span>(i); <span class="comment">// 可能抛出异常</span></span><br><span class="line">    <span class="comment">// p 自动释放</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>即使 <code>helper</code> 抛出异常，<code>p</code>
+仍会被正确释放。</li>
+</ul></li>
+</ol>
+<h2 id="注意事项">注意事项</h2>
+<ul>
+<li><p><strong>无明显句柄时</strong>：如果无法定义 RAII 对象，可使用
+<code>final_action</code> 作为最后手段，但优先使用 RAII。</p></li>
+<li><p><strong>无异常环境</strong>：在禁用异常的场景（如嵌入式系统），可通过以下方式模拟
+RAII：</p>
+<ul>
+<li><p>为资源句柄添加 <code>valid()</code>
+检查，验证构造是否成功。</p></li>
+<li><p>示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">vector&lt;string&gt; <span class="title">vs</span><span class="params">(<span class="number">100</span>)</span></span>; <span class="comment">// 自定义 vector，带 valid()</span></span><br><span class="line">    <span class="keyword">if</span> (!vs.<span class="built_in">valid</span>()) &#123; <span class="comment">/* 处理错误 */</span> &#125;</span><br><span class="line">    <span class="function">ifstream <span class="title">fs</span><span class="params">(<span class="string">&quot;foo&quot;</span>)</span></span>; <span class="comment">// 自定义 ifstream，带 valid()</span></span><br><span class="line">    <span class="keyword">if</span> (!fs.<span class="built_in">valid</span>()) &#123; <span class="comment">/* 处理错误 */</span> &#125;</span><br><span class="line">&#125; <span class="comment">// 析构函数照常清理</span></span><br></pre></td></tr></table></figure></li>
+<li><p>缺点：代码量增加，需手动检查
+<code>valid()</code>，且无法隐式传播错误。</p></li>
+</ul></li>
+<li><p><strong>禁用异常的场景</strong>：</p>
+<ul>
+<li>极小型系统（内存不足，如 2K）。</li>
+<li>硬实时系统（无法保证异常处理时间）。</li>
+<li>遗留代码（指针使用复杂，缺乏所有权策略）。</li>
+<li>异常实现效率低（慢、内存占用大或动态链接库支持差）。</li>
+<li>管理决策（需挑战传统观念）。</li>
+<li>除非有充分理由，优先使用异常实现 RAII。</li>
+</ul></li>
+</ul>
+<hr />
+<h1 id="总结">总结</h1>
+<ul>
+<li><strong>RAII</strong> 是 C++
+的核心设计理念，通过将资源绑定到对象的生命周期，实现自动、异常安全的资源管理。</li>
+<li><strong>原理</strong>：构造函数获取资源，析构函数释放资源，利用栈解退确保清理。</li>
+<li><strong>应用</strong>：动态内存（<code>std::unique_ptr</code>、<code>std::shared_ptr</code>）、文件（<code>std::fstream</code>）、锁（<code>std::lock_guard</code>）、网络、数据库等。</li>
+<li><strong>优点</strong>：自动管理、异常安全、代码简洁、确定性释放。</li>
+<li><strong>注意事项</strong>：避免手动释放、确保析构函数不抛异常、正确处理拷贝和移动。</li>
+<li><strong>无 <code>finally</code></strong>：RAII 比
+<code>finally</code> 更简洁、系统化，减少代码量且异常安全。</li>
+<li><strong>防止泄漏</strong>：RAII
+是防止资源泄漏的最优方法，优于手动释放或 <code>finally</code>。</li>
+</ul>
+<p>RAII 体现了 C++ 的“用对象管理资源”哲学，是现代 C++（C++11
+及以后）的基石。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://cmder.github.io/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C++/C++-RAII.html" title="C++ RAII">https://cmder.github.io/编程语言/C++/C++-RAII.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E6%95%B0%E5%AD%A6/%E8%A1%A5%E7%A0%81%E7%B3%BB%E7%BB%9F%E8%AE%A1%E7%AE%97%E4%B8%80%E8%87%B4%E6%80%A7%E7%9A%84%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC.html" rel="prev" title="补码系统计算一致性的数学推导">
+                  <i class="fa fa-angle-left"></i> 补码系统计算一致性的数学推导
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E9%9F%B3%E8%A7%86%E9%A2%91/ExoPlayer/ExoPlayer-%E4%B8%AD%E7%9A%84-Timeline%E3%80%81Period-%E5%92%8C-Window.html" rel="next" title="ExoPlayer 中的 Timeline、Period 和 Window">
+                  ExoPlayer 中的 Timeline、Period 和 Window <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: false,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+if (window.darkmode && !window.darkmode.isActivated()) {
+  window.darkmode.toggle();
+  var toggleButtons = document.getElementsByClassName("darkmode-toggle");
+  if (toggleButtons && toggleButtons.length > 0) {
+    for (i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.add("darkmode-toggle--white");
+    }
+  }
+}
+</script>
+
+</body>
+</html>

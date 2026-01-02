@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cmder.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"atom-one-light","dark":"atom-one-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="这个示例实现了一个简单的 OpenGL ES 2.0 渲染器，用于将 YUV420P 格式的图像帧转换为 RGB 并显示在屏幕上。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 示例：YUV 转 RGB">
+<meta property="og:url" content="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/Android-%E7%A4%BA%E4%BE%8B%EF%BC%9AYUV-%E8%BD%AC-RGB.html">
+<meta property="og:site_name" content="说码解字">
+<meta property="og:description" content="这个示例实现了一个简单的 OpenGL ES 2.0 渲染器，用于将 YUV420P 格式的图像帧转换为 RGB 并显示在屏幕上。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-17T14:17:47.000Z">
+<meta property="article:modified_time" content="2026-01-02T11:29:49.881Z">
+<meta property="article:author" content="Bruce Yao">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/Android-%E7%A4%BA%E4%BE%8B%EF%BC%9AYUV-%E8%BD%AC-RGB.html">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/Android-%E7%A4%BA%E4%BE%8B%EF%BC%9AYUV-%E8%BD%AC-RGB.html","path":"音视频/Android-示例：YUV-转-RGB.html","title":"Android 示例：YUV 转 RGB"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Android 示例：YUV 转 RGB | 说码解字</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"forest","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">说码解字</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bruce Yao"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bruce Yao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cmder" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cmder" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cmd100000@gmail.com" title="E-Mail → mailto:cmd100000@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/Android-%E7%A4%BA%E4%BE%8B%EF%BC%9AYUV-%E8%BD%AC-RGB.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Bruce Yao">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="说码解字">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Android 示例：YUV 转 RGB | 说码解字">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android 示例：YUV 转 RGB
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-08-17 22:17:47" itemprop="dateCreated datePublished" datetime="2025-08-17T22:17:47+08:00">2025-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-02 19:29:49" itemprop="dateModified" datetime="2026-01-02T19:29:49+08:00">2026-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/" itemprop="url" rel="index"><span itemprop="name">音视频</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>这个示例实现了一个简单的 OpenGL ES 2.0 渲染器，用于将 YUV420P
+格式的图像帧转换为 RGB 并显示在屏幕上。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.cmder.yuvgl</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Context</span><br><span class="line"><span class="keyword">import</span> android.opengl.GLES20</span><br><span class="line"><span class="keyword">import</span> android.opengl.GLSurfaceView</span><br><span class="line"><span class="keyword">import</span> android.opengl.Matrix</span><br><span class="line"><span class="keyword">import</span> java.nio.ByteBuffer</span><br><span class="line"><span class="keyword">import</span> java.nio.ByteOrder</span><br><span class="line"><span class="keyword">import</span> java.nio.FloatBuffer</span><br><span class="line"><span class="keyword">import</span> javax.microedition.khronos.egl.EGLConfig</span><br><span class="line"><span class="keyword">import</span> javax.microedition.khronos.opengles.GL10</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">YuvToRgbRenderer</span>(<span class="keyword">private</span> <span class="keyword">val</span> context: Context) : GLSurfaceView.Renderer &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Vertex shader source code (GLSL)</span></span><br><span class="line">    <span class="comment">// 顶点着色器处理全屏四边形的顶点坐标（aPosition）和纹理坐标（aTexCoord），通过uMVPMatrix变换顶点位置，传递纹理坐标给片段着色器。</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> vertexShaderCode = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        attribute vec4 aPosition;</span></span><br><span class="line"><span class="string">        attribute vec2 aTexCoord;</span></span><br><span class="line"><span class="string">        varying vec2 vTexCoord;</span></span><br><span class="line"><span class="string">        uniform mat4 uMVPMatrix;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        void main() &#123;</span></span><br><span class="line"><span class="string">            gl_Position = uMVPMatrix * aPosition;</span></span><br><span class="line"><span class="string">            vTexCoord = aTexCoord;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span>.trimIndent()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Fragment shader source code (GLSL) for YUV420P to RGB conversion</span></span><br><span class="line">    <span class="comment">// Assumes three separate textures: Y (luminance), U (chroma blue), V (chroma red)</span></span><br><span class="line">    <span class="comment">// For other formats like NV21, adjust the sampling accordingly (e.g., VU interleaved).</span></span><br><span class="line">    <span class="comment">// 片段着色器从Y、U、V纹理中采样数据，应用BT.601标准矩阵将YUV转换为RGB颜色值，输出到gl_FragColor。</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> fragmentShaderCode = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        precision mediump float;</span></span><br><span class="line"><span class="string">        varying vec2 vTexCoord;</span></span><br><span class="line"><span class="string">        uniform sampler2D yTexture;</span></span><br><span class="line"><span class="string">        uniform sampler2D uTexture;</span></span><br><span class="line"><span class="string">        uniform sampler2D vTexture;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        void main() &#123;</span></span><br><span class="line"><span class="string">            float y = texture2D(yTexture, vTexCoord).r;</span></span><br><span class="line"><span class="string">            float u = texture2D(uTexture, vTexCoord).r - 0.5;</span></span><br><span class="line"><span class="string">            float v = texture2D(vTexture, vTexCoord).r - 0.5;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            // YUV to RGB conversion matrix (BT.601 standard)</span></span><br><span class="line"><span class="string">            float r = y + 1.402 * v;</span></span><br><span class="line"><span class="string">            float g = y - 0.344136 * u - 0.714136 * v;</span></span><br><span class="line"><span class="string">            float b = y + 1.772 * u;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            gl_FragColor = vec4(r, g, b, 1.0);</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span>.trimIndent()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Program handle</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> program: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Handles for attributes and uniforms</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> positionHandle: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> texCoordHandle: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> mvpMatrixHandle: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> yTextureHandle: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> uTextureHandle: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> vTextureHandle: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Texture IDs</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> yTextureId: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> uTextureId: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> vTextureId: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// MVP matrix</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> mvpMatrix = FloatArray(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Vertex data: positions and texture coordinates for a full-screen quad</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> vertexData = floatArrayOf(</span><br><span class="line">        -<span class="number">1f</span>, -<span class="number">1f</span>, <span class="number">0f</span>, <span class="number">0f</span>, <span class="number">1f</span>,  <span class="comment">// Bottom-left</span></span><br><span class="line">        <span class="number">1f</span>, -<span class="number">1f</span>, <span class="number">0f</span>, <span class="number">1f</span>, <span class="number">1f</span>,   <span class="comment">// Bottom-right</span></span><br><span class="line">        -<span class="number">1f</span>, <span class="number">1f</span>, <span class="number">0f</span>, <span class="number">0f</span>, <span class="number">0f</span>,   <span class="comment">// Top-left</span></span><br><span class="line">        <span class="number">1f</span>, <span class="number">1f</span>, <span class="number">0f</span>, <span class="number">1f</span>, <span class="number">0f</span>     <span class="comment">// Top-right</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> vertexBuffer: FloatBuffer</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Example YUV data dimensions (adjust based on your input)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> width: <span class="built_in">Int</span> = <span class="number">640</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> height: <span class="built_in">Int</span> = <span class="number">480</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Example YUV buffers (in real use, fill these from Camera or Video source)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> yBuffer: ByteBuffer</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> uBuffer: ByteBuffer</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> vBuffer: ByteBuffer</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSurfaceCreated</span><span class="params">(gl: <span class="type">GL10</span>?, config: <span class="type">EGLConfig</span>?)</span></span> &#123;</span><br><span class="line">        <span class="comment">// Compile and link shaders</span></span><br><span class="line">        <span class="comment">// 编译并链接顶点和片段着色器，创建OpenGL程序。</span></span><br><span class="line">        <span class="keyword">val</span> vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)</span><br><span class="line">        <span class="keyword">val</span> fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode)</span><br><span class="line">        program = GLES20.glCreateProgram()</span><br><span class="line">        GLES20.glAttachShader(program, vertexShader)</span><br><span class="line">        GLES20.glAttachShader(program, fragmentShader)</span><br><span class="line">        GLES20.glLinkProgram(program)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Get handles</span></span><br><span class="line">        <span class="comment">// 获取着色器中的属性和统一变量句柄（如aPosition、yTexture等）。</span></span><br><span class="line">        positionHandle = GLES20.glGetAttribLocation(program, <span class="string">&quot;aPosition&quot;</span>)</span><br><span class="line">        texCoordHandle = GLES20.glGetAttribLocation(program, <span class="string">&quot;aTexCoord&quot;</span>)</span><br><span class="line">        mvpMatrixHandle = GLES20.glGetUniformLocation(program, <span class="string">&quot;uMVPMatrix&quot;</span>)</span><br><span class="line">        yTextureHandle = GLES20.glGetUniformLocation(program, <span class="string">&quot;yTexture&quot;</span>)</span><br><span class="line">        uTextureHandle = GLES20.glGetUniformLocation(program, <span class="string">&quot;uTexture&quot;</span>)</span><br><span class="line">        vTextureHandle = GLES20.glGetUniformLocation(program, <span class="string">&quot;vTexture&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Initialize vertex buffer</span></span><br><span class="line">        <span class="comment">// 初始化顶点缓冲区，定义一个全屏四边形（2个三角形组成）。</span></span><br><span class="line">        vertexBuffer = ByteBuffer.allocateDirect(vertexData.size * <span class="number">4</span>)</span><br><span class="line">            .order(ByteOrder.nativeOrder())</span><br><span class="line">            .asFloatBuffer()</span><br><span class="line">            .put(vertexData)</span><br><span class="line">            .apply &#123; position(<span class="number">0</span>) &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Create textures</span></span><br><span class="line">        <span class="comment">// 创建三个纹理（Y、U、V），分别绑定到GL_TEXTURE0、GL_TEXTURE1、GL_TEXTURE2。</span></span><br><span class="line">        <span class="keyword">val</span> textureIds = IntArray(<span class="number">3</span>)</span><br><span class="line">        GLES20.glGenTextures(<span class="number">3</span>, textureIds, <span class="number">0</span>)</span><br><span class="line">        yTextureId = textureIds[<span class="number">0</span>]</span><br><span class="line">        uTextureId = textureIds[<span class="number">1</span>]</span><br><span class="line">        vTextureId = textureIds[<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Bind and set textures (initially empty, update in draw)</span></span><br><span class="line">        bindTexture(yTextureId, GLES20.GL_TEXTURE0)</span><br><span class="line">        bindTexture(uTextureId, GLES20.GL_TEXTURE1)</span><br><span class="line">        bindTexture(vTextureId, GLES20.GL_TEXTURE2)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Initialize example YUV buffers (in real app, update these dynamically)</span></span><br><span class="line">        initializeYuvBuffers()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Set orthographic projection</span></span><br><span class="line">        <span class="comment">// 设置单位矩阵作为MVP变换。</span></span><br><span class="line">        Matrix.setIdentityM(mvpMatrix, <span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSurfaceChanged</span><span class="params">(gl: <span class="type">GL10</span>?, width: <span class="type">Int</span>, height: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        <span class="comment">// 根据屏幕尺寸设置OpenGL视口，确保渲染区域匹配屏幕。</span></span><br><span class="line">        GLES20.glViewport(<span class="number">0</span>, <span class="number">0</span>, width, height)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onDrawFrame</span><span class="params">(gl: <span class="type">GL10</span>?)</span></span> &#123;</span><br><span class="line">        <span class="comment">// 清空屏幕，激活着色器程序。</span></span><br><span class="line">        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)</span><br><span class="line">        GLES20.glUseProgram(program)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Update textures with YUV data</span></span><br><span class="line">        updateTextures()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Set uniforms</span></span><br><span class="line">        <span class="comment">// 设置统一变量（MVP矩阵和纹理单元）。</span></span><br><span class="line">        GLES20.glUniformMatrix4fv(mvpMatrixHandle, <span class="number">1</span>, <span class="literal">false</span>, mvpMatrix, <span class="number">0</span>)</span><br><span class="line">        GLES20.glUniform1i(yTextureHandle, <span class="number">0</span>)</span><br><span class="line">        GLES20.glUniform1i(uTextureHandle, <span class="number">1</span>)</span><br><span class="line">        GLES20.glUniform1i(vTextureHandle, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Enable attributes</span></span><br><span class="line">        <span class="comment">// 绑定顶点和纹理坐标数据，绘制四边形（GL_TRIANGLE_STRIP）。</span></span><br><span class="line">        <span class="keyword">val</span> stride = <span class="number">5</span> * <span class="number">4</span>  <span class="comment">// 5 floats per vertex * 4 bytes</span></span><br><span class="line">        vertexBuffer.position(<span class="number">0</span>)</span><br><span class="line">        GLES20.glVertexAttribPointer(</span><br><span class="line">            positionHandle,</span><br><span class="line">            <span class="number">3</span>,</span><br><span class="line">            GLES20.GL_FLOAT,</span><br><span class="line">            <span class="literal">false</span>,</span><br><span class="line">            stride,</span><br><span class="line">            vertexBuffer</span><br><span class="line">        )</span><br><span class="line">        GLES20.glEnableVertexAttribArray(positionHandle)</span><br><span class="line"></span><br><span class="line">        vertexBuffer.position(<span class="number">3</span>)</span><br><span class="line">        GLES20.glVertexAttribPointer(</span><br><span class="line">            texCoordHandle,</span><br><span class="line">            <span class="number">2</span>,</span><br><span class="line">            GLES20.GL_FLOAT,</span><br><span class="line">            <span class="literal">false</span>,</span><br><span class="line">            stride,</span><br><span class="line">            vertexBuffer</span><br><span class="line">        )</span><br><span class="line">        GLES20.glEnableVertexAttribArray(texCoordHandle)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Draw quad</span></span><br><span class="line">        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, <span class="number">0</span>, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Disable attributes</span></span><br><span class="line">        <span class="comment">// 禁用顶点属性，完成一帧渲染。</span></span><br><span class="line">        GLES20.glDisableVertexAttribArray(positionHandle)</span><br><span class="line">        GLES20.glDisableVertexAttribArray(texCoordHandle)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 编译GLSL着色器代码。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">loadShader</span><span class="params">(type: <span class="type">Int</span>, shaderCode: <span class="type">String</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> shader = GLES20.glCreateShader(type)</span><br><span class="line">        GLES20.glShaderSource(shader, shaderCode)</span><br><span class="line">        GLES20.glCompileShader(shader)</span><br><span class="line">        <span class="keyword">return</span> shader</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 配置纹理参数（如线性过滤和边缘处理）。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">bindTexture</span><span class="params">(textureId: <span class="type">Int</span>, unit: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        GLES20.glActiveTexture(unit)</span><br><span class="line">        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId)</span><br><span class="line">        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)</span><br><span class="line">        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR)</span><br><span class="line">        GLES20.glTexParameteri(</span><br><span class="line">            GLES20.GL_TEXTURE_2D,</span><br><span class="line">            GLES20.GL_TEXTURE_WRAP_S,</span><br><span class="line">            GLES20.GL_CLAMP_TO_EDGE</span><br><span class="line">        )</span><br><span class="line">        GLES20.glTexParameteri(</span><br><span class="line">            GLES20.GL_TEXTURE_2D,</span><br><span class="line">            GLES20.GL_TEXTURE_WRAP_T,</span><br><span class="line">            GLES20.GL_CLAMP_TO_EDGE</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建测试用的YUV数据缓冲区。</span></span><br><span class="line"><span class="comment">     * 初始化YUV缓冲区，填充测试用的灰色数据（Y=128, U=128, V=128）。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">initializeYuvBuffers</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">// Example: Allocate buffers (in real use, get from CameraPreview or MediaCodec)</span></span><br><span class="line">        yBuffer = ByteBuffer.allocateDirect(width * height)</span><br><span class="line">        uBuffer = ByteBuffer.allocateDirect(width * height / <span class="number">4</span>)</span><br><span class="line">        vBuffer = ByteBuffer.allocateDirect(width * height / <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Fill with dummy data for testing (e.g., gray image)</span></span><br><span class="line">        yBuffer.put(ByteArray(width * height) &#123; <span class="number">128.</span>toByte() &#125;)</span><br><span class="line">        uBuffer.put(ByteArray(width * height / <span class="number">4</span>) &#123; <span class="number">128.</span>toByte() &#125;)</span><br><span class="line">        vBuffer.put(ByteArray(width * height / <span class="number">4</span>) &#123; <span class="number">128.</span>toByte() &#125;)</span><br><span class="line">        yBuffer.position(<span class="number">0</span>)</span><br><span class="line">        uBuffer.position(<span class="number">0</span>)</span><br><span class="line">        vBuffer.position(<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将YUV数据上传到纹理（Y全尺寸，U/V半尺寸）。</span></span><br><span class="line"><span class="comment">     * 更新Y、U、V纹理数据。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">updateTextures</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">// Update Y texture</span></span><br><span class="line">        GLES20.glActiveTexture(GLES20.GL_TEXTURE0)</span><br><span class="line">        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, yTextureId)</span><br><span class="line">        GLES20.glTexImage2D(</span><br><span class="line">            GLES20.GL_TEXTURE_2D,</span><br><span class="line">            <span class="number">0</span>,</span><br><span class="line">            GLES20.GL_LUMINANCE,</span><br><span class="line">            width,</span><br><span class="line">            height,</span><br><span class="line">            <span class="number">0</span>,</span><br><span class="line">            GLES20.GL_LUMINANCE,</span><br><span class="line">            GLES20.GL_UNSIGNED_BYTE,</span><br><span class="line">            yBuffer</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Update U texture (half size)</span></span><br><span class="line">        GLES20.glActiveTexture(GLES20.GL_TEXTURE1)</span><br><span class="line">        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, uTextureId)</span><br><span class="line">        GLES20.glTexImage2D(</span><br><span class="line">            GLES20.GL_TEXTURE_2D,</span><br><span class="line">            <span class="number">0</span>,</span><br><span class="line">            GLES20.GL_LUMINANCE,</span><br><span class="line">            width / <span class="number">2</span>,</span><br><span class="line">            height / <span class="number">2</span>,</span><br><span class="line">            <span class="number">0</span>,</span><br><span class="line">            GLES20.GL_LUMINANCE,</span><br><span class="line">            GLES20.GL_UNSIGNED_BYTE,</span><br><span class="line">            uBuffer</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Update V texture (half size)</span></span><br><span class="line">        GLES20.glActiveTexture(GLES20.GL_TEXTURE2)</span><br><span class="line">        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, vTextureId)</span><br><span class="line">        GLES20.glTexImage2D(</span><br><span class="line">            GLES20.GL_TEXTURE_2D,</span><br><span class="line">            <span class="number">0</span>,</span><br><span class="line">            GLES20.GL_LUMINANCE,</span><br><span class="line">            width / <span class="number">2</span>,</span><br><span class="line">            height / <span class="number">2</span>,</span><br><span class="line">            <span class="number">0</span>,</span><br><span class="line">            GLES20.GL_LUMINANCE,</span><br><span class="line">            GLES20.GL_UNSIGNED_BYTE,</span><br><span class="line">            vBuffer</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// In real app, call this to update YUV data from external source</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 允许外部更新YUV数据和尺寸（实际应用中从相机或视频解码器获取）。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">updateYuvData</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        newY: <span class="type">ByteArray</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        newU: <span class="type">ByteArray</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        newV: <span class="type">ByteArray</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        newWidth: <span class="type">Int</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">        newHeight: <span class="type">Int</span></span></span></span><br><span class="line"><span class="params"><span class="function">    )</span></span> &#123;</span><br><span class="line">        width = newWidth</span><br><span class="line">        height = newHeight</span><br><span class="line">        yBuffer = ByteBuffer.wrap(newY)</span><br><span class="line">        uBuffer = ByteBuffer.wrap(newU)</span><br><span class="line">        vBuffer = ByteBuffer.wrap(newV)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>项目地址：https://github.com/cmder/Demos/tree/main/YUVGL</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Bruce Yao
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://cmder.github.io/%E9%9F%B3%E8%A7%86%E9%A2%91/Android-%E7%A4%BA%E4%BE%8B%EF%BC%9AYUV-%E8%BD%AC-RGB.html" title="Android 示例：YUV 转 RGB">https://cmder.github.io/音视频/Android-示例：YUV-转-RGB.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E9%9F%B3%E8%A7%86%E9%A2%91/YUV-%E5%A6%82%E4%BD%95%E8%BD%AC-RGB.html" rel="prev" title="YUV 如何转 RGB">
+                  <i class="fa fa-angle-left"></i> YUV 如何转 RGB
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E6%95%99%E7%A8%8B%E5%90%88%E9%9B%86.html" rel="next" title="教程合集">
+                  教程合集 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Bruce Yao</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cmder" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: 'unset',
+  left: '32px',
+  time: '0.5s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: false,
+  label: '🌓',
+  autoMatchOsTheme: false
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+if (window.darkmode && !window.darkmode.isActivated()) {
+  window.darkmode.toggle();
+  var toggleButtons = document.getElementsByClassName("darkmode-toggle");
+  if (toggleButtons && toggleButtons.length > 0) {
+    for (i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.add("darkmode-toggle--white");
+    }
+  }
+}
+</script>
+
+</body>
+</html>
